@@ -69,8 +69,6 @@
             gap: 8px;
         }
 
-        .app-header h1 .icon { font-size: 1.4rem; }
-
         .header-actions {
             display: flex;
             align-items: center;
@@ -93,47 +91,22 @@
 
         .btn-primary { background: white; color: var(--primary); }
         .btn-primary:hover { background: var(--primary-light); }
-
-        .btn-secondary {
-            background: rgba(255,255,255,0.15);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
+        .btn-secondary { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); }
         .btn-secondary:hover { background: rgba(255,255,255,0.25); }
-
         .btn-success { background: var(--success); color: white; }
         .btn-success:hover { background: #15803d; }
-
         .btn-danger { background: var(--danger); color: white; }
         .btn-danger:hover { background: #b91c1c; }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--primary);
-            border: 1.5px solid var(--primary);
-        }
+        .btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
         .btn-outline:hover { background: var(--primary-light); }
-
-        .btn-ghost {
-            background: transparent;
-            color: var(--gray-500);
-            padding: 5px 8px;
-        }
+        .btn-ghost { background: transparent; color: var(--gray-500); padding: 5px 8px; }
         .btn-ghost:hover { background: var(--gray-100); color: var(--gray-700); }
-
         .btn-sm { padding: 4px 10px; font-size: 0.8rem; }
+        .btn-icon { padding: 6px; min-width: 32px; justify-content: center; }
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-warning:hover { background: #b45309; }
 
-        .btn-icon {
-            padding: 6px;
-            min-width: 32px;
-            justify-content: center;
-        }
-
-        .main-container {
-            display: flex;
-            height: calc(100vh - 52px);
-            overflow: hidden;
-        }
+        .main-container { display: flex; height: calc(100vh - 52px); overflow: hidden; }
 
         .pdf-panel {
             flex: 1;
@@ -154,11 +127,7 @@
             font-size: 0.85rem;
         }
 
-        .pdf-toolbar-group {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+        .pdf-toolbar-group { display: flex; align-items: center; gap: 6px; }
 
         .pdf-toolbar .btn {
             color: white;
@@ -186,10 +155,7 @@
             gap: 10px;
         }
 
-        .pdf-canvas-container canvas {
-            box-shadow: var(--shadow-lg);
-            max-width: 100%;
-        }
+        .pdf-canvas-container canvas { box-shadow: var(--shadow-lg); max-width: 100%; }
 
         .pdf-placeholder {
             display: flex;
@@ -223,12 +189,7 @@
         }
 
         .resize-handle:hover, .resize-handle.active { background: var(--primary); }
-
-        .resize-handle::after {
-            content: '⋮';
-            color: var(--gray-500);
-            font-size: 1.2rem;
-        }
+        .resize-handle::after { content: '⋮'; color: var(--gray-500); font-size: 1.2rem; }
         .resize-handle:hover::after, .resize-handle.active::after { color: white; }
 
         .workspace-panel {
@@ -269,12 +230,7 @@
         }
 
         .workspace-tab:hover { color: var(--gray-700); background: var(--gray-100); }
-
-        .workspace-tab.active {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
-            background: white;
-        }
+        .workspace-tab.active { color: var(--primary); border-bottom-color: var(--primary); background: white; }
 
         .workspace-tab .badge {
             background: var(--gray-200);
@@ -285,16 +241,9 @@
             font-weight: 700;
         }
 
-        .workspace-tab.active .badge {
-            background: var(--primary-light);
-            color: var(--primary);
-        }
+        .workspace-tab.active .badge { background: var(--primary-light); color: var(--primary); }
 
-        .workspace-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px;
-        }
+        .workspace-content { flex: 1; overflow-y: auto; padding: 16px; }
 
         .tab-pane { display: none; }
         .tab-pane.active { display: block; }
@@ -333,15 +282,10 @@
         }
 
         .section-header.collapsed .collapse-icon { transform: rotate(-90deg); }
-
         .section-body { padding: 12px 14px; }
         .section-body.collapsed { display: none; }
 
-        .input-group {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 10px;
-        }
+        .input-group { display: flex; gap: 6px; margin-bottom: 10px; }
 
         .input-group input, .input-group textarea {
             flex: 1;
@@ -358,8 +302,6 @@
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
-
-        .input-group input::placeholder { color: var(--gray-400); }
 
         .dx-list { list-style: none; }
 
@@ -378,13 +320,7 @@
         }
 
         .dx-item:active { cursor: grabbing; }
-
-        .dx-item.dragging {
-            opacity: 0.5;
-            background: var(--primary-light);
-            border-color: var(--primary);
-        }
-
+        .dx-item.dragging { opacity: 0.5; background: var(--primary-light); border-color: var(--primary); }
         .dx-item.drag-over { border-top: 2px solid var(--primary); }
 
         .dx-rank {
@@ -403,24 +339,11 @@
 
         .dx-rank.top { background: var(--success-light); color: var(--success); }
 
-        .dx-drag-handle {
-            color: var(--gray-400);
-            cursor: grab;
-            font-size: 1rem;
-            flex-shrink: 0;
-            padding: 0 2px;
-        }
-
+        .dx-drag-handle { color: var(--gray-400); cursor: grab; font-size: 1rem; flex-shrink: 0; }
         .dx-text { flex: 1; font-size: 0.87rem; font-weight: 500; }
-
-        .dx-confidence { font-size: 0.75rem; color: var(--gray-500); flex-shrink: 0; }
-
         .dx-actions { display: flex; gap: 2px; flex-shrink: 0; }
-
         .dx-actions .btn-icon { font-size: 0.85rem; padding: 3px; min-width: 24px; }
-
         .dx-ruled-out { text-decoration: line-through; opacity: 0.5; }
-
         .dx-ruled-out .dx-rank { background: var(--danger-light); color: var(--danger); }
 
         .item-list { list-style: none; }
@@ -439,12 +362,7 @@
         .item-entry .item-icon { flex-shrink: 0; margin-top: 2px; }
         .item-entry .item-content { flex: 1; }
         .item-entry .item-name { font-size: 0.87rem; font-weight: 600; }
-
-        .item-entry .item-rationale {
-            font-size: 0.8rem;
-            color: var(--gray-500);
-            margin-top: 2px;
-        }
+        .item-entry .item-rationale { font-size: 0.8rem; color: var(--gray-500); margin-top: 2px; }
 
         .item-entry .item-category {
             font-size: 0.7rem;
@@ -497,12 +415,7 @@
             margin-bottom: 12px;
         }
 
-        .score-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-
+        .score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
         .score-item { text-align: center; }
         .score-value { font-size: 1.8rem; font-weight: 800; }
         .score-value.good { color: #4ade80; }
@@ -510,12 +423,7 @@
         .score-value.poor { color: #f87171; }
         .score-label { font-size: 0.75rem; color: var(--gray-400); margin-top: 2px; }
 
-        .comparison-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-            margin-top: 12px;
-        }
+        .comparison-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 12px; }
 
         .comparison-table th {
             text-align: left;
@@ -534,7 +442,6 @@
 
         .match-yes { color: var(--success); font-weight: 700; }
         .match-no { color: var(--danger); }
-        .match-partial { color: var(--warning); }
 
         .modal-overlay {
             display: none;
@@ -568,7 +475,6 @@
         }
 
         .modal-header h2 { font-size: 1.1rem; }
-
         .modal-body { padding: 20px; }
 
         .modal-footer {
@@ -655,24 +561,20 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            max-width: 360px;
+            max-width: 400px;
         }
 
         .toast-success { background: var(--success); }
         .toast-error { background: var(--danger); }
         .toast-info { background: var(--primary); }
+        .toast-warning { background: var(--warning); }
 
         @keyframes slideIn {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 30px 20px;
-            color: var(--gray-400);
-        }
-
+        .empty-state { text-align: center; padding: 30px 20px; color: var(--gray-400); }
         .empty-state .empty-icon { font-size: 2.5rem; margin-bottom: 8px; }
         .empty-state p { font-size: 0.85rem; }
 
@@ -684,27 +586,26 @@
             padding: 4px 10px;
             background: rgba(255,255,255,0.1);
             border-radius: 20px;
+            cursor: pointer;
         }
 
-        .llm-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--gray-400);
-        }
+        .llm-status:hover { background: rgba(255,255,255,0.2); }
 
+        .llm-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gray-400); }
         .llm-dot.connected { background: #4ade80; }
         .llm-dot.error { background: #f87171; }
+        .llm-dot.needs-key { background: #facc15; animation: pulse 2s infinite; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
 
         .phase-bar { display: flex; gap: 2px; margin-bottom: 12px; }
 
         .phase-step {
-            flex: 1;
-            height: 6px;
-            background: var(--gray-200);
-            border-radius: 3px;
-            cursor: pointer;
-            transition: var(--transition);
+            flex: 1; height: 6px; background: var(--gray-200);
+            border-radius: 3px; cursor: pointer; transition: var(--transition);
         }
 
         .phase-step.active { background: var(--primary); }
@@ -713,42 +614,25 @@
         .phase-labels { display: flex; justify-content: space-between; margin-bottom: 16px; }
 
         .phase-label {
-            font-size: 0.7rem;
-            color: var(--gray-400);
-            text-align: center;
-            cursor: pointer;
-            padding: 2px 4px;
-            border-radius: 4px;
+            font-size: 0.7rem; color: var(--gray-400); text-align: center;
+            cursor: pointer; padding: 2px 4px; border-radius: 4px;
         }
 
         .phase-label.active { color: var(--primary); font-weight: 700; }
         .phase-label:hover { background: var(--gray-100); }
 
         .spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
+            display: inline-block; width: 16px; height: 16px;
             border: 2px solid rgba(255,255,255,0.3);
-            border-top-color: white;
-            border-radius: 50%;
+            border-top-color: white; border-radius: 50%;
             animation: spin 0.6s linear infinite;
-        }
-
-        .spinner.dark {
-            border-color: var(--gray-200);
-            border-top-color: var(--primary);
         }
 
         @keyframes spin { to { transform: rotate(360deg); } }
 
         .answer-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;
         }
 
         .answer-tag.correct { background: var(--success-light); color: var(--success); }
@@ -758,7 +642,6 @@
         .workspace-content::-webkit-scrollbar, .pdf-content::-webkit-scrollbar { width: 8px; }
         .workspace-content::-webkit-scrollbar-track, .pdf-content::-webkit-scrollbar-track { background: var(--gray-100); }
         .workspace-content::-webkit-scrollbar-thumb, .pdf-content::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 4px; }
-        .workspace-content::-webkit-scrollbar-thumb:hover, .pdf-content::-webkit-scrollbar-thumb:hover { background: var(--gray-400); }
 
         @media (max-width: 900px) {
             .main-container { flex-direction: column; }
@@ -767,94 +650,84 @@
             .resize-handle { width: 100%; height: 6px; cursor: row-resize; }
         }
 
-        .hidden { display: none !important; }
-
-        .extraction-status {
-            background: var(--primary-light);
-            border: 1px solid var(--primary);
-            border-radius: var(--radius);
-            padding: 12px 16px;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.87rem;
-        }
-
-        .extraction-status.error { background: var(--danger-light); border-color: var(--danger); }
-        .extraction-status.success { background: var(--success-light); border-color: var(--success); }
-
         .key-input-wrapper { position: relative; }
         .key-input-wrapper input { padding-right: 40px; }
 
         .key-toggle {
-            position: absolute;
-            right: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--gray-400);
-            font-size: 1rem;
+            position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+            background: none; border: none; cursor: pointer; color: var(--gray-400); font-size: 1rem;
         }
 
         .helper-text { font-size: 0.78rem; color: var(--gray-400); margin-bottom: 8px; }
 
         .select-small {
-            padding: 4px 8px;
-            font-size: 0.8rem;
-            border: 1px solid var(--gray-300);
-            border-radius: var(--radius);
-            background: white;
+            padding: 4px 8px; font-size: 0.8rem;
+            border: 1px solid var(--gray-300); border-radius: var(--radius); background: white;
         }
 
-        /* Reasoning display */
         .reasoning-block {
-            background: #fffbeb;
-            border: 1px solid #fbbf24;
-            border-radius: var(--radius);
-            padding: 12px;
-            margin-top: 12px;
-            font-size: 0.82rem;
-            max-height: 200px;
-            overflow-y: auto;
+            background: #fffbeb; border: 1px solid #fbbf24; border-radius: var(--radius);
+            padding: 12px; margin-top: 12px; font-size: 0.82rem; max-height: 300px; overflow-y: auto;
         }
 
         .reasoning-block summary {
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--warning);
-            margin-bottom: 6px;
+            cursor: pointer; font-weight: 600; color: var(--warning); margin-bottom: 6px;
         }
 
         .reasoning-block pre {
-            white-space: pre-wrap;
-            word-break: break-word;
-            font-family: inherit;
-            color: var(--gray-600);
-            margin-top: 8px;
+            white-space: pre-wrap; word-break: break-word;
+            font-family: inherit; color: var(--gray-600); margin-top: 8px;
         }
+
+        /* First-run setup banner */
+        .setup-banner {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: var(--gray-900);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .setup-banner .setup-text { flex: 1; }
+        .setup-banner .setup-text strong { display: block; font-size: 0.95rem; }
+        .setup-banner .setup-text span { font-size: 0.82rem; opacity: 0.8; }
     </style>
 </head>
 <body>
 
+    <!-- FIRST-RUN API KEY BANNER (shown if no key) -->
+    <div class="setup-banner" id="setupBanner" style="display:none;">
+        <div>🔑</div>
+        <div class="setup-text">
+            <strong>API Key Required</strong>
+            <span>Enter your OpenRouter API key to enable AI extraction. Free models available!</span>
+        </div>
+        <button class="btn btn-sm" style="background:white; color:var(--gray-900);" onclick="openSettings()">
+            Set Up Now →
+        </button>
+        <button class="btn btn-ghost btn-sm" style="color:var(--gray-700);" onclick="dismissBanner()">✕</button>
+    </div>
+
     <header class="app-header">
         <h1>
-            <span class="icon">🩺</span>
+            <span>🩺</span>
             CaseDx
         </h1>
         <div class="header-actions">
-            <div class="llm-status" id="llmStatus">
+            <div class="llm-status" id="llmStatus" onclick="openSettings()" title="Click to configure LLM">
                 <span class="llm-dot" id="llmDot"></span>
                 <span id="llmName">No LLM</span>
             </div>
             <label class="btn btn-primary" for="pdfInput" style="margin:0; cursor:pointer;">
-                📄 Load Case PDF
+                📄 Load PDF
             </label>
             <input type="file" id="pdfInput" accept=".pdf" style="display:none;">
             <button class="btn btn-secondary" onclick="openSettings()">⚙ Settings</button>
-            <button class="btn btn-secondary" onclick="resetCase()">🔄 New Case</button>
+            <button class="btn btn-secondary" onclick="resetCase()">🔄 New</button>
         </div>
     </header>
 
@@ -863,21 +736,23 @@
             <div class="pdf-toolbar" id="pdfToolbar" style="display:none;">
                 <div class="pdf-toolbar-group">
                     <button class="btn" onclick="prevPage()">◀</button>
-                    <span>Page <span id="pageNum">1</span> of <span id="pageCount">1</span></span>
+                    <span>Page <span id="pageNum">1</span> / <span id="pageCount">1</span></span>
                     <button class="btn" onclick="nextPage()">▶</button>
                 </div>
                 <div class="pdf-toolbar-group">
                     <button class="btn" onclick="zoomOut()">−</button>
                     <span id="zoomLevel">100%</span>
                     <button class="btn" onclick="zoomIn()">+</button>
-                    <button class="btn" onclick="extractWithLLM()" id="extractBtn" title="Extract case data with AI">🤖 Extract</button>
+                    <button class="btn" onclick="extractWithLLM()" id="extractBtn" title="Extract answer key with AI">
+                        🤖 Extract
+                    </button>
                 </div>
             </div>
             <div class="pdf-content" id="pdfContent">
                 <div class="pdf-placeholder" id="pdfPlaceholder">
                     <div class="upload-icon">📋</div>
                     <h3>Load a Case PDF</h3>
-                    <p>Click "Load Case PDF" above or drag & drop a PDF file here to begin your case analysis.</p>
+                    <p>Click "Load PDF" or drag & drop a file here.</p>
                     <label class="btn btn-outline" for="pdfInput" style="cursor:pointer;">Choose File</label>
                 </div>
                 <div class="pdf-canvas-container" id="pdfCanvasContainer" style="display:none;"></div>
@@ -888,25 +763,15 @@
 
         <div class="workspace-panel" id="workspacePanel">
             <div class="workspace-tabs">
-                <button class="workspace-tab active" data-tab="workup">
-                    🔍 Workup <span class="badge" id="workupCount">0</span>
-                </button>
-                <button class="workspace-tab" data-tab="diagnoses">
-                    🎯 Diagnoses <span class="badge" id="dxCount">0</span>
-                </button>
-                <button class="workspace-tab" data-tab="testing">
-                    🧪 Testing <span class="badge" id="testCount">0</span>
-                </button>
-                <button class="workspace-tab" data-tab="management">
-                    💊 Management <span class="badge" id="mgmtCount">0</span>
-                </button>
-                <button class="workspace-tab" data-tab="scoring">
-                    📊 Score
-                </button>
+                <button class="workspace-tab active" data-tab="workup">🔍 Workup <span class="badge" id="workupCount">0</span></button>
+                <button class="workspace-tab" data-tab="diagnoses">🎯 Dx <span class="badge" id="dxCount">0</span></button>
+                <button class="workspace-tab" data-tab="testing">🧪 Tests <span class="badge" id="testCount">0</span></button>
+                <button class="workspace-tab" data-tab="management">💊 Mgmt <span class="badge" id="mgmtCount">0</span></button>
+                <button class="workspace-tab" data-tab="scoring">📊 Score</button>
             </div>
 
             <div class="workspace-content">
-                <!-- TAB: WORKUP -->
+                <!-- WORKUP TAB -->
                 <div class="tab-pane active" id="tab-workup">
                     <div class="section-card">
                         <div class="section-header" onclick="toggleSection(this)">
@@ -915,73 +780,65 @@
                         </div>
                         <div class="section-body">
                             <div class="phase-bar">
-                                <div class="phase-step active" data-phase="0" onclick="setPhase(0)"></div>
-                                <div class="phase-step" data-phase="1" onclick="setPhase(1)"></div>
-                                <div class="phase-step" data-phase="2" onclick="setPhase(2)"></div>
-                                <div class="phase-step" data-phase="3" onclick="setPhase(3)"></div>
-                                <div class="phase-step" data-phase="4" onclick="setPhase(4)"></div>
+                                <div class="phase-step active" onclick="setPhase(0)"></div>
+                                <div class="phase-step" onclick="setPhase(1)"></div>
+                                <div class="phase-step" onclick="setPhase(2)"></div>
+                                <div class="phase-step" onclick="setPhase(3)"></div>
+                                <div class="phase-step" onclick="setPhase(4)"></div>
                             </div>
                             <div class="phase-labels">
-                                <span class="phase-label active" data-phase="0" onclick="setPhase(0)">HPI</span>
-                                <span class="phase-label" data-phase="1" onclick="setPhase(1)">Exam</span>
-                                <span class="phase-label" data-phase="2" onclick="setPhase(2)">Initial Dx</span>
-                                <span class="phase-label" data-phase="3" onclick="setPhase(3)">Results</span>
-                                <span class="phase-label" data-phase="4" onclick="setPhase(4)">Final Dx</span>
+                                <span class="phase-label active" onclick="setPhase(0)">HPI</span>
+                                <span class="phase-label" onclick="setPhase(1)">Exam</span>
+                                <span class="phase-label" onclick="setPhase(2)">Initial Dx</span>
+                                <span class="phase-label" onclick="setPhase(3)">Results</span>
+                                <span class="phase-label" onclick="setPhase(4)">Final Dx</span>
                             </div>
                         </div>
                     </div>
-
                     <div class="section-card">
                         <div class="section-header" onclick="toggleSection(this)">
-                            <h3>🔑 Key Findings / HPI Notes</h3>
+                            <h3>🔑 Key Findings / HPI</h3>
                             <span class="collapse-icon">▼</span>
                         </div>
                         <div class="section-body">
-                            <textarea class="notes-textarea" id="hpiNotes" placeholder="Jot down key findings from the history of present illness, vitals, pertinent positives and negatives..."></textarea>
+                            <textarea class="notes-textarea" id="hpiNotes" placeholder="Key findings, vitals, pertinent positives/negatives..."></textarea>
                         </div>
                     </div>
-
                     <div class="section-card">
                         <div class="section-header" onclick="toggleSection(this)">
-                            <h3>🩻 Physical Exam Notes</h3>
+                            <h3>🩻 Physical Exam</h3>
                             <span class="collapse-icon">▼</span>
                         </div>
                         <div class="section-body">
-                            <textarea class="notes-textarea" id="examNotes" placeholder="Note any abnormal physical exam findings, pertinent negatives..."></textarea>
+                            <textarea class="notes-textarea" id="examNotes" placeholder="Abnormal exam findings, pertinent negatives..."></textarea>
                         </div>
                     </div>
-
                     <div class="section-card">
                         <div class="section-header" onclick="toggleSection(this)">
-                            <h3>📝 General Notes</h3>
+                            <h3>📝 Notes</h3>
                             <span class="collapse-icon">▼</span>
                         </div>
                         <div class="section-body">
-                            <textarea class="notes-textarea" id="generalNotes" placeholder="Any additional thoughts, reasoning, questions..."></textarea>
+                            <textarea class="notes-textarea" id="generalNotes" placeholder="Additional thoughts, reasoning..."></textarea>
                         </div>
                     </div>
                 </div>
 
-                <!-- TAB: DIAGNOSES -->
+                <!-- DIAGNOSES TAB -->
                 <div class="tab-pane" id="tab-diagnoses">
-                    <div class="helper-text">Rank your differential diagnoses from most to least likely. Drag to reorder.</div>
+                    <div class="helper-text">Rank differentials most → least likely. Drag to reorder.</div>
                     <div class="input-group">
                         <input type="text" id="dxInput" placeholder="Enter a diagnosis..." onkeydown="if(event.key==='Enter') addDiagnosis()">
                         <button class="btn btn-outline btn-sm" onclick="addDiagnosis()">+ Add</button>
                     </div>
-                    <ul class="dx-list" id="dxList">
-                        <li class="empty-state" id="dxEmpty">
-                            <div class="empty-icon">🎯</div>
-                            <p>No diagnoses yet. Start building your differential!</p>
-                        </li>
-                    </ul>
+                    <ul class="dx-list" id="dxList"></ul>
                 </div>
 
-                <!-- TAB: TESTING -->
+                <!-- TESTING TAB -->
                 <div class="tab-pane" id="tab-testing">
-                    <div class="helper-text">Order the diagnostic tests you'd like. Be specific!</div>
+                    <div class="helper-text">Order diagnostic tests. Be specific!</div>
                     <div class="input-group" style="flex-wrap:wrap;">
-                        <input type="text" id="testInput" placeholder="e.g., CBC with diff, CT chest with contrast..." onkeydown="if(event.key==='Enter') addTest()" style="flex: 1; min-width: 200px;">
+                        <input type="text" id="testInput" placeholder="e.g., CBC with diff, CT chest w/ contrast..." onkeydown="if(event.key==='Enter') addTest()" style="flex:1; min-width:200px;">
                         <select class="select-small" id="testCategory">
                             <option value="lab">🧪 Lab</option>
                             <option value="imaging">🩻 Imaging</option>
@@ -990,22 +847,17 @@
                         </select>
                         <button class="btn btn-outline btn-sm" onclick="addTest()">+ Add</button>
                     </div>
-                    <div class="form-group" style="margin-bottom: 14px;">
-                        <input type="text" id="testRationale" placeholder="Rationale (optional) — why are you ordering this?" style="width:100%; padding:6px 12px; border:1.5px solid var(--gray-300); border-radius:var(--radius); font-size:0.83rem;">
+                    <div class="form-group" style="margin-bottom:14px;">
+                        <input type="text" id="testRationale" placeholder="Rationale (optional)" style="width:100%; padding:6px 12px; border:1.5px solid var(--gray-300); border-radius:var(--radius); font-size:0.83rem;">
                     </div>
-                    <ul class="item-list" id="testList">
-                        <li class="empty-state" id="testEmpty">
-                            <div class="empty-icon">🧪</div>
-                            <p>No tests ordered yet.</p>
-                        </li>
-                    </ul>
+                    <ul class="item-list" id="testList"></ul>
                 </div>
 
-                <!-- TAB: MANAGEMENT -->
+                <!-- MANAGEMENT TAB -->
                 <div class="tab-pane" id="tab-management">
-                    <div class="helper-text">What treatments or interventions would you start?</div>
+                    <div class="helper-text">What treatments / interventions would you start?</div>
                     <div class="input-group" style="flex-wrap:wrap;">
-                        <input type="text" id="mgmtInput" placeholder="e.g., IV NS bolus 1L, Ceftriaxone 1g IV..." onkeydown="if(event.key==='Enter') addManagement()" style="flex: 1; min-width: 200px;">
+                        <input type="text" id="mgmtInput" placeholder="e.g., IV NS 1L bolus, Ceftriaxone 1g IV..." onkeydown="if(event.key==='Enter') addManagement()" style="flex:1; min-width:200px;">
                         <select class="select-small" id="mgmtCategory">
                             <option value="medication">💊 Medication</option>
                             <option value="intervention">🏥 Intervention</option>
@@ -1014,27 +866,22 @@
                         </select>
                         <button class="btn btn-outline btn-sm" onclick="addManagement()">+ Add</button>
                     </div>
-                    <div class="form-group" style="margin-bottom: 14px;">
+                    <div class="form-group" style="margin-bottom:14px;">
                         <input type="text" id="mgmtRationale" placeholder="Rationale (optional)" style="width:100%; padding:6px 12px; border:1.5px solid var(--gray-300); border-radius:var(--radius); font-size:0.83rem;">
                     </div>
-                    <ul class="item-list" id="mgmtList">
-                        <li class="empty-state" id="mgmtEmpty">
-                            <div class="empty-icon">💊</div>
-                            <p>No management plans yet.</p>
-                        </li>
-                    </ul>
+                    <ul class="item-list" id="mgmtList"></ul>
                 </div>
 
-                <!-- TAB: SCORING -->
+                <!-- SCORING TAB -->
                 <div class="tab-pane" id="tab-scoring">
                     <div id="noScoreYet">
                         <div class="empty-state">
                             <div class="empty-icon">📊</div>
-                            <p>Score your case after extracting the answer key from the PDF using the 🤖 Extract button, or manually enter the answer key below.</p>
+                            <p>Use the 🤖 Extract button or manually enter the answer key below.</p>
                         </div>
                         <div class="section-card">
                             <div class="section-header" onclick="toggleSection(this)">
-                                <h3>📝 Manual Answer Key</h3>
+                                <h3>📝 Answer Key</h3>
                                 <span class="collapse-icon">▼</span>
                             </div>
                             <div class="section-body">
@@ -1044,15 +891,15 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Key Tests (comma-separated)</label>
-                                    <input type="text" id="answerTests" placeholder="e.g., CT head, LP, blood cultures">
+                                    <input type="text" id="answerTests" placeholder="CT head, LP, blood cultures">
                                 </div>
                                 <div class="form-group">
                                     <label>Key Treatments (comma-separated)</label>
-                                    <input type="text" id="answerTreatments" placeholder="e.g., IV antibiotics, surgical consult">
+                                    <input type="text" id="answerTreatments" placeholder="IV antibiotics, surgical consult">
                                 </div>
                                 <div class="form-group">
-                                    <label>Differential Diagnoses Considered (comma-separated)</label>
-                                    <input type="text" id="answerDifferentials" placeholder="e.g., meningitis, SAH, migraine">
+                                    <label>Differentials Considered (comma-separated)</label>
+                                    <input type="text" id="answerDifferentials" placeholder="meningitis, SAH, migraine">
                                 </div>
                                 <button class="btn btn-success" onclick="scoreCase()" style="width:100%;">📊 Score My Case</button>
                             </div>
@@ -1074,47 +921,47 @@
             <div class="modal-body">
                 <div class="settings-group">
                     <h4>LLM Provider</h4>
-                    <div class="radio-group" id="llmProviderGroup">
+                    <div class="radio-group">
                         <label class="radio-option">
                             <input type="radio" name="llmProvider" value="none">
                             <div>
-                                <div class="option-label">None (Manual Mode)</div>
-                                <div class="option-desc">No AI extraction — enter answer key manually.</div>
+                                <div class="option-label">None (Manual)</div>
+                                <div class="option-desc">Enter answer key manually.</div>
                             </div>
                         </label>
                         <label class="radio-option">
-                            <input type="radio" name="llmProvider" value="openai">
+                            <input type="radio" name="llmProvider" value="openrouter" checked>
                             <div>
-                                <div class="option-label">OpenAI (GPT-4o-mini)</div>
-                                <div class="option-desc">Uses GPT-4o-mini. Requires API key.</div>
-                            </div>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="llmProvider" value="anthropic">
-                            <div>
-                                <div class="option-label">Anthropic (Claude)</div>
-                                <div class="option-desc">Uses Claude 3 Haiku. Requires API key.</div>
+                                <div class="option-label">OpenRouter ⭐ Recommended</div>
+                                <div class="option-desc">Free models available. Get key at openrouter.ai</div>
                             </div>
                         </label>
                         <label class="radio-option">
                             <input type="radio" name="llmProvider" value="gemini">
                             <div>
                                 <div class="option-label">Google Gemini</div>
-                                <div class="option-desc">Uses Gemini 1.5 Flash. Requires API key.</div>
+                                <div class="option-desc">Free tier. Get key at aistudio.google.com</div>
+                            </div>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="llmProvider" value="openai">
+                            <div>
+                                <div class="option-label">OpenAI (GPT-4o-mini)</div>
+                                <div class="option-desc">Paid. Requires API key.</div>
+                            </div>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="llmProvider" value="anthropic">
+                            <div>
+                                <div class="option-label">Anthropic (Claude)</div>
+                                <div class="option-desc">Paid. Requires API key.</div>
                             </div>
                         </label>
                         <label class="radio-option">
                             <input type="radio" name="llmProvider" value="ollama">
                             <div>
                                 <div class="option-label">Ollama (Local)</div>
-                                <div class="option-desc">Free! Run locally. Default: llama3.2</div>
-                            </div>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="llmProvider" value="openrouter" checked>
-                            <div>
-                                <div class="option-label">OpenRouter ⭐</div>
-                                <div class="option-desc">Pre-configured with free GPT-OSS-120B model.</div>
+                                <div class="option-desc">100% free & private. Run locally.</div>
                             </div>
                         </label>
                     </div>
@@ -1124,24 +971,25 @@
                     <h4>API Key</h4>
                     <div class="form-group">
                         <div class="key-input-wrapper">
-                            <input type="password" id="apiKeyInput" placeholder="Enter your API key">
+                            <input type="password" id="apiKeyInput" placeholder="Paste your API key here...">
                             <button class="key-toggle" onclick="toggleKeyVisibility()">👁</button>
                         </div>
-                        <div style="font-size:0.75rem; color:var(--gray-400); margin-top:4px;">
-                            Your key is stored locally in your browser and never sent anywhere except the provider's API.
+                        <div style="font-size:0.75rem; color:var(--gray-400); margin-top:6px;">
+                            🔒 Stored only in your browser's localStorage. Never sent to any server except the LLM provider.
                         </div>
+                        <div id="apiKeyHelp" style="font-size:0.78rem; color:var(--primary); margin-top:6px;"></div>
                     </div>
                 </div>
 
                 <div class="settings-group" id="ollamaGroup" style="display:none;">
                     <h4>Ollama Settings</h4>
                     <div class="form-group">
-                        <label>Ollama URL</label>
-                        <input type="text" id="ollamaUrl" value="http://localhost:11434" placeholder="http://localhost:11434">
+                        <label>URL</label>
+                        <input type="text" id="ollamaUrl" value="http://localhost:11434">
                     </div>
                     <div class="form-group">
-                        <label>Model Name</label>
-                        <input type="text" id="ollamaModel" value="llama3.2" placeholder="llama3.2">
+                        <label>Model</label>
+                        <input type="text" id="ollamaModel" value="llama3.2">
                     </div>
                 </div>
 
@@ -1149,25 +997,41 @@
                     <h4>OpenRouter Settings</h4>
                     <div class="form-group">
                         <label>Model</label>
-                        <input type="text" id="openrouterModel" value="openai/gpt-oss-120b:free" placeholder="model identifier">
-                        <div style="font-size:0.75rem; color:var(--gray-400); margin-top:4px;">
-                            Current: openai/gpt-oss-120b:free (free model with reasoning)
-                        </div>
+                        <select id="openrouterModel" style="width:100%; padding:8px 12px; border:1.5px solid var(--gray-300); border-radius:var(--radius);">
+                            <option value="openai/gpt-oss-120b:free">GPT-OSS-120B (Free) ⭐</option>
+                            <option value="meta-llama/llama-3.1-8b-instruct:free">Llama 3.1 8B (Free)</option>
+                            <option value="google/gemma-2-9b-it:free">Gemma 2 9B (Free)</option>
+                            <option value="mistralai/mistral-7b-instruct:free">Mistral 7B (Free)</option>
+                            <option value="qwen/qwen-2.5-72b-instruct:free">Qwen 2.5 72B (Free)</option>
+                            <option value="custom">Custom model...</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="customModelGroup" style="display:none;">
+                        <label>Custom Model ID</label>
+                        <input type="text" id="openrouterCustomModel" placeholder="provider/model-name:free">
                     </div>
                     <div class="form-group">
-                        <label style="display:flex; align-items:center; gap:8px;">
+                        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
                             <input type="checkbox" id="openrouterReasoning" checked style="accent-color:var(--primary);">
                             Enable reasoning (chain-of-thought)
                         </label>
                         <div style="font-size:0.75rem; color:var(--gray-400); margin-top:4px;">
-                            When enabled, the model will show its reasoning process. Supported by GPT-OSS-120B.
+                            Model thinks step-by-step before answering. Disable if you get errors.
                         </div>
+                    </div>
+                    <div style="background:var(--gray-50); border-radius:var(--radius); padding:10px 12px; font-size:0.78rem; color:var(--gray-500); margin-top:8px;">
+                        <strong>⚠️ Important:</strong> Free models require your OpenRouter privacy settings
+                        to allow training data usage. If you get a "No endpoints found" error:
+                        <br><a href="https://openrouter.ai/settings/privacy" target="_blank" style="color:var(--primary); font-weight:600;">
+                            → Fix it here: openrouter.ai/settings/privacy
+                        </a>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-ghost" onclick="closeSettings()">Cancel</button>
-                <button class="btn btn-success" onclick="saveSettings()">💾 Save Settings</button>
+                <button class="btn btn-warning" onclick="testConnection()">🔌 Test Connection</button>
+                <button class="btn btn-success" onclick="saveSettings()">💾 Save</button>
             </div>
         </div>
     </div>
@@ -1177,24 +1041,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
     <script>
-        // ===== GLOBAL STATE =====
+        // ===== STATE =====
         const state = {
-            pdfDoc: null,
-            currentPage: 1,
-            zoom: 1.0,
-            pdfText: '',
+            pdfDoc: null, currentPage: 1, zoom: 1.0, pdfText: '',
+            diagnoses: [], tests: [], management: [],
+            currentPhase: 0, answerKey: null, lastReasoning: null,
 
-            diagnoses: [],
-            tests: [],
-            management: [],
-            currentPhase: 0,
-
-            answerKey: null,
-            lastReasoning: null, // Store reasoning from LLM
-
-            // DEFAULTS: Pre-configured for OpenRouter with your key and free model
+            // NO hardcoded keys — everything comes from localStorage
             llmProvider: 'openrouter',
-            apiKey: 'GET_API_KEY',
+            apiKey: '',
             ollamaUrl: 'http://localhost:11434',
             ollamaModel: 'llama3.2',
             openrouterModel: 'openai/gpt-oss-120b:free',
@@ -1205,26 +1060,41 @@
 
         // ===== INIT =====
         document.addEventListener('DOMContentLoaded', () => {
-            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+            pdfjsLib.GlobalWorkerOptions.workerSrc =
+                'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
             loadSettings();
             setupTabs();
             setupDragDrop();
             setupResize();
+            setupModelSelector();
             updateLLMStatus();
+            checkFirstRun();
+            renderDiagnoses();
+            renderTests();
+            renderManagement();
         });
 
-        // ===== PDF LOADING =====
+        function checkFirstRun() {
+            if (!state.apiKey && state.llmProvider !== 'none' && state.llmProvider !== 'ollama') {
+                document.getElementById('setupBanner').style.display = 'flex';
+            }
+        }
+
+        function dismissBanner() {
+            document.getElementById('setupBanner').style.display = 'none';
+        }
+
+        // ===== PDF =====
         document.getElementById('pdfInput').addEventListener('change', async (e) => {
             const file = e.target.files[0];
-            if (!file) return;
-            await loadPDF(file);
+            if (file) await loadPDF(file);
         });
 
         async function loadPDF(file) {
             try {
-                const arrayBuffer = await file.arrayBuffer();
-                const typedArray = new Uint8Array(arrayBuffer);
-                state.pdfDoc = await pdfjsLib.getDocument(typedArray).promise;
+                const buf = await file.arrayBuffer();
+                state.pdfDoc = await pdfjsLib.getDocument(new Uint8Array(buf)).promise;
 
                 document.getElementById('pdfToolbar').style.display = 'flex';
                 document.getElementById('pdfPlaceholder').style.display = 'none';
@@ -1235,14 +1105,13 @@
                 for (let i = 1; i <= state.pdfDoc.numPages; i++) {
                     const page = await state.pdfDoc.getPage(i);
                     const content = await page.getTextContent();
-                    state.pdfText += content.items.map(item => item.str).join(' ') + '\n\n';
+                    state.pdfText += content.items.map(x => x.str).join(' ') + '\n\n';
                 }
 
                 state.currentPage = 1;
-                renderPage(state.currentPage);
-                showToast(`PDF loaded! ${state.pdfDoc.numPages} pages, ${state.pdfText.length} chars extracted.`, 'success');
+                renderPage(1);
+                showToast(`PDF loaded — ${state.pdfDoc.numPages} pages`, 'success');
             } catch (err) {
-                console.error(err);
                 showToast('Failed to load PDF: ' + err.message, 'error');
             }
         }
@@ -1250,86 +1119,54 @@
         async function renderPage(num) {
             if (!state.pdfDoc) return;
             const page = await state.pdfDoc.getPage(num);
-            const viewport = page.getViewport({ scale: state.zoom * 1.5 });
-
+            const vp = page.getViewport({ scale: state.zoom * 1.5 });
             const container = document.getElementById('pdfCanvasContainer');
             container.innerHTML = '';
-
             const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = viewport.width;
-            canvas.height = viewport.height;
-
-            await page.render({ canvasContext: ctx, viewport }).promise;
+            canvas.width = vp.width;
+            canvas.height = vp.height;
+            await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
             container.appendChild(canvas);
             document.getElementById('pageNum').textContent = num;
         }
 
-        function prevPage() {
-            if (state.currentPage > 1) { state.currentPage--; renderPage(state.currentPage); }
-        }
+        function prevPage() { if (state.currentPage > 1) renderPage(--state.currentPage); }
+        function nextPage() { if (state.pdfDoc && state.currentPage < state.pdfDoc.numPages) renderPage(++state.currentPage); }
+        function zoomIn() { state.zoom = Math.min(3, state.zoom + 0.2); document.getElementById('zoomLevel').textContent = Math.round(state.zoom*100)+'%'; renderPage(state.currentPage); }
+        function zoomOut() { state.zoom = Math.max(0.3, state.zoom - 0.2); document.getElementById('zoomLevel').textContent = Math.round(state.zoom*100)+'%'; renderPage(state.currentPage); }
 
-        function nextPage() {
-            if (state.pdfDoc && state.currentPage < state.pdfDoc.numPages) { state.currentPage++; renderPage(state.currentPage); }
-        }
-
-        function zoomIn() {
-            state.zoom = Math.min(3, state.zoom + 0.2);
-            document.getElementById('zoomLevel').textContent = Math.round(state.zoom * 100) + '%';
-            renderPage(state.currentPage);
-        }
-
-        function zoomOut() {
-            state.zoom = Math.max(0.3, state.zoom - 0.2);
-            document.getElementById('zoomLevel').textContent = Math.round(state.zoom * 100) + '%';
-            renderPage(state.currentPage);
-        }
-
-        // ===== DRAG & DROP PDF =====
         function setupDragDrop() {
-            const panel = document.getElementById('pdfPanel');
-            panel.addEventListener('dragover', (e) => { e.preventDefault(); panel.classList.add('drop-zone-active'); });
-            panel.addEventListener('dragleave', () => { panel.classList.remove('drop-zone-active'); });
-            panel.addEventListener('drop', async (e) => {
-                e.preventDefault();
-                panel.classList.remove('drop-zone-active');
-                const file = e.dataTransfer.files[0];
-                if (file && file.type === 'application/pdf') {
-                    await loadPDF(file);
-                } else {
-                    showToast('Please drop a PDF file', 'error');
-                }
+            const p = document.getElementById('pdfPanel');
+            p.addEventListener('dragover', e => { e.preventDefault(); p.classList.add('drop-zone-active'); });
+            p.addEventListener('dragleave', () => p.classList.remove('drop-zone-active'));
+            p.addEventListener('drop', async e => {
+                e.preventDefault(); p.classList.remove('drop-zone-active');
+                const f = e.dataTransfer.files[0];
+                if (f?.type === 'application/pdf') await loadPDF(f);
+                else showToast('Please drop a PDF file', 'error');
             });
         }
 
         // ===== TABS =====
         function setupTabs() {
-            document.querySelectorAll('.workspace-tab').forEach(tab => {
+            document.querySelectorAll('.workspace-tab').forEach(tab =>
                 tab.addEventListener('click', () => {
                     document.querySelectorAll('.workspace-tab').forEach(t => t.classList.remove('active'));
                     document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
                     tab.classList.add('active');
                     document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
-                });
-            });
+                })
+            );
         }
 
-        function toggleSection(header) {
-            header.classList.toggle('collapsed');
-            header.nextElementSibling.classList.toggle('collapsed');
-        }
+        function toggleSection(h) { h.classList.toggle('collapsed'); h.nextElementSibling.classList.toggle('collapsed'); }
 
-        // ===== PHASE =====
         function setPhase(phase) {
             state.currentPhase = phase;
             document.querySelectorAll('.phase-step').forEach((el, i) => {
-                el.classList.remove('active', 'completed');
-                if (i < phase) el.classList.add('completed');
-                if (i === phase) el.classList.add('active');
+                el.className = 'phase-step' + (i < phase ? ' completed' : '') + (i === phase ? ' active' : '');
             });
-            document.querySelectorAll('.phase-label').forEach((el, i) => {
-                el.classList.toggle('active', i === phase);
-            });
+            document.querySelectorAll('.phase-label').forEach((el, i) => el.classList.toggle('active', i === phase));
         }
 
         // ===== DIAGNOSES =====
@@ -1337,16 +1174,12 @@
             const input = document.getElementById('dxInput');
             const text = input.value.trim();
             if (!text) return;
-            state.diagnoses.push({ id: state.nextId++, text, ruledOut: false, confidence: 50 });
-            input.value = '';
-            input.focus();
+            state.diagnoses.push({ id: state.nextId++, text, ruledOut: false });
+            input.value = ''; input.focus();
             renderDiagnoses();
         }
 
-        function removeDiagnosis(id) {
-            state.diagnoses = state.diagnoses.filter(d => d.id !== id);
-            renderDiagnoses();
-        }
+        function removeDiagnosis(id) { state.diagnoses = state.diagnoses.filter(d => d.id !== id); renderDiagnoses(); }
 
         function toggleRuleOut(id) {
             const dx = state.diagnoses.find(d => d.id === id);
@@ -1354,133 +1187,80 @@
             renderDiagnoses();
         }
 
-        function moveDiagnosis(id, direction) {
-            const idx = state.diagnoses.findIndex(d => d.id === id);
-            if (idx === -1) return;
-            const newIdx = idx + direction;
-            if (newIdx < 0 || newIdx >= state.diagnoses.length) return;
-            [state.diagnoses[idx], state.diagnoses[newIdx]] = [state.diagnoses[newIdx], state.diagnoses[idx]];
+        function moveDiagnosis(id, dir) {
+            const i = state.diagnoses.findIndex(d => d.id === id);
+            const j = i + dir;
+            if (i < 0 || j < 0 || j >= state.diagnoses.length) return;
+            [state.diagnoses[i], state.diagnoses[j]] = [state.diagnoses[j], state.diagnoses[i]];
             renderDiagnoses();
         }
 
         function renderDiagnoses() {
             const list = document.getElementById('dxList');
-            const count = state.diagnoses.length;
-            document.getElementById('dxCount').textContent = count;
-            document.getElementById('workupCount').textContent =
-                state.diagnoses.length + state.tests.length + state.management.length;
-
-            if (count === 0) {
+            updateBadges();
+            if (!state.diagnoses.length) {
                 list.innerHTML = '';
-                list.appendChild(createEmptyState('🎯', 'No diagnoses yet. Start building your differential!'));
+                list.appendChild(createEmptyState('🎯', 'No diagnoses yet. Build your differential!'));
                 return;
             }
-
             list.innerHTML = '';
             state.diagnoses.forEach((dx, i) => {
                 const li = document.createElement('li');
                 li.className = 'dx-item' + (dx.ruledOut ? ' dx-ruled-out' : '');
-                li.draggable = true;
-                li.dataset.id = dx.id;
-                li.addEventListener('dragstart', handleDxDragStart);
-                li.addEventListener('dragover', handleDxDragOver);
-                li.addEventListener('drop', handleDxDrop);
-                li.addEventListener('dragend', handleDxDragEnd);
-
-                const rankClass = i === 0 && !dx.ruledOut ? 'top' : '';
+                li.draggable = true; li.dataset.id = dx.id;
+                li.addEventListener('dragstart', dxDragStart);
+                li.addEventListener('dragover', dxDragOver);
+                li.addEventListener('drop', dxDrop);
+                li.addEventListener('dragend', dxDragEnd);
                 li.innerHTML = `
-                    <span class="dx-drag-handle" title="Drag to reorder">⠿</span>
-                    <span class="dx-rank ${rankClass}">${i + 1}</span>
-                    <span class="dx-text">${escapeHtml(dx.text)}</span>
+                    <span class="dx-drag-handle">⠿</span>
+                    <span class="dx-rank ${i===0&&!dx.ruledOut?'top':''}">${i+1}</span>
+                    <span class="dx-text">${esc(dx.text)}</span>
                     ${dx.ruledOut ? '<span class="answer-tag incorrect">Ruled Out</span>' : ''}
                     <div class="dx-actions">
-                        <button class="btn btn-ghost btn-icon" onclick="moveDiagnosis(${dx.id}, -1)" title="Move up">▲</button>
-                        <button class="btn btn-ghost btn-icon" onclick="moveDiagnosis(${dx.id}, 1)" title="Move down">▼</button>
-                        <button class="btn btn-ghost btn-icon" onclick="toggleRuleOut(${dx.id})" title="${dx.ruledOut ? 'Restore' : 'Rule out'}">${dx.ruledOut ? '♻' : '🚫'}</button>
-                        <button class="btn btn-ghost btn-icon" onclick="removeDiagnosis(${dx.id})" title="Delete">🗑</button>
-                    </div>
-                `;
+                        <button class="btn btn-ghost btn-icon" onclick="moveDiagnosis(${dx.id},-1)">▲</button>
+                        <button class="btn btn-ghost btn-icon" onclick="moveDiagnosis(${dx.id},1)">▼</button>
+                        <button class="btn btn-ghost btn-icon" onclick="toggleRuleOut(${dx.id})">${dx.ruledOut?'♻':'🚫'}</button>
+                        <button class="btn btn-ghost btn-icon" onclick="removeDiagnosis(${dx.id})">🗑</button>
+                    </div>`;
                 list.appendChild(li);
             });
         }
 
-        let draggedDxId = null;
-
-        function handleDxDragStart(e) {
-            draggedDxId = parseInt(e.currentTarget.dataset.id);
-            e.currentTarget.classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'move';
-        }
-
-        function handleDxDragOver(e) {
+        let dragId = null;
+        function dxDragStart(e) { dragId = +e.currentTarget.dataset.id; e.currentTarget.classList.add('dragging'); }
+        function dxDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+        function dxDrop(e) {
             e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-            e.currentTarget.classList.add('drag-over');
-        }
-
-        function handleDxDrop(e) {
-            e.preventDefault();
-            const targetId = parseInt(e.currentTarget.dataset.id);
-            if (draggedDxId === null || draggedDxId === targetId) return;
-            const fromIdx = state.diagnoses.findIndex(d => d.id === draggedDxId);
-            const toIdx = state.diagnoses.findIndex(d => d.id === targetId);
-            if (fromIdx === -1 || toIdx === -1) return;
-            const [moved] = state.diagnoses.splice(fromIdx, 1);
-            state.diagnoses.splice(toIdx, 0, moved);
+            const tid = +e.currentTarget.dataset.id;
+            if (dragId == null || dragId === tid) return;
+            const fi = state.diagnoses.findIndex(d => d.id === dragId);
+            const ti = state.diagnoses.findIndex(d => d.id === tid);
+            const [m] = state.diagnoses.splice(fi, 1);
+            state.diagnoses.splice(ti, 0, m);
             renderDiagnoses();
         }
-
-        function handleDxDragEnd(e) {
-            draggedDxId = null;
-            document.querySelectorAll('.dx-item').forEach(el => el.classList.remove('dragging', 'drag-over'));
-        }
+        function dxDragEnd() { dragId = null; document.querySelectorAll('.dx-item').forEach(el => el.classList.remove('dragging','drag-over')); }
 
         // ===== TESTS =====
         function addTest() {
             const input = document.getElementById('testInput');
-            const category = document.getElementById('testCategory').value;
-            const rationale = document.getElementById('testRationale');
-            const name = input.value.trim();
-            if (!name) return;
-            state.tests.push({ id: state.nextId++, name, category, rationale: rationale.value.trim() });
-            input.value = '';
-            rationale.value = '';
-            input.focus();
+            const name = input.value.trim(); if (!name) return;
+            state.tests.push({ id: state.nextId++, name, category: document.getElementById('testCategory').value, rationale: document.getElementById('testRationale').value.trim() });
+            input.value = ''; document.getElementById('testRationale').value = ''; input.focus();
             renderTests();
         }
 
-        function removeTest(id) {
-            state.tests = state.tests.filter(t => t.id !== id);
-            renderTests();
-        }
+        function removeTest(id) { state.tests = state.tests.filter(t => t.id !== id); renderTests(); }
 
         function renderTests() {
-            const list = document.getElementById('testList');
-            const count = state.tests.length;
-            document.getElementById('testCount').textContent = count;
-            document.getElementById('workupCount').textContent =
-                state.diagnoses.length + state.tests.length + state.management.length;
-
-            if (count === 0) {
-                list.innerHTML = '';
-                list.appendChild(createEmptyState('🧪', 'No tests ordered yet.'));
-                return;
-            }
-
+            const list = document.getElementById('testList'); updateBadges();
+            const icons = { lab:'🧪', imaging:'🩻', procedure:'🔬', other:'📋' };
+            if (!state.tests.length) { list.innerHTML = ''; list.appendChild(createEmptyState('🧪','No tests ordered.')); return; }
             list.innerHTML = '';
-            const catIcons = { lab: '🧪', imaging: '🩻', procedure: '🔬', other: '📋' };
             state.tests.forEach(t => {
-                const li = document.createElement('li');
-                li.className = 'item-entry';
-                li.innerHTML = `
-                    <span class="item-icon">${catIcons[t.category] || '📋'}</span>
-                    <div class="item-content">
-                        <div class="item-name">${escapeHtml(t.name)}</div>
-                        ${t.rationale ? `<div class="item-rationale">${escapeHtml(t.rationale)}</div>` : ''}
-                    </div>
-                    <span class="item-category cat-${t.category}">${t.category}</span>
-                    <button class="btn btn-ghost btn-icon" onclick="removeTest(${t.id})" title="Remove">🗑</button>
-                `;
+                const li = document.createElement('li'); li.className = 'item-entry';
+                li.innerHTML = `<span class="item-icon">${icons[t.category]||'📋'}</span><div class="item-content"><div class="item-name">${esc(t.name)}</div>${t.rationale?`<div class="item-rationale">${esc(t.rationale)}</div>`:''}</div><span class="item-category cat-${t.category}">${t.category}</span><button class="btn btn-ghost btn-icon" onclick="removeTest(${t.id})">🗑</button>`;
                 list.appendChild(li);
             });
         }
@@ -1488,291 +1268,191 @@
         // ===== MANAGEMENT =====
         function addManagement() {
             const input = document.getElementById('mgmtInput');
-            const category = document.getElementById('mgmtCategory').value;
-            const rationale = document.getElementById('mgmtRationale');
-            const name = input.value.trim();
-            if (!name) return;
-            state.management.push({ id: state.nextId++, name, category, rationale: rationale.value.trim() });
-            input.value = '';
-            rationale.value = '';
-            input.focus();
+            const name = input.value.trim(); if (!name) return;
+            state.management.push({ id: state.nextId++, name, category: document.getElementById('mgmtCategory').value, rationale: document.getElementById('mgmtRationale').value.trim() });
+            input.value = ''; document.getElementById('mgmtRationale').value = ''; input.focus();
             renderManagement();
         }
 
-        function removeManagement(id) {
-            state.management = state.management.filter(m => m.id !== id);
-            renderManagement();
-        }
+        function removeManagement(id) { state.management = state.management.filter(m => m.id !== id); renderManagement(); }
 
         function renderManagement() {
-            const list = document.getElementById('mgmtList');
-            const count = state.management.length;
-            document.getElementById('mgmtCount').textContent = count;
-            document.getElementById('workupCount').textContent =
-                state.diagnoses.length + state.tests.length + state.management.length;
-
-            if (count === 0) {
-                list.innerHTML = '';
-                list.appendChild(createEmptyState('💊', 'No management plans yet.'));
-                return;
-            }
-
+            const list = document.getElementById('mgmtList'); updateBadges();
+            const icons = { medication:'💊', intervention:'🏥', consult:'📞', other:'📋' };
+            if (!state.management.length) { list.innerHTML = ''; list.appendChild(createEmptyState('💊','No management plans.')); return; }
             list.innerHTML = '';
-            const catIcons = { medication: '💊', intervention: '🏥', consult: '📞', other: '📋' };
             state.management.forEach(m => {
-                const li = document.createElement('li');
-                li.className = 'item-entry';
-                li.innerHTML = `
-                    <span class="item-icon">${catIcons[m.category] || '📋'}</span>
-                    <div class="item-content">
-                        <div class="item-name">${escapeHtml(m.name)}</div>
-                        ${m.rationale ? `<div class="item-rationale">${escapeHtml(m.rationale)}</div>` : ''}
-                    </div>
-                    <span class="item-category cat-${m.category}">${m.category}</span>
-                    <button class="btn btn-ghost btn-icon" onclick="removeManagement(${m.id})" title="Remove">🗑</button>
-                `;
+                const li = document.createElement('li'); li.className = 'item-entry';
+                li.innerHTML = `<span class="item-icon">${icons[m.category]||'📋'}</span><div class="item-content"><div class="item-name">${esc(m.name)}</div>${m.rationale?`<div class="item-rationale">${esc(m.rationale)}</div>`:''}</div><span class="item-category cat-${m.category}">${m.category}</span><button class="btn btn-ghost btn-icon" onclick="removeManagement(${m.id})">🗑</button>`;
                 list.appendChild(li);
             });
         }
 
-        // =============================================================
-        // ===== LLM EXTRACTION (Updated for OpenRouter + Reasoning) ===
-        // =============================================================
+        function updateBadges() {
+            document.getElementById('dxCount').textContent = state.diagnoses.length;
+            document.getElementById('testCount').textContent = state.tests.length;
+            document.getElementById('mgmtCount').textContent = state.management.length;
+            document.getElementById('workupCount').textContent = state.diagnoses.length + state.tests.length + state.management.length;
+        }
 
+        // ===== LLM EXTRACTION =====
         async function extractWithLLM() {
-            if (!state.pdfText.trim()) {
-                showToast('No PDF text found. Make sure a PDF is loaded.', 'error');
-                return;
-            }
-            if (state.llmProvider === 'none') {
-                showToast('No LLM configured. Go to Settings to set one up, or use manual answer key.', 'error');
+            if (!state.pdfText.trim()) { showToast('Load a PDF first.', 'error'); return; }
+            if (state.llmProvider === 'none') { showToast('Configure an LLM in Settings first.', 'error'); return; }
+            if (!state.apiKey && state.llmProvider !== 'ollama') {
+                showToast('API key required. Click Settings to add one.', 'error');
+                openSettings();
                 return;
             }
 
             const btn = document.getElementById('extractBtn');
-            const origText = btn.innerHTML;
-            btn.innerHTML = '<span class="spinner"></span> Extracting...';
-            btn.disabled = true;
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner"></span> Extracting...'; btn.disabled = true;
 
             try {
-                const prompt = buildExtractionPrompt(state.pdfText);
-                console.log('📤 Sending to LLM:', state.llmProvider, '| Text length:', state.pdfText.length);
-
+                const prompt = buildPrompt(state.pdfText);
                 const result = await callLLM(prompt);
-                console.log('📥 LLM response:', result);
-
-                const parsed = parseExtractionResponse(result.content);
+                const parsed = parseResponse(result.content);
 
                 if (parsed) {
                     state.answerKey = parsed;
                     state.lastReasoning = result.reasoning;
-
                     document.getElementById('answerDiagnosis').value = parsed.diagnosis || '';
-                    document.getElementById('answerTests').value = (parsed.tests || []).join(', ');
-                    document.getElementById('answerTreatments').value = (parsed.treatments || []).join(', ');
-                    document.getElementById('answerDifferentials').value = (parsed.differentials || []).join(', ');
+                    document.getElementById('answerTests').value = (parsed.tests||[]).join(', ');
+                    document.getElementById('answerTreatments').value = (parsed.treatments||[]).join(', ');
+                    document.getElementById('answerDifferentials').value = (parsed.differentials||[]).join(', ');
+                    showToast('✅ Extracted!' + (result.reasoning ? ' (with reasoning)' : ''), 'success');
 
-                    let successMsg = '✅ Case data extracted successfully!';
-                    if (result.reasoning) {
-                        successMsg += ' (with reasoning)';
-                    }
-                    showToast(successMsg, 'success');
-
-                    // Switch to scoring tab to show results
+                    // Switch to score tab
                     document.querySelectorAll('.workspace-tab').forEach(t => t.classList.remove('active'));
                     document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
                     document.querySelector('[data-tab="scoring"]').classList.add('active');
                     document.getElementById('tab-scoring').classList.add('active');
                 } else {
-                    showToast('Failed to parse LLM response. Check browser console for details.', 'error');
+                    showToast('Failed to parse response. Check console (F12).', 'error');
                 }
             } catch (err) {
                 console.error('Extraction error:', err);
-                showToast('Extraction failed: ' + err.message, 'error');
+                let msg = err.message;
+                if (msg.includes('No endpoints found')) {
+                    msg = 'Privacy policy error — go to openrouter.ai/settings/privacy and allow training data for free models.';
+                    showToast(msg, 'error');
+                    window.open('https://openrouter.ai/settings/privacy', '_blank');
+                } else {
+                    showToast('Error: ' + msg, 'error');
+                }
             } finally {
-                btn.innerHTML = origText;
-                btn.disabled = false;
+                btn.innerHTML = orig; btn.disabled = false;
             }
         }
 
-        function buildExtractionPrompt(text) {
-            // Truncate to stay within token limits (roughly 4 chars per token)
-            const maxChars = 15000;
-            const truncated = text.length > maxChars
-                ? text.substring(0, maxChars) + '\n\n[...text truncated...]'
-                : text;
+        function buildPrompt(text) {
+            const t = text.substring(0, 15000);
+            return `You are a medical education assistant. Analyze this clinical case and extract key information.
 
-            return `You are a medical education assistant analyzing a clinical case for a learning exercise.
+Return ONLY valid JSON — no markdown, no code fences, no explanation. Just the raw JSON object.
 
-Analyze the following medical case text and extract the key clinical information.
-
-IMPORTANT: Return ONLY a valid JSON object with no additional text, no markdown code fences, no explanation before or after. Just the raw JSON.
-
-Required JSON structure:
 {
-  "diagnosis": "the final/correct diagnosis from the case",
-  "differentials": ["differential diagnosis 1", "differential diagnosis 2", "etc"],
-  "tests": ["diagnostic test 1", "diagnostic test 2", "etc"],
-  "treatments": ["treatment 1", "treatment 2", "etc"],
-  "keyFindings": "brief summary of the most important clinical findings",
-  "specialty": "primary medical specialty"
+  "diagnosis": "the final correct diagnosis",
+  "differentials": ["diagnosis1", "diagnosis2"],
+  "tests": ["test1", "test2"],
+  "treatments": ["treatment1", "treatment2"],
+  "keyFindings": "brief summary of key findings",
+  "specialty": "medical specialty"
 }
 
-Guidelines:
-- "diagnosis" should be the final confirmed diagnosis
-- "differentials" should include all diagnoses that were considered/discussed
-- "tests" should include labs, imaging, procedures, and any diagnostic workup performed
-- "treatments" should include medications, procedures, interventions, and consultations
-- Be specific with test and treatment names
-
-CASE TEXT:
-${truncated}`;
+CASE:
+${t}`;
         }
 
-        // Unified LLM call that returns { content, reasoning }
         async function callLLM(prompt) {
             switch (state.llmProvider) {
-                case 'openai': return { content: await callOpenAI(prompt), reasoning: null };
-                case 'anthropic': return { content: await callAnthropic(prompt), reasoning: null };
-                case 'gemini': return { content: await callGemini(prompt), reasoning: null };
-                case 'ollama': return { content: await callOllama(prompt), reasoning: null };
-                case 'openrouter': return await callOpenRouter(prompt);
-                default: throw new Error('No LLM provider configured');
+                case 'openai': return { content: await fetchOpenAI(prompt), reasoning: null };
+                case 'anthropic': return { content: await fetchAnthropic(prompt), reasoning: null };
+                case 'gemini': return { content: await fetchGemini(prompt), reasoning: null };
+                case 'ollama': return { content: await fetchOllama(prompt), reasoning: null };
+                case 'openrouter': return await fetchOpenRouter(prompt);
+                default: throw new Error('No LLM configured');
             }
         }
 
-        async function callOpenAI(prompt) {
-            const res = await fetch('https://api.openai.com/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${state.apiKey}`
-                },
-                body: JSON.stringify({
-                    model: 'gpt-4o-mini',
-                    messages: [{ role: 'user', content: prompt }],
-                    temperature: 0.2,
-                    max_tokens: 2000
-                })
+        async function fetchOpenAI(prompt) {
+            const r = await fetch('https://api.openai.com/v1/chat/completions', {
+                method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${state.apiKey}`},
+                body: JSON.stringify({ model:'gpt-4o-mini', messages:[{role:'user',content:prompt}], temperature:0.2, max_tokens:2000 })
             });
-            if (!res.ok) {
-                const err = await res.json().catch(() => ({}));
-                throw new Error(err.error?.message || `OpenAI API error: ${res.status}`);
-            }
-            const data = await res.json();
-            return data.choices[0].message.content;
+            if (!r.ok) { const e = await r.json().catch(()=>({})); throw new Error(e.error?.message||`HTTP ${r.status}`); }
+            return (await r.json()).choices[0].message.content;
         }
 
-        async function callAnthropic(prompt) {
-            const res = await fetch('https://api.anthropic.com/v1/messages', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': state.apiKey,
-                    'anthropic-version': '2023-06-01',
-                    'anthropic-dangerous-direct-browser-access': 'true'
-                },
-                body: JSON.stringify({
-                    model: 'claude-3-haiku-20240307',
-                    max_tokens: 2000,
-                    messages: [{ role: 'user', content: prompt }]
-                })
+        async function fetchAnthropic(prompt) {
+            const r = await fetch('https://api.anthropic.com/v1/messages', {
+                method:'POST', headers:{'Content-Type':'application/json','x-api-key':state.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+                body: JSON.stringify({ model:'claude-3-haiku-20240307', max_tokens:2000, messages:[{role:'user',content:prompt}] })
             });
-            if (!res.ok) {
-                const err = await res.json().catch(() => ({}));
-                throw new Error(err.error?.message || `Anthropic API error: ${res.status}`);
-            }
-            const data = await res.json();
-            return data.content[0].text;
+            if (!r.ok) { const e = await r.json().catch(()=>({})); throw new Error(e.error?.message||`HTTP ${r.status}`); }
+            return (await r.json()).content[0].text;
         }
 
-        async function callGemini(prompt) {
-            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${state.apiKey}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [{ parts: [{ text: prompt }] }],
-                    generationConfig: { temperature: 0.2, maxOutputTokens: 2000 }
-                })
+        async function fetchGemini(prompt) {
+            const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${state.apiKey}`, {
+                method:'POST', headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({ contents:[{parts:[{text:prompt}]}], generationConfig:{temperature:0.2,maxOutputTokens:2000} })
             });
-            if (!res.ok) {
-                const err = await res.json().catch(() => ({}));
-                throw new Error(err.error?.message || `Gemini API error: ${res.status}`);
-            }
-            const data = await res.json();
-            return data.candidates[0].content.parts[0].text;
+            if (!r.ok) { const e = await r.json().catch(()=>({})); throw new Error(e.error?.message||`HTTP ${r.status}`); }
+            return (await r.json()).candidates[0].content.parts[0].text;
         }
 
-        async function callOllama(prompt) {
-            const res = await fetch(`${state.ollamaUrl}/api/generate`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    model: state.ollamaModel,
-                    prompt: prompt,
-                    stream: false,
-                    options: { temperature: 0.2 }
-                })
+        async function fetchOllama(prompt) {
+            const r = await fetch(`${state.ollamaUrl}/api/generate`, {
+                method:'POST', headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({ model:state.ollamaModel, prompt, stream:false, options:{temperature:0.2} })
             });
-            if (!res.ok) throw new Error(`Ollama error: ${res.status}`);
-            const data = await res.json();
-            return data.response;
+            if (!r.ok) throw new Error(`Ollama: HTTP ${r.status}`);
+            return (await r.json()).response;
         }
 
-        // ===== OPENROUTER WITH REASONING SUPPORT =====
-        async function callOpenRouter(prompt) {
-            const requestBody = {
+        async function fetchOpenRouter(prompt) {
+            const body = {
                 model: state.openrouterModel,
                 messages: [{ role: 'user', content: prompt }],
                 temperature: 0.2,
                 max_tokens: 4000
             };
 
-            // Add reasoning support if enabled
             if (state.openrouterReasoning) {
-                requestBody.reasoning = { enabled: true };
+                body.reasoning = { enabled: true };
             }
 
-            console.log('🔵 OpenRouter request:', {
-                model: requestBody.model,
-                reasoning: requestBody.reasoning,
-                messageLength: prompt.length
-            });
+            console.log('📤 OpenRouter:', { model: body.model, reasoning: body.reasoning });
 
-            const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+            const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${state.apiKey}`,
                     'HTTP-Referer': window.location.href,
-                    'X-Title': 'CaseDx Medical Simulator'
+                    'X-Title': 'CaseDx'
                 },
-                body: JSON.stringify(requestBody)
+                body: JSON.stringify(body)
             });
 
-            if (!res.ok) {
-                const errBody = await res.text();
-                console.error('OpenRouter error response:', errBody);
-                let errMsg;
-                try {
-                    const errJson = JSON.parse(errBody);
-                    errMsg = errJson.error?.message || errJson.error || `HTTP ${res.status}`;
-                } catch {
-                    errMsg = `HTTP ${res.status}: ${errBody.substring(0, 200)}`;
-                }
-                throw new Error(`OpenRouter: ${errMsg}`);
+            if (!r.ok) {
+                const errText = await r.text();
+                console.error('OpenRouter error:', errText);
+                let msg;
+                try { msg = JSON.parse(errText).error?.message || errText; } catch { msg = errText.substring(0, 300); }
+                throw new Error(msg);
             }
 
-            const data = await res.json();
-            console.log('🟢 OpenRouter response:', data);
+            const data = await r.json();
+            console.log('📥 OpenRouter response:', data);
 
             const message = data.choices[0].message;
-            const content = message.content || '';
-
-            // Extract reasoning if present
             let reasoning = null;
+
+            // Extract reasoning from various possible fields
             if (message.reasoning_details) {
-                // reasoning_details can be a string or array of objects
                 if (typeof message.reasoning_details === 'string') {
                     reasoning = message.reasoning_details;
                 } else if (Array.isArray(message.reasoning_details)) {
@@ -1780,314 +1460,220 @@ ${truncated}`;
                         .map(r => typeof r === 'string' ? r : (r.content || r.text || JSON.stringify(r)))
                         .join('\n');
                 }
-                console.log('🧠 Reasoning:', reasoning);
+            } else if (message.reasoning) {
+                reasoning = typeof message.reasoning === 'string' ? message.reasoning : JSON.stringify(message.reasoning);
             }
 
-            // Also check for reasoning in the response (some models use 'reasoning' field)
-            if (!reasoning && message.reasoning) {
-                reasoning = typeof message.reasoning === 'string'
-                    ? message.reasoning
-                    : JSON.stringify(message.reasoning);
-            }
-
-            return { content, reasoning };
+            return { content: message.content || '', reasoning };
         }
 
-        function parseExtractionResponse(text) {
+        function parseResponse(text) {
             try {
-                let jsonStr = text;
-
-                // Remove markdown code blocks
-                const jsonMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/);
-                if (jsonMatch) jsonStr = jsonMatch[1];
-
-                // Find JSON object
-                const objMatch = jsonStr.match(/\{[\s\S]*\}/);
-                if (objMatch) jsonStr = objMatch[0];
-
-                const parsed = JSON.parse(jsonStr);
+                let s = text;
+                const m1 = s.match(/```(?:json)?\s*([\s\S]*?)```/);
+                if (m1) s = m1[1];
+                const m2 = s.match(/\{[\s\S]*\}/);
+                if (m2) s = m2[0];
+                const p = JSON.parse(s);
                 return {
-                    diagnosis: parsed.diagnosis || '',
-                    differentials: Array.isArray(parsed.differentials) ? parsed.differentials : [],
-                    tests: Array.isArray(parsed.tests) ? parsed.tests : [],
-                    treatments: Array.isArray(parsed.treatments) ? parsed.treatments : [],
-                    keyFindings: parsed.keyFindings || '',
-                    specialty: parsed.specialty || ''
+                    diagnosis: p.diagnosis||'', differentials: Array.isArray(p.differentials)?p.differentials:[],
+                    tests: Array.isArray(p.tests)?p.tests:[], treatments: Array.isArray(p.treatments)?p.treatments:[],
+                    keyFindings: p.keyFindings||'', specialty: p.specialty||''
                 };
-            } catch (e) {
-                console.error('JSON parse error:', e, '\nRaw text:', text);
-
-                // Try a more aggressive extraction
-                try {
-                    const lines = text.split('\n');
-                    let inJson = false;
-                    let jsonLines = [];
-                    for (const line of lines) {
-                        if (line.includes('{')) inJson = true;
-                        if (inJson) jsonLines.push(line);
-                        if (line.includes('}') && inJson) break;
-                    }
-                    if (jsonLines.length > 0) {
-                        const parsed = JSON.parse(jsonLines.join('\n'));
-                        return {
-                            diagnosis: parsed.diagnosis || '',
-                            differentials: Array.isArray(parsed.differentials) ? parsed.differentials : [],
-                            tests: Array.isArray(parsed.tests) ? parsed.tests : [],
-                            treatments: Array.isArray(parsed.treatments) ? parsed.treatments : [],
-                            keyFindings: parsed.keyFindings || '',
-                            specialty: parsed.specialty || ''
-                        };
-                    }
-                } catch (e2) {
-                    console.error('Aggressive parse also failed:', e2);
-                }
-
+            } catch(e) {
+                console.error('Parse error:', e, '\nRaw:', text);
                 return null;
+            }
+        }
+
+        // ===== TEST CONNECTION =====
+        async function testConnection() {
+            const provider = document.querySelector('input[name="llmProvider"]:checked').value;
+            const key = document.getElementById('apiKeyInput').value.trim();
+
+            if (provider === 'none') { showToast('Select a provider first', 'info'); return; }
+            if (!key && provider !== 'ollama') { showToast('Enter an API key first', 'error'); return; }
+
+            // Temporarily save
+            const oldKey = state.apiKey;
+            const oldProvider = state.llmProvider;
+            const oldModel = state.openrouterModel;
+            state.apiKey = key;
+            state.llmProvider = provider;
+            state.openrouterModel = getSelectedModel();
+            state.openrouterReasoning = document.getElementById('openrouterReasoning').checked;
+            state.ollamaUrl = document.getElementById('ollamaUrl').value.trim();
+            state.ollamaModel = document.getElementById('ollamaModel').value.trim();
+
+            showToast('Testing connection...', 'info');
+
+            try {
+                const result = await callLLM('Respond with exactly: {"status":"ok"}');
+                showToast('✅ Connection successful!', 'success');
+            } catch (err) {
+                let msg = err.message;
+                if (msg.includes('No endpoints found')) {
+                    showToast('❌ Privacy policy error — click the link below to fix it', 'error');
+                } else {
+                    showToast('❌ ' + msg, 'error');
+                }
+                // Restore old values on failure
+                state.apiKey = oldKey;
+                state.llmProvider = oldProvider;
+                state.openrouterModel = oldModel;
             }
         }
 
         // ===== SCORING =====
         function scoreCase() {
             const diagnosis = document.getElementById('answerDiagnosis').value.trim();
-            const tests = document.getElementById('answerTests').value.split(',').map(s => s.trim()).filter(Boolean);
-            const treatments = document.getElementById('answerTreatments').value.split(',').map(s => s.trim()).filter(Boolean);
-            const differentials = document.getElementById('answerDifferentials').value.split(',').map(s => s.trim()).filter(Boolean);
+            if (!diagnosis) { showToast('Enter the correct diagnosis first.', 'error'); return; }
 
-            if (!diagnosis) {
-                showToast('Please enter the correct diagnosis first.', 'error');
-                return;
-            }
-
+            const tests = document.getElementById('answerTests').value.split(',').map(s=>s.trim()).filter(Boolean);
+            const treatments = document.getElementById('answerTreatments').value.split(',').map(s=>s.trim()).filter(Boolean);
+            const differentials = document.getElementById('answerDifferentials').value.split(',').map(s=>s.trim()).filter(Boolean);
             state.answerKey = { diagnosis, tests, treatments, differentials };
 
-            const dxScore = calculateDiagnosisScore(diagnosis, differentials);
-            const testScore = calculateListScore(state.tests.map(t => t.name), tests);
-            const mgmtScore = calculateListScore(state.management.map(m => m.name), treatments);
-            const overallScore = Math.round((dxScore.score + testScore.score + mgmtScore.score) / 3);
+            const dxS = calcDxScore(diagnosis, differentials);
+            const testS = calcListScore(state.tests.map(t=>t.name), tests);
+            const mgmtS = calcListScore(state.management.map(m=>m.name), treatments);
+            const overall = Math.round((dxS.score + testS.score + mgmtS.score) / 3);
 
-            const container = document.getElementById('scoreResults');
-            container.style.display = 'block';
-            document.getElementById('noScoreYet').style.display = 'none';
-
-            // Build reasoning HTML if available
             let reasoningHtml = '';
             if (state.lastReasoning) {
-                reasoningHtml = `
-                    <div class="section-card">
-                        <div class="section-header" onclick="toggleSection(this)">
-                            <h3>🧠 AI Reasoning Process</h3>
-                            <span class="collapse-icon">▼</span>
-                        </div>
-                        <div class="section-body">
-                            <div class="reasoning-block">
-                                <details>
-                                    <summary>View the model's chain-of-thought reasoning</summary>
-                                    <pre>${escapeHtml(state.lastReasoning)}</pre>
-                                </details>
-                            </div>
-                        </div>
-                    </div>
-                `;
+                reasoningHtml = `<div class="section-card"><div class="section-header" onclick="toggleSection(this)"><h3>🧠 AI Reasoning</h3><span class="collapse-icon">▼</span></div><div class="section-body"><div class="reasoning-block"><details><summary>View chain-of-thought</summary><pre>${esc(state.lastReasoning)}</pre></details></div></div></div>`;
             }
 
-            container.innerHTML = `
+            const c = document.getElementById('scoreResults');
+            c.style.display = 'block';
+            document.getElementById('noScoreYet').style.display = 'none';
+
+            c.innerHTML = `
                 <div class="score-card">
-                    <h3>Overall Performance</h3>
+                    <h3>Performance</h3>
                     <div class="score-grid">
-                        <div class="score-item">
-                            <div class="score-value ${getScoreClass(dxScore.score)}">${dxScore.score}%</div>
-                            <div class="score-label">Diagnosis</div>
-                        </div>
-                        <div class="score-item">
-                            <div class="score-value ${getScoreClass(testScore.score)}">${testScore.score}%</div>
-                            <div class="score-label">Testing</div>
-                        </div>
-                        <div class="score-item">
-                            <div class="score-value ${getScoreClass(mgmtScore.score)}">${mgmtScore.score}%</div>
-                            <div class="score-label">Management</div>
-                        </div>
+                        <div class="score-item"><div class="score-value ${sc(dxS.score)}">${dxS.score}%</div><div class="score-label">Diagnosis</div></div>
+                        <div class="score-item"><div class="score-value ${sc(testS.score)}">${testS.score}%</div><div class="score-label">Testing</div></div>
+                        <div class="score-item"><div class="score-value ${sc(mgmtS.score)}">${mgmtS.score}%</div><div class="score-label">Management</div></div>
                     </div>
-                    <div style="text-align:center; margin-top:16px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.1);">
-                        <div class="score-value ${getScoreClass(overallScore)}" style="font-size:2.5rem;">${overallScore}%</div>
-                        <div class="score-label" style="font-size:0.85rem;">Overall Score</div>
+                    <div style="text-align:center;margin-top:16px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);">
+                        <div class="score-value ${sc(overall)}" style="font-size:2.5rem;">${overall}%</div>
+                        <div class="score-label" style="font-size:0.85rem;">Overall</div>
                     </div>
                 </div>
-
                 ${reasoningHtml}
-
-                <div class="section-card">
-                    <div class="section-header" onclick="toggleSection(this)">
-                        <h3>🎯 Diagnosis Breakdown</h3>
-                        <span class="collapse-icon">▼</span>
-                    </div>
-                    <div class="section-body">
-                        <p style="margin-bottom:8px;"><strong>Correct Diagnosis:</strong> ${escapeHtml(diagnosis)}</p>
-                        <p style="margin-bottom:12px; font-size:0.85rem; color:var(--gray-500);">${dxScore.detail}</p>
-                        ${state.diagnoses.length > 0 ? `
-                            <table class="comparison-table">
-                                <tr><th>#</th><th>Your Differential</th><th>Status</th></tr>
-                                ${state.diagnoses.map((d, i) => `
-                                    <tr>
-                                        <td>${i + 1}</td>
-                                        <td class="${d.ruledOut ? 'match-no' : ''}">${escapeHtml(d.text)}${d.ruledOut ? ' (ruled out)' : ''}</td>
-                                        <td>${getDxMatchTag(d.text, diagnosis, differentials)}</td>
-                                    </tr>
-                                `).join('')}
-                            </table>
-                        ` : '<p style="color:var(--gray-400);">No diagnoses were entered.</p>'}
-                    </div>
-                </div>
-
-                <div class="section-card">
-                    <div class="section-header" onclick="toggleSection(this)">
-                        <h3>🧪 Testing Breakdown</h3>
-                        <span class="collapse-icon">▼</span>
-                    </div>
-                    <div class="section-body">
-                        ${renderComparisonList('Your Tests', state.tests.map(t=>t.name), 'Answer Key Tests', tests)}
-                    </div>
-                </div>
-
-                <div class="section-card">
-                    <div class="section-header" onclick="toggleSection(this)">
-                        <h3>💊 Management Breakdown</h3>
-                        <span class="collapse-icon">▼</span>
-                    </div>
-                    <div class="section-body">
-                        ${renderComparisonList('Your Treatments', state.management.map(m=>m.name), 'Answer Key Treatments', treatments)}
-                    </div>
-                </div>
-
-                <button class="btn btn-outline" onclick="document.getElementById('scoreResults').style.display='none'; document.getElementById('noScoreYet').style.display='block';" style="width:100%; margin-top:8px;">
-                    ← Edit Answer Key
-                </button>
+                <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><h3>🎯 Diagnosis</h3><span class="collapse-icon">▼</span></div><div class="section-body">
+                    <p style="margin-bottom:8px;"><strong>Correct:</strong> ${esc(diagnosis)}</p>
+                    <p style="margin-bottom:12px;font-size:0.85rem;color:var(--gray-500);">${dxS.detail}</p>
+                    ${state.diagnoses.length ? `<table class="comparison-table"><tr><th>#</th><th>Your Differential</th><th>Status</th></tr>${state.diagnoses.map((d,i)=>`<tr><td>${i+1}</td><td class="${d.ruledOut?'match-no':''}">${esc(d.text)}${d.ruledOut?' (ruled out)':''}</td><td>${dxTag(d.text,diagnosis,differentials)}</td></tr>`).join('')}</table>` : '<p style="color:var(--gray-400)">No diagnoses entered.</p>'}
+                </div></div>
+                <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><h3>🧪 Testing</h3><span class="collapse-icon">▼</span></div><div class="section-body">${compareList('Yours',state.tests.map(t=>t.name),'Answer',tests)}</div></div>
+                <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><h3>💊 Management</h3><span class="collapse-icon">▼</span></div><div class="section-body">${compareList('Yours',state.management.map(m=>m.name),'Answer',treatments)}</div></div>
+                <button class="btn btn-outline" onclick="document.getElementById('scoreResults').style.display='none';document.getElementById('noScoreYet').style.display='block';" style="width:100%;margin-top:8px;">← Edit Answer Key</button>
             `;
         }
 
-        function calculateDiagnosisScore(correctDx, differentials) {
-            if (state.diagnoses.length === 0) return { score: 0, detail: 'No diagnoses entered.' };
-
-            const activeDx = state.diagnoses.filter(d => !d.ruledOut);
-            if (activeDx.length === 0) return { score: 0, detail: 'All diagnoses were ruled out.' };
-
-            const topDx = activeDx[0].text.toLowerCase();
-            const correct = correctDx.toLowerCase();
-
-            if (fuzzyMatch(topDx, correct))
-                return { score: 100, detail: `Your #1 diagnosis "${activeDx[0].text}" matches the correct diagnosis!` };
-
-            const matchIdx = activeDx.findIndex(d => fuzzyMatch(d.text.toLowerCase(), correct));
-            if (matchIdx > 0) {
-                const score = Math.max(20, 85 - matchIdx * 15);
-                return { score, detail: `Correct diagnosis was #${matchIdx + 1} on your active list. Higher ranking = better score.` };
-            }
-
-            const diffMatches = activeDx.filter(d =>
-                differentials.some(diff => fuzzyMatch(d.text.toLowerCase(), diff.toLowerCase()))
-            ).length;
-
-            if (diffMatches > 0)
-                return { score: Math.min(40, diffMatches * 15), detail: `${diffMatches} of your diagnoses were on the differential list, but you didn't identify the correct final diagnosis.` };
-
-            return { score: 0, detail: 'The correct diagnosis was not on your differential.' };
+        function calcDxScore(correct, diffs) {
+            if (!state.diagnoses.length) return {score:0,detail:'No diagnoses entered.'};
+            const active = state.diagnoses.filter(d=>!d.ruledOut);
+            if (!active.length) return {score:0,detail:'All ruled out.'};
+            if (fuzzy(active[0].text,correct)) return {score:100,detail:`#1 "${active[0].text}" is correct!`};
+            const mi = active.findIndex(d=>fuzzy(d.text,correct));
+            if (mi>0) return {score:Math.max(20,85-mi*15),detail:`Correct was #${mi+1} on your list.`};
+            const dm = active.filter(d=>diffs.some(df=>fuzzy(d.text,df))).length;
+            if (dm) return {score:Math.min(40,dm*15),detail:`${dm} on the differential, but missed the final dx.`};
+            return {score:0,detail:'Correct diagnosis was not on your differential.'};
         }
 
-        function calculateListScore(userItems, answerItems) {
-            if (answerItems.length === 0) return { score: 100, detail: '' };
-            if (userItems.length === 0) return { score: 0, detail: 'No items entered.' };
-
-            let matches = 0;
-            answerItems.forEach(answer => {
-                if (userItems.some(u => fuzzyMatch(u.toLowerCase(), answer.toLowerCase()))) matches++;
-            });
-
-            return { score: Math.round((matches / answerItems.length) * 100), detail: `${matches}/${answerItems.length} key items matched.` };
+        function calcListScore(user, answer) {
+            if (!answer.length) return {score:100};
+            if (!user.length) return {score:0};
+            let m=0; answer.forEach(a=>{if(user.some(u=>fuzzy(u,a)))m++;});
+            return {score:Math.round(m/answer.length*100)};
         }
 
-        function fuzzyMatch(a, b) {
-            a = a.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
-            b = b.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
-
-            if (a === b) return true;
-            if (a.includes(b) || b.includes(a)) return true;
-
-            const wordsA = a.split(/\s+/).filter(w => w.length > 2);
-            const wordsB = b.split(/\s+/).filter(w => w.length > 2);
-            if (wordsA.length === 0 || wordsB.length === 0) return false;
-
-            const overlap = wordsA.filter(w => wordsB.some(wb => wb.includes(w) || w.includes(wb)));
-            return overlap.length >= Math.min(2, Math.ceil(wordsB.length * 0.6));
+        function fuzzy(a,b) {
+            a=a.toLowerCase().replace(/[^a-z0-9\s]/g,'').trim();
+            b=b.toLowerCase().replace(/[^a-z0-9\s]/g,'').trim();
+            if (a===b||a.includes(b)||b.includes(a)) return true;
+            const wa=a.split(/\s+/).filter(w=>w.length>2), wb=b.split(/\s+/).filter(w=>w.length>2);
+            if (!wa.length||!wb.length) return false;
+            return wa.filter(w=>wb.some(x=>x.includes(w)||w.includes(x))).length >= Math.min(2,Math.ceil(wb.length*0.6));
         }
 
-        function getDxMatchTag(userDx, correctDx, differentials) {
-            const u = userDx.toLowerCase();
-            if (fuzzyMatch(u, correctDx.toLowerCase()))
-                return '<span class="answer-tag correct">✓ Correct Dx</span>';
-            if (differentials.some(d => fuzzyMatch(u, d.toLowerCase())))
-                return '<span class="answer-tag partial">~ On Differential</span>';
-            return '<span class="answer-tag incorrect">✗ Not matched</span>';
+        function dxTag(u,c,d) {
+            if(fuzzy(u,c)) return '<span class="answer-tag correct">✓ Correct</span>';
+            if(d.some(x=>fuzzy(u,x))) return '<span class="answer-tag partial">~ Differential</span>';
+            return '<span class="answer-tag incorrect">✗ Miss</span>';
         }
 
-        function renderComparisonList(userLabel, userItems, answerLabel, answerItems) {
-            let html = '<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">';
-
-            html += `<div><h4 style="font-size:0.85rem; margin-bottom:8px; color:var(--gray-600);">${userLabel}</h4>`;
-            if (userItems.length === 0) {
-                html += '<p style="color:var(--gray-400); font-size:0.85rem;">None entered</p>';
-            } else {
-                userItems.forEach(item => {
-                    const matched = answerItems.some(a => fuzzyMatch(item.toLowerCase(), a.toLowerCase()));
-                    html += `<div style="padding:4px 0; font-size:0.85rem;">${matched ? '<span class="match-yes">✓</span>' : '<span class="match-no">○</span>'} ${escapeHtml(item)}</div>`;
-                });
-            }
-            html += '</div>';
-
-            html += `<div><h4 style="font-size:0.85rem; margin-bottom:8px; color:var(--gray-600);">${answerLabel}</h4>`;
-            if (answerItems.length === 0) {
-                html += '<p style="color:var(--gray-400); font-size:0.85rem;">None specified</p>';
-            } else {
-                answerItems.forEach(item => {
-                    const matched = userItems.some(u => fuzzyMatch(u.toLowerCase(), item.toLowerCase()));
-                    html += `<div style="padding:4px 0; font-size:0.85rem;">${matched ? '<span class="match-yes">✓</span>' : '<span class="match-no">✗</span>'} ${escapeHtml(item)}</div>`;
-                });
-            }
-            html += '</div></div>';
-            return html;
+        function compareList(ul,ui,al,ai) {
+            let h='<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">';
+            h+=`<div><h4 style="font-size:0.85rem;margin-bottom:8px;color:var(--gray-600)">${ul}</h4>`;
+            if(!ui.length) h+='<p style="color:var(--gray-400);font-size:0.85rem">None</p>';
+            else ui.forEach(x=>{const m=ai.some(a=>fuzzy(x,a));h+=`<div style="padding:3px 0;font-size:0.85rem">${m?'<span class="match-yes">✓</span>':'<span class="match-no">○</span>'} ${esc(x)}</div>`;});
+            h+='</div>';
+            h+=`<div><h4 style="font-size:0.85rem;margin-bottom:8px;color:var(--gray-600)">${al}</h4>`;
+            if(!ai.length) h+='<p style="color:var(--gray-400);font-size:0.85rem">None</p>';
+            else ai.forEach(x=>{const m=ui.some(u=>fuzzy(u,x));h+=`<div style="padding:3px 0;font-size:0.85rem">${m?'<span class="match-yes">✓</span>':'<span class="match-no">✗</span>'} ${esc(x)}</div>`;});
+            h+='</div></div>';
+            return h;
         }
 
-        function getScoreClass(score) {
-            if (score >= 70) return 'good';
-            if (score >= 40) return 'okay';
-            return 'poor';
-        }
+        function sc(s) { return s>=70?'good':s>=40?'okay':'poor'; }
 
         // ===== SETTINGS =====
+        function setupModelSelector() {
+            const sel = document.getElementById('openrouterModel');
+            sel.addEventListener('change', () => {
+                document.getElementById('customModelGroup').style.display = sel.value === 'custom' ? 'block' : 'none';
+            });
+        }
+
+        function getSelectedModel() {
+            const sel = document.getElementById('openrouterModel');
+            return sel.value === 'custom' ? document.getElementById('openrouterCustomModel').value.trim() : sel.value;
+        }
+
         function openSettings() {
             document.getElementById('settingsModal').classList.add('show');
-            document.querySelectorAll('input[name="llmProvider"]').forEach(r => {
-                r.checked = r.value === state.llmProvider;
-            });
+            document.querySelectorAll('input[name="llmProvider"]').forEach(r => r.checked = r.value === state.llmProvider);
             document.getElementById('apiKeyInput').value = state.apiKey;
             document.getElementById('ollamaUrl').value = state.ollamaUrl;
             document.getElementById('ollamaModel').value = state.ollamaModel;
-            document.getElementById('openrouterModel').value = state.openrouterModel;
             document.getElementById('openrouterReasoning').checked = state.openrouterReasoning;
-            updateSettingsVisibility();
-            document.querySelectorAll('input[name="llmProvider"]').forEach(r =>
-                r.addEventListener('change', updateSettingsVisibility)
-            );
+
+            // Set model selector
+            const sel = document.getElementById('openrouterModel');
+            const opts = Array.from(sel.options).map(o=>o.value);
+            if (opts.includes(state.openrouterModel)) {
+                sel.value = state.openrouterModel;
+            } else {
+                sel.value = 'custom';
+                document.getElementById('openrouterCustomModel').value = state.openrouterModel;
+                document.getElementById('customModelGroup').style.display = 'block';
+            }
+
+            updateSettingsUI();
+            document.querySelectorAll('input[name="llmProvider"]').forEach(r => r.addEventListener('change', updateSettingsUI));
         }
 
-        function closeSettings() {
-            document.getElementById('settingsModal').classList.remove('show');
-        }
+        function closeSettings() { document.getElementById('settingsModal').classList.remove('show'); }
 
-        function updateSettingsVisibility() {
-            const provider = document.querySelector('input[name="llmProvider"]:checked').value;
-            document.getElementById('apiKeyGroup').style.display =
-                ['openai', 'anthropic', 'gemini', 'openrouter'].includes(provider) ? 'block' : 'none';
-            document.getElementById('ollamaGroup').style.display = provider === 'ollama' ? 'block' : 'none';
-            document.getElementById('openrouterGroup').style.display = provider === 'openrouter' ? 'block' : 'none';
+        function updateSettingsUI() {
+            const p = document.querySelector('input[name="llmProvider"]:checked').value;
+            document.getElementById('apiKeyGroup').style.display = ['openai','anthropic','gemini','openrouter'].includes(p)?'block':'none';
+            document.getElementById('ollamaGroup').style.display = p==='ollama'?'block':'none';
+            document.getElementById('openrouterGroup').style.display = p==='openrouter'?'block':'none';
+
+            const help = document.getElementById('apiKeyHelp');
+            const links = {
+                openrouter: '→ Get free key: <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--primary)">openrouter.ai/keys</a>',
+                gemini: '→ Get free key: <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--primary)">aistudio.google.com</a>',
+                openai: '→ <a href="https://platform.openai.com/api-keys" target="_blank" style="color:var(--primary)">platform.openai.com</a>',
+                anthropic: '→ <a href="https://console.anthropic.com/" target="_blank" style="color:var(--primary)">console.anthropic.com</a>'
+            };
+            help.innerHTML = links[p] || '';
         }
 
         function saveSettings() {
@@ -2095,7 +1681,7 @@ ${truncated}`;
             state.apiKey = document.getElementById('apiKeyInput').value.trim();
             state.ollamaUrl = document.getElementById('ollamaUrl').value.trim();
             state.ollamaModel = document.getElementById('ollamaModel').value.trim();
-            state.openrouterModel = document.getElementById('openrouterModel').value.trim();
+            state.openrouterModel = getSelectedModel();
             state.openrouterReasoning = document.getElementById('openrouterReasoning').checked;
 
             localStorage.setItem('casedx_settings', JSON.stringify({
@@ -2108,165 +1694,86 @@ ${truncated}`;
             }));
 
             updateLLMStatus();
+            dismissBanner();
             closeSettings();
             showToast('Settings saved!', 'success');
         }
 
         function loadSettings() {
             try {
-                const saved = JSON.parse(localStorage.getItem('casedx_settings'));
-                if (saved) {
-                    state.llmProvider = saved.llmProvider || 'openrouter';
-                    state.apiKey = saved.apiKey || state.apiKey;
-                    state.ollamaUrl = saved.ollamaUrl || 'http://localhost:11434';
-                    state.ollamaModel = saved.ollamaModel || 'llama3.2';
-                    state.openrouterModel = saved.openrouterModel || 'openai/gpt-oss-120b:free';
-                    state.openrouterReasoning = saved.openrouterReasoning !== undefined ? saved.openrouterReasoning : true;
+                const s = JSON.parse(localStorage.getItem('casedx_settings'));
+                if (s) {
+                    state.llmProvider = s.llmProvider || 'openrouter';
+                    state.apiKey = s.apiKey || '';
+                    state.ollamaUrl = s.ollamaUrl || 'http://localhost:11434';
+                    state.ollamaModel = s.ollamaModel || 'llama3.2';
+                    state.openrouterModel = s.openrouterModel || 'openai/gpt-oss-120b:free';
+                    state.openrouterReasoning = s.openrouterReasoning !== undefined ? s.openrouterReasoning : true;
                 }
-            } catch (e) {
-                console.log('No saved settings, using defaults with OpenRouter');
-            }
+            } catch(e) {}
         }
 
         function updateLLMStatus() {
             const dot = document.getElementById('llmDot');
             const name = document.getElementById('llmName');
-            const names = {
-                none: 'Manual Mode',
-                openai: 'OpenAI',
-                anthropic: 'Anthropic',
-                gemini: 'Gemini',
-                ollama: 'Ollama',
-                openrouter: 'OpenRouter'
-            };
+            const names = { none:'Manual', openai:'OpenAI', anthropic:'Anthropic', gemini:'Gemini', ollama:'Ollama', openrouter:'OpenRouter' };
 
-            let displayName = names[state.llmProvider] || 'None';
+            let dn = names[state.llmProvider] || 'None';
             if (state.llmProvider === 'openrouter' && state.openrouterModel) {
-                // Show short model name
-                const shortModel = state.openrouterModel.split('/').pop().split(':')[0];
-                displayName += ` (${shortModel})`;
+                dn += ` · ${state.openrouterModel.split('/').pop().split(':')[0]}`;
             }
-            name.textContent = displayName;
+            name.textContent = dn;
 
-            if (state.llmProvider === 'none') {
-                dot.className = 'llm-dot';
-            } else if (state.llmProvider === 'ollama' || state.apiKey) {
-                dot.className = 'llm-dot connected';
-            } else {
-                dot.className = 'llm-dot error';
-            }
+            if (state.llmProvider === 'none') dot.className = 'llm-dot';
+            else if (state.llmProvider === 'ollama') dot.className = 'llm-dot connected';
+            else if (state.apiKey) dot.className = 'llm-dot connected';
+            else dot.className = 'llm-dot needs-key';
         }
 
         function toggleKeyVisibility() {
-            const input = document.getElementById('apiKeyInput');
-            input.type = input.type === 'password' ? 'text' : 'password';
+            const i = document.getElementById('apiKeyInput');
+            i.type = i.type === 'password' ? 'text' : 'password';
         }
 
         // ===== RESIZE =====
         function setupResize() {
-            const handle = document.getElementById('resizeHandle');
-            const panel = document.getElementById('workspacePanel');
-            let isResizing = false;
-
-            handle.addEventListener('mousedown', () => {
-                isResizing = true;
-                handle.classList.add('active');
-                document.body.style.cursor = 'col-resize';
-                document.body.style.userSelect = 'none';
-            });
-
-            document.addEventListener('mousemove', (e) => {
-                if (!isResizing) return;
-                const containerRect = document.querySelector('.main-container').getBoundingClientRect();
-                const newWidth = Math.max(380, Math.min(800, containerRect.right - e.clientX));
-                panel.style.width = newWidth + 'px';
-            });
-
-            document.addEventListener('mouseup', () => {
-                if (isResizing) {
-                    isResizing = false;
-                    handle.classList.remove('active');
-                    document.body.style.cursor = '';
-                    document.body.style.userSelect = '';
-                }
-            });
+            const h = document.getElementById('resizeHandle'), p = document.getElementById('workspacePanel');
+            let resizing = false;
+            h.addEventListener('mousedown', () => { resizing=true; h.classList.add('active'); document.body.style.cursor='col-resize'; document.body.style.userSelect='none'; });
+            document.addEventListener('mousemove', e => { if(!resizing) return; const r=document.querySelector('.main-container').getBoundingClientRect(); p.style.width=Math.max(380,Math.min(800,r.right-e.clientX))+'px'; });
+            document.addEventListener('mouseup', () => { if(resizing){resizing=false;h.classList.remove('active');document.body.style.cursor='';document.body.style.userSelect='';} });
         }
 
         // ===== RESET =====
         function resetCase() {
-            if (state.diagnoses.length + state.tests.length + state.management.length > 0) {
-                if (!confirm('Are you sure you want to reset? All your entries will be cleared.')) return;
-            }
-
-            state.pdfDoc = null;
-            state.currentPage = 1;
-            state.zoom = 1.0;
-            state.pdfText = '';
-            state.diagnoses = [];
-            state.tests = [];
-            state.management = [];
-            state.currentPhase = 0;
-            state.answerKey = null;
-            state.lastReasoning = null;
-            state.nextId = 1;
-
-            document.getElementById('pdfToolbar').style.display = 'none';
-            document.getElementById('pdfPlaceholder').style.display = 'flex';
-            document.getElementById('pdfCanvasContainer').style.display = 'none';
-            document.getElementById('pdfCanvasContainer').innerHTML = '';
-            document.getElementById('zoomLevel').textContent = '100%';
-
-            document.getElementById('hpiNotes').value = '';
-            document.getElementById('examNotes').value = '';
-            document.getElementById('generalNotes').value = '';
-            document.getElementById('answerDiagnosis').value = '';
-            document.getElementById('answerTests').value = '';
-            document.getElementById('answerTreatments').value = '';
-            document.getElementById('answerDifferentials').value = '';
-            document.getElementById('scoreResults').style.display = 'none';
-            document.getElementById('scoreResults').innerHTML = '';
-            document.getElementById('noScoreYet').style.display = 'block';
-            document.getElementById('pdfInput').value = '';
-
-            setPhase(0);
-            renderDiagnoses();
-            renderTests();
-            renderManagement();
-
-            document.querySelectorAll('.workspace-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+            if (state.diagnoses.length+state.tests.length+state.management.length > 0 && !confirm('Reset everything?')) return;
+            state.pdfDoc=null; state.currentPage=1; state.zoom=1; state.pdfText='';
+            state.diagnoses=[]; state.tests=[]; state.management=[];
+            state.currentPhase=0; state.answerKey=null; state.lastReasoning=null; state.nextId=1;
+            document.getElementById('pdfToolbar').style.display='none';
+            document.getElementById('pdfPlaceholder').style.display='flex';
+            document.getElementById('pdfCanvasContainer').style.display='none';
+            document.getElementById('pdfCanvasContainer').innerHTML='';
+            document.getElementById('zoomLevel').textContent='100%';
+            ['hpiNotes','examNotes','generalNotes','answerDiagnosis','answerTests','answerTreatments','answerDifferentials'].forEach(id=>document.getElementById(id).value='');
+            document.getElementById('scoreResults').style.display='none';
+            document.getElementById('noScoreYet').style.display='block';
+            document.getElementById('pdfInput').value='';
+            setPhase(0); renderDiagnoses(); renderTests(); renderManagement();
+            document.querySelectorAll('.workspace-tab').forEach(t=>t.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
             document.querySelector('.workspace-tab').classList.add('active');
             document.getElementById('tab-workup').classList.add('active');
-
-            showToast('Case reset!', 'info');
+            showToast('Reset!','info');
         }
 
-        // ===== UTILITIES =====
-        function escapeHtml(str) {
-            const div = document.createElement('div');
-            div.textContent = str;
-            return div.innerHTML;
-        }
-
-        function createEmptyState(icon, message) {
-            const li = document.createElement('li');
-            li.className = 'empty-state';
-            li.innerHTML = `<div class="empty-icon">${icon}</div><p>${message}</p>`;
-            return li;
-        }
-
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast toast-${type}`;
-            toast.textContent = message;
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(100%)';
-                toast.style.transition = 'all 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }, 4000);
+        // ===== UTILS =====
+        function esc(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+        function createEmptyState(icon,msg) { const li=document.createElement('li'); li.className='empty-state'; li.innerHTML=`<div class="empty-icon">${icon}</div><p>${msg}</p>`; return li; }
+        function showToast(msg,type='info') {
+            const c=document.getElementById('toastContainer'), t=document.createElement('div');
+            t.className=`toast toast-${type}`; t.textContent=msg; c.appendChild(t);
+            setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(100%)';t.style.transition='all 0.3s';setTimeout(()=>t.remove(),300);},5000);
         }
     </script>
 </body>
