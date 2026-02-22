@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CaseDx – Medical Case Simulator</title>
+    <!-- PDF.js text layer CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf_viewer.min.css">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
@@ -43,9 +45,45 @@
         .pdf-toolbar-group { display: flex; align-items: center; gap: 6px; }
         .pdf-toolbar .btn { color: white; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 4px 8px; font-size: 0.8rem; }
         .pdf-toolbar .btn:hover { background: rgba(255,255,255,0.2); }
-        .pdf-content { flex: 1; overflow: auto; display: flex; align-items: center; justify-content: center; }
+        .pdf-content { flex: 1; overflow: auto; display: flex; align-items: flex-start; justify-content: center; }
         .pdf-canvas-container { display: flex; flex-direction: column; align-items: center; padding: 10px; gap: 10px; }
-        .pdf-canvas-container canvas { box-shadow: var(--shadow-lg); max-width: 100%; }
+
+        /* PDF page wrapper for text selection */
+        .pdf-page-wrapper {
+            position: relative;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 10px;
+        }
+        .pdf-page-wrapper canvas {
+            display: block;
+        }
+        /* Text layer for selection */
+        .pdf-page-wrapper .textLayer {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            opacity: 0.25;
+            line-height: 1.0;
+        }
+        .pdf-page-wrapper .textLayer > span {
+            color: transparent;
+            position: absolute;
+            white-space: pre;
+            transform-origin: 0% 0%;
+        }
+        .pdf-page-wrapper .textLayer ::selection {
+            background: rgba(37, 99, 235, 0.4);
+        }
+        .pdf-page-wrapper .textLayer .highlight {
+            margin: -1px;
+            padding: 1px;
+            background-color: rgba(255, 255, 0, 0.4);
+            border-radius: 4px;
+        }
+
         .pdf-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; color: var(--gray-400); text-align: center; padding: 40px; }
         .pdf-placeholder .upload-icon { font-size: 4rem; }
         .pdf-placeholder h3 { color: var(--gray-600); }
@@ -180,9 +218,6 @@
         .info-box { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 10px 12px; font-size: 0.78rem; color: var(--gray-500); margin-top: 8px; }
         .info-box a { color: var(--primary); font-weight: 600; }
         .info-box.warning { background: #fffbeb; border-color: #fbbf24; }
-
-        /* Answer key visual cards */
-        .answer-key-display { margin-top: 16px; }
         .ak-card { border: 1.5px solid var(--gray-200); border-radius: var(--radius-lg); margin-bottom: 12px; overflow: hidden; }
         .ak-card-header { padding: 10px 14px; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; }
         .ak-card-body { padding: 10px 14px; }
@@ -193,8 +228,6 @@
         .ak-dx-value { font-size: 1.05rem; font-weight: 700; color: var(--gray-800); padding: 4px 0; }
         .ak-list { list-style: none; padding: 0; }
         .ak-list li { padding: 6px 10px; margin: 3px 0; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius); font-size: 0.85rem; display: flex; align-items: center; gap: 8px; }
-        .ak-list li .ak-bullet { flex-shrink: 0; }
-        .ak-list-card .ak-card-header { background: var(--gray-50); color: var(--gray-700); }
         .ak-diff-card { border-color: #8b5cf6; }
         .ak-diff-card .ak-card-header { background: #ede9fe; color: #7c3aed; }
         .ak-lab-card { border-color: #7c3aed; }
@@ -204,16 +237,6 @@
         .ak-tx-card { border-color: var(--success); }
         .ak-tx-card .ak-card-header { background: var(--success-light); color: var(--success); }
         .ak-empty { color: var(--gray-400); font-style: italic; font-size: 0.85rem; padding: 8px 0; }
-        .ak-edit-hint { font-size: 0.75rem; color: var(--gray-400); margin-top: 4px; }
-
-        /* Inline edit for answer key items */
-        .ak-editable { position: relative; }
-        .ak-edit-btn { position: absolute; top: 6px; right: 6px; font-size: 0.7rem; padding: 2px 6px; }
-        .ak-edit-input { width: 100%; padding: 6px 10px; border: 1.5px solid var(--primary); border-radius: var(--radius); font-size: 0.85rem; margin-top: 6px; }
-        .ak-add-row { display: flex; gap: 6px; margin-top: 6px; }
-        .ak-add-row input { flex: 1; padding: 6px 10px; border: 1.5px solid var(--gray-300); border-radius: var(--radius); font-size: 0.83rem; }
-        .ak-add-row input:focus { border-color: var(--primary); outline: none; }
-
         .dx-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
         .dx-compare-card { border-radius: var(--radius); padding: 14px; text-align: center; }
         .dx-compare-card.clinical { background: var(--warning-light); border: 1.5px solid var(--warning); }
@@ -256,143 +279,152 @@
                     <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><h3>🩻 Exam</h3><span class="collapse-icon">▼</span></div><div class="section-body"><textarea class="notes-textarea" id="examNotes" placeholder="Findings..."></textarea></div></div>
                     <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><h3>📝 Notes</h3><span class="collapse-icon">▼</span></div><div class="section-body"><textarea class="notes-textarea" id="generalNotes" placeholder="Thoughts..."></textarea></div></div>
                 </div>
-                <div class="tab-pane" id="tab-diagnoses">
-                    <div class="helper-text">Rank differentials. Drag to reorder.</div>
-                    <div class="input-group"><input type="text" id="dxInput" placeholder="Enter a diagnosis..." onkeydown="if(event.key==='Enter')addDiagnosis()"><button class="btn btn-outline btn-sm" onclick="addDiagnosis()">+ Add</button></div>
-                    <ul class="dx-list" id="dxList"></ul>
-                </div>
-                <div class="tab-pane" id="tab-testing">
-                    <div class="helper-text">Order diagnostic tests.</div>
-                    <div class="input-group" style="flex-wrap:wrap;"><input type="text" id="testInput" placeholder="e.g., CBC, CT chest..." onkeydown="if(event.key==='Enter')addTest()" style="flex:1;min-width:200px;"><select class="select-small" id="testCategory"><option value="lab">🧪 Lab</option><option value="imaging">🩻 Imaging</option><option value="procedure">🔬 Procedure</option><option value="other">📋 Other</option></select><button class="btn btn-outline btn-sm" onclick="addTest()">+ Add</button></div>
-                    <div style="margin-bottom:14px;"><input type="text" id="testRationale" placeholder="Rationale (optional)" style="width:100%;padding:6px 12px;border:1.5px solid var(--gray-300);border-radius:var(--radius);font-size:0.83rem;"></div>
-                    <ul class="item-list" id="testList"></ul>
-                </div>
-                <div class="tab-pane" id="tab-management">
-                    <div class="helper-text">Treatments / interventions.</div>
-                    <div class="input-group" style="flex-wrap:wrap;"><input type="text" id="mgmtInput" placeholder="e.g., IV NS 1L..." onkeydown="if(event.key==='Enter')addMgmt()" style="flex:1;min-width:200px;"><select class="select-small" id="mgmtCategory"><option value="medication">💊 Medication</option><option value="intervention">🏥 Intervention</option><option value="consult">📞 Consult</option><option value="other">📋 Other</option></select><button class="btn btn-outline btn-sm" onclick="addMgmt()">+ Add</button></div>
-                    <div style="margin-bottom:14px;"><input type="text" id="mgmtRationale" placeholder="Rationale (optional)" style="width:100%;padding:6px 12px;border:1.5px solid var(--gray-300);border-radius:var(--radius);font-size:0.83rem;"></div>
-                    <ul class="item-list" id="mgmtList"></ul>
-                </div>
-                <div class="tab-pane" id="tab-scoring">
-                    <div id="answerKeyDisplay"></div>
-                    <div id="scoreResults" style="display:none;"></div>
-                </div>
+                <div class="tab-pane" id="tab-diagnoses"><div class="helper-text">Rank differentials. Drag to reorder.</div><div class="input-group"><input type="text" id="dxInput" placeholder="Enter a diagnosis..." onkeydown="if(event.key==='Enter')addDx()"><button class="btn btn-outline btn-sm" onclick="addDx()">+ Add</button></div><ul class="dx-list" id="dxList"></ul></div>
+                <div class="tab-pane" id="tab-testing"><div class="helper-text">Order diagnostic tests.</div><div class="input-group" style="flex-wrap:wrap;"><input type="text" id="testInput" placeholder="e.g., CBC, CT chest..." onkeydown="if(event.key==='Enter')addTest()" style="flex:1;min-width:200px;"><select class="select-small" id="testCat"><option value="lab">🧪 Lab</option><option value="imaging">🩻 Imaging</option><option value="procedure">🔬 Procedure</option><option value="other">📋 Other</option></select><button class="btn btn-outline btn-sm" onclick="addTest()">+ Add</button></div><div style="margin-bottom:14px;"><input type="text" id="testRat" placeholder="Rationale (optional)" style="width:100%;padding:6px 12px;border:1.5px solid var(--gray-300);border-radius:var(--radius);font-size:0.83rem;"></div><ul class="item-list" id="testList"></ul></div>
+                <div class="tab-pane" id="tab-management"><div class="helper-text">Treatments / interventions.</div><div class="input-group" style="flex-wrap:wrap;"><input type="text" id="mgmtInput" placeholder="e.g., IV NS 1L..." onkeydown="if(event.key==='Enter')addMgmt()" style="flex:1;min-width:200px;"><select class="select-small" id="mgmtCat"><option value="medication">💊 Medication</option><option value="intervention">🏥 Intervention</option><option value="consult">📞 Consult</option><option value="other">📋 Other</option></select><button class="btn btn-outline btn-sm" onclick="addMgmt()">+ Add</button></div><div style="margin-bottom:14px;"><input type="text" id="mgmtRat" placeholder="Rationale (optional)" style="width:100%;padding:6px 12px;border:1.5px solid var(--gray-300);border-radius:var(--radius);font-size:0.83rem;"></div><ul class="item-list" id="mgmtList"></ul></div>
+                <div class="tab-pane" id="tab-scoring"><div id="answerKeyDisplay"></div><div id="scoreResults" style="display:none;"></div></div>
             </div>
         </div>
     </div>
 
-    <div class="modal-overlay" id="settingsModal">
-        <div class="modal">
-            <div class="modal-header"><h2>⚙ Settings</h2><button class="btn btn-ghost" onclick="closeSettings()">✕</button></div>
-            <div class="modal-body">
-                <div class="settings-group"><h4>LLM Provider</h4><div class="radio-group">
-                    <label class="radio-option"><input type="radio" name="llmProvider" value="none"><div><div class="option-label">None (Manual)</div></div></label>
-                    <label class="radio-option"><input type="radio" name="llmProvider" value="openrouter" checked><div><div class="option-label">OpenRouter ⭐</div><div class="option-desc">Free models.</div></div></label>
-                    <label class="radio-option"><input type="radio" name="llmProvider" value="gemini"><div><div class="option-label">Google Gemini</div></div></label>
-                    <label class="radio-option"><input type="radio" name="llmProvider" value="openai"><div><div class="option-label">OpenAI</div></div></label>
-                    <label class="radio-option"><input type="radio" name="llmProvider" value="ollama"><div><div class="option-label">Ollama (Local)</div></div></label>
-                </div></div>
-                <div class="settings-group" id="apiKeyGroup"><h4>API Key</h4><div class="form-group"><div class="key-input-wrapper"><input type="password" id="apiKeyInput" placeholder="Paste API key..."><button class="key-toggle" onclick="toggleKeyVis()">👁</button></div><div id="apiKeyHelp" style="font-size:0.78rem;color:var(--primary);margin-top:4px;"></div></div></div>
-                <div class="settings-group" id="ollamaGroup" style="display:none;"><h4>Ollama</h4><div class="form-group"><label>URL</label><input type="text" id="ollamaUrl" value="http://localhost:11434"></div><div class="form-group"><label>Model</label><input type="text" id="ollamaModel" value="llama3.2"></div></div>
-                <div class="settings-group" id="openrouterGroup"><h4>OpenRouter Model</h4><div class="form-group"><input type="text" id="openrouterModelInput" placeholder="e.g., meta-llama/llama-3.1-8b-instruct" style="width:100%;padding:8px;border:1.5px solid var(--gray-300);border-radius:var(--radius);font-size:0.85rem;"><div style="font-size:0.75rem;color:var(--gray-400);margin-top:4px;">Browse: <a href="https://openrouter.ai/models" target="_blank" style="color:var(--primary)">openrouter.ai/models</a></div></div><div class="info-box warning">⚠️ Free models require: <a href="https://openrouter.ai/settings/privacy" target="_blank">openrouter.ai/settings/privacy</a> → Allow training data</div></div>
-                <div class="settings-group"><h4>Test</h4><button class="btn btn-warning btn-sm" onclick="testConn()" id="testBtn" style="width:100%;margin-bottom:8px;">🔌 Test Connection</button><div class="debug-log" id="debugLog">Ready.\n</div></div>
-            </div>
-            <div class="modal-footer"><button class="btn btn-ghost" onclick="closeSettings()">Cancel</button><button class="btn btn-success" onclick="saveSettings()">💾 Save</button></div>
-        </div>
-    </div>
+    <div class="modal-overlay" id="settingsModal"><div class="modal"><div class="modal-header"><h2>⚙ Settings</h2><button class="btn btn-ghost" onclick="closeSettings()">✕</button></div><div class="modal-body">
+        <div class="settings-group"><h4>LLM Provider</h4><div class="radio-group">
+            <label class="radio-option"><input type="radio" name="llmProvider" value="none"><div><div class="option-label">None (Manual)</div></div></label>
+            <label class="radio-option"><input type="radio" name="llmProvider" value="openrouter" checked><div><div class="option-label">OpenRouter ⭐</div></div></label>
+            <label class="radio-option"><input type="radio" name="llmProvider" value="gemini"><div><div class="option-label">Google Gemini</div></div></label>
+            <label class="radio-option"><input type="radio" name="llmProvider" value="openai"><div><div class="option-label">OpenAI</div></div></label>
+            <label class="radio-option"><input type="radio" name="llmProvider" value="ollama"><div><div class="option-label">Ollama (Local)</div></div></label>
+        </div></div>
+        <div class="settings-group" id="apiKeyGroup"><h4>API Key</h4><div class="form-group"><div class="key-input-wrapper"><input type="password" id="apiKeyInput" placeholder="Paste API key..."><button class="key-toggle" onclick="toggleKeyVis()">👁</button></div><div id="apiKeyHelp" style="font-size:0.78rem;color:var(--primary);margin-top:4px;"></div></div></div>
+        <div class="settings-group" id="ollamaGroup" style="display:none;"><h4>Ollama</h4><div class="form-group"><label>URL</label><input type="text" id="ollamaUrl" value="http://localhost:11434"></div><div class="form-group"><label>Model</label><input type="text" id="ollamaModel" value="llama3.2"></div></div>
+        <div class="settings-group" id="openrouterGroup"><h4>OpenRouter</h4><div class="form-group"><input type="text" id="orModelInput" placeholder="meta-llama/llama-3.1-8b-instruct" style="width:100%;padding:8px;border:1.5px solid var(--gray-300);border-radius:var(--radius);font-size:0.85rem;"><div class="info-box warning" style="margin-top:6px;">⚠️ Free models need: <a href="https://openrouter.ai/settings/privacy" target="_blank">privacy settings</a> → Allow training</div></div></div>
+        <div class="settings-group"><h4>Test</h4><button class="btn btn-warning btn-sm" onclick="testConn()" id="testBtn" style="width:100%;margin-bottom:8px;">🔌 Test</button><div class="debug-log" id="debugLog">Ready.\n</div></div>
+    </div><div class="modal-footer"><button class="btn btn-ghost" onclick="closeSettings()">Cancel</button><button class="btn btn-success" onclick="saveSettings()">💾 Save</button></div></div></div>
     <div class="toast-container" id="toastContainer"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
-    const S = {
-        pdfDoc:null, pg:1, zoom:1, pdfText:'', parsed:null,
-        dx:[], tests:[], mgmt:[], phase:0,
-        answer:null, // {finalDx, clinicalDx, differentials[], labs[], diagnosticTests[], treatments[]}
-        llm:'openrouter', key:'', ollamaUrl:'http://localhost:11434', ollamaModel:'llama3.2',
-        orModel:'meta-llama/llama-3.1-8b-instruct', nid:1
-    };
-
-    function dlog(m,t='info'){const e=document.getElementById('debugLog');if(e){e.innerHTML+=`<span class="log-${t}">[${new Date().toLocaleTimeString()}] ${m}</span>\n`;e.scrollTop=e.scrollHeight;}console.log(m);}
+    const S={pdfDoc:null,pg:1,zoom:1,pdfText:'',parsed:null,dx:[],tests:[],mgmt:[],phase:0,answer:null,llm:'openrouter',key:'',ollamaUrl:'http://localhost:11434',ollamaModel:'llama3.2',orModel:'meta-llama/llama-3.1-8b-instruct',nid:1};
+    function dlog(m,t='info'){const e=document.getElementById('debugLog');if(e){e.innerHTML+=`<span class="log-${t}">[${new Date().toLocaleTimeString()}] ${m}</span>\n`;e.scrollTop=e.scrollHeight;}}
 
     document.addEventListener('DOMContentLoaded',()=>{
         pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
         loadSettings();setupTabs();setupDD();setupResize();updateStatus();
         if(!S.key&&S.llm!=='none'&&S.llm!=='ollama')document.getElementById('setupBanner').style.display='flex';
-        renderDx();renderTests();renderMgmt();renderAnswerKey();
+        renderDxList();renderTestList();renderMgmtList();renderAK();
     });
     function dismissBanner(){document.getElementById('setupBanner').style.display='none';}
 
-    // PDF
+    // ===== PDF WITH TEXT LAYER =====
     document.getElementById('pdfInput').addEventListener('change',async e=>{if(e.target.files[0])await loadPDF(e.target.files[0]);});
-    async function loadPDF(f){try{const b=await f.arrayBuffer();S.pdfDoc=await pdfjsLib.getDocument(new Uint8Array(b)).promise;document.getElementById('pdfToolbar').style.display='flex';document.getElementById('pdfPlaceholder').style.display='none';document.getElementById('pdfCanvasContainer').style.display='flex';document.getElementById('pageCount').textContent=S.pdfDoc.numPages;S.pdfText='';for(let i=1;i<=S.pdfDoc.numPages;i++){const p=await S.pdfDoc.getPage(i);const c=await p.getTextContent();S.pdfText+=c.items.map(x=>x.str).join(' ')+'\n\n';}S.pg=1;renderPg(1);S.parsed=parseSections(S.pdfText);renderParsedPreview();toast(`PDF loaded — ${S.pdfDoc.numPages} pages`,'success');}catch(e){toast('PDF error: '+e.message,'error');}}
-    async function renderPg(n){if(!S.pdfDoc)return;const p=await S.pdfDoc.getPage(n);const v=p.getViewport({scale:S.zoom*1.5});const c=document.getElementById('pdfCanvasContainer');c.innerHTML='';const cv=document.createElement('canvas');cv.width=v.width;cv.height=v.height;await p.render({canvasContext:cv.getContext('2d'),viewport:v}).promise;c.appendChild(cv);document.getElementById('pageNum').textContent=n;}
-    function prevPage(){if(S.pg>1)renderPg(--S.pg);}function nextPage(){if(S.pdfDoc&&S.pg<S.pdfDoc.numPages)renderPg(++S.pg);}
+    async function loadPDF(f){
+        try{
+            const b=await f.arrayBuffer();
+            S.pdfDoc=await pdfjsLib.getDocument(new Uint8Array(b)).promise;
+            document.getElementById('pdfToolbar').style.display='flex';
+            document.getElementById('pdfPlaceholder').style.display='none';
+            document.getElementById('pdfCanvasContainer').style.display='flex';
+            document.getElementById('pageCount').textContent=S.pdfDoc.numPages;
+            S.pdfText='';
+            for(let i=1;i<=S.pdfDoc.numPages;i++){const p=await S.pdfDoc.getPage(i);const c=await p.getTextContent();S.pdfText+=c.items.map(x=>x.str).join(' ')+'\n\n';}
+            S.pg=1;renderPg(1);
+            S.parsed=parseSections(S.pdfText);renderParsedPreview();
+            toast(`PDF loaded — ${S.pdfDoc.numPages} pages`,'success');
+        }catch(e){toast('PDF error: '+e.message,'error');}
+    }
+
+    async function renderPg(n){
+        if(!S.pdfDoc)return;
+        const page=await S.pdfDoc.getPage(n);
+        const scale=S.zoom*1.5;
+        const viewport=page.getViewport({scale});
+        const container=document.getElementById('pdfCanvasContainer');
+        container.innerHTML='';
+
+        // Create wrapper div
+        const wrapper=document.createElement('div');
+        wrapper.className='pdf-page-wrapper';
+        wrapper.style.width=viewport.width+'px';
+        wrapper.style.height=viewport.height+'px';
+
+        // Canvas
+        const canvas=document.createElement('canvas');
+        canvas.width=viewport.width;
+        canvas.height=viewport.height;
+        const ctx=canvas.getContext('2d');
+        await page.render({canvasContext:ctx,viewport}).promise;
+        wrapper.appendChild(canvas);
+
+        // Text layer for selection
+        const textContent=await page.getTextContent();
+        const textLayerDiv=document.createElement('div');
+        textLayerDiv.className='textLayer';
+        textLayerDiv.style.width=viewport.width+'px';
+        textLayerDiv.style.height=viewport.height+'px';
+        wrapper.appendChild(textLayerDiv);
+
+        // Render text spans
+        pdfjsLib.renderTextLayer({
+            textContent:textContent,
+            container:textLayerDiv,
+            viewport:viewport,
+            textDivs:[]
+        });
+
+        container.appendChild(wrapper);
+        document.getElementById('pageNum').textContent=n;
+    }
+
+    function prevPage(){if(S.pg>1){S.pg--;renderPg(S.pg);}}
+    function nextPage(){if(S.pdfDoc&&S.pg<S.pdfDoc.numPages){S.pg++;renderPg(S.pg);}}
     function zoomIn(){S.zoom=Math.min(3,S.zoom+0.2);document.getElementById('zoomLevel').textContent=Math.round(S.zoom*100)+'%';renderPg(S.pg);}
     function zoomOut(){S.zoom=Math.max(0.3,S.zoom-0.2);document.getElementById('zoomLevel').textContent=Math.round(S.zoom*100)+'%';renderPg(S.pg);}
     function setupDD(){const p=document.getElementById('pdfPanel');p.addEventListener('dragover',e=>{e.preventDefault();p.classList.add('drop-zone-active');});p.addEventListener('dragleave',()=>p.classList.remove('drop-zone-active'));p.addEventListener('drop',async e=>{e.preventDefault();p.classList.remove('drop-zone-active');const f=e.dataTransfer.files[0];if(f?.type==='application/pdf')await loadPDF(f);else toast('Drop a PDF','error');});}
 
     // ===== PDF SECTION PARSER =====
-    function parseSections(text) {
-        const sec = {clinicalDx:null, finalDx:null, diffDx:null, diffList:[], labData:null, diagTesting:null, mgmtDiscussion:null, full:text};
+    function parseSections(text){
+        const sec={clinicalDx:null,finalDx:null,diffDx:null,diffList:[],labData:null,diagTesting:null,mgmtDisc:null,full:text};
         const targets=[
             {k:'clinicalDx',re:[/Clinical\s+Diagnos[ie]s/i,/Clinical\s+Impression/i]},
             {k:'finalDx',re:[/Final\s+Diagnos[ie]s/i,/Pathological\s+Diagnos[ie]s/i,/Anatomical\s+Diagnos[ie]s/i]},
             {k:'diffDx',re:[/Differential\s+Diagnos[ie]s/i]},
             {k:'labData',re:[/Laboratory\s+Data/i,/Laboratory\s+Results/i]},
             {k:'diagTesting',re:[/Diagnostic\s+Testing/i,/Diagnostic\s+Studies/i,/Imaging\s+Studies/i]},
-            {k:'mgmtDiscussion',re:[/Discussion\s+of\s+Management/i,/Management\s+Discussion/i]}
+            {k:'mgmtDisc',re:[/Discussion\s+of\s+Management/i,/Management\s+Discussion/i]}
         ];
         const bounds=[/Presentation\s+of\s+Case/i,/Hospital\s+Course/i,/Discussion(?!\s+of)/i,/Pathological\s+Discussion/i,/Radiologic/i,/Follow[\s-]?up/i,/References/i,/Physical\s+Exam/i,/History/i];
         const allH=[];
-        for(const t of targets)for(const r of t.re){const m=text.match(r);if(m){allH.push({k:t.k,i:m.index,l:m[0].length,t:m[0]});break;}}
+        for(const t of targets)for(const r of t.re){const m=text.match(r);if(m){allH.push({k:t.k,i:m.index,l:m[0].length});break;}}
         for(const r of bounds){const re=new RegExp(r.source,'gi');let m;while((m=re.exec(text))!==null)allH.push({k:'_',i:m.index,l:m[0].length});}
         allH.sort((a,b)=>a.i-b.i);
-
         for(const h of allH){
             if(h.k==='_')continue;
-            const start=h.i+h.l;
-            const next=allH.find(x=>x.i>h.i);
-            const end=next?next.i:Math.min(start+3000,text.length);
+            const start=h.i+h.l;const next=allH.find(x=>x.i>h.i);const end=next?next.i:Math.min(start+3000,text.length);
             let content=text.substring(start,end).replace(/^[\s:;\-–—]+/,'').trim();
-
             if(h.k==='finalDx'||h.k==='clinicalDx'){
-                // Get the diagnosis text — first meaningful lines
-                const lines=content.split(/\n/).map(l=>l.trim()).filter(l=>l.length>2);
-                const dxLines=[];
-                for(const l of lines){
-                    if(l.length>200)break;
-                    if(/^(Discussion|Hospital|The patient|This case|Dr\.|In this|A )/i.test(l))break;
-                    dxLines.push(l);
-                    if(dxLines.length>=5)break;
-                }
-                sec[h.k]=dxLines.length?dxLines.join('; ').replace(/\s+/g,' '):content.substring(0,300);
-            } else if(h.k==='diffDx'){
-                sec.diffDx=content.substring(0,3000);
-                sec.diffList=extractDiffList(content);
-            } else {
-                sec[h.k]=content.substring(0,2000);
-            }
+                const lines=content.split(/\n/).map(l=>l.trim()).filter(l=>l.length>2);const dxL=[];
+                for(const l of lines){if(l.length>200||/^(Discussion|Hospital|The patient|This case|Dr\.|In this|A )/i.test(l))break;dxL.push(l);if(dxL.length>=5)break;}
+                sec[h.k]=dxL.length?dxL.join('; ').replace(/\s+/g,' '):content.substring(0,300);
+            }else if(h.k==='diffDx'){sec.diffDx=content.substring(0,3000);sec.diffList=extractDiffList(content);
+            }else{sec[h.k]=content.substring(0,2000);}
         }
         return sec;
     }
-
     function extractDiffList(text){
         const dx=[];const lines=text.split(/\n/);
-        for(const line of lines){
-            const t=line.trim();if(!t||t.length<3||t.length>120)continue;
+        for(const line of lines){const t=line.trim();if(!t||t.length<3||t.length>120)continue;
             const num=t.match(/^\d+[\.\)]\s*(.+)/);if(num){dx.push(num[1].trim());continue;}
             const bul=t.match(/^[•\-\*]\s*(.+)/);if(bul){dx.push(bul[1].trim());continue;}
-            if(t.length<=80&&/^[A-Z]/.test(t)&&!/^(The|This|It|In|A|An|However|Although|Because|Dr\.|Figure|Table)/i.test(t)&&!/\b(was|were|is|are|has|had|the patient|showed|revealed)\b/i.test(t)){
-                dx.push(t.replace(/\.$/,''));
-            }
+            if(t.length<=80&&/^[A-Z]/.test(t)&&!/^(The|This|It|In|A|An|However|Although|Because|Dr\.|Figure|Table)/i.test(t)&&!/\b(was|were|is|are|has|had|the patient|showed|revealed)\b/i.test(t))dx.push(t.replace(/\.$/,''));
         }
         return[...new Set(dx.map(d=>d.replace(/\s+/g,' ').trim()))].filter(d=>d.length>2&&d.length<100);
     }
 
     function renderParsedPreview(){
         const c=document.getElementById('parsedSectionsPreview');if(!S.parsed){c.innerHTML='';return;}
-        const secs=[{k:'finalDx',l:'Final Diagnosis',ic:'🎯'},{k:'clinicalDx',l:'Clinical Diagnosis',ic:'🏥'},{k:'diffDx',l:'Differential Diagnosis',ic:'🤔'},{k:'labData',l:'Laboratory Data',ic:'🧪'},{k:'diagTesting',l:'Diagnostic Testing',ic:'🩻'},{k:'mgmtDiscussion',l:'Management',ic:'💊'}];
-        let h='<div class="section-card"><div class="section-header" onclick="toggleSection(this)"><h3>📄 Detected Sections</h3><span class="collapse-icon">▼</span></div><div class="section-body">';
+        const secs=[{k:'finalDx',l:'Final Diagnosis',ic:'🎯'},{k:'clinicalDx',l:'Clinical Diagnosis',ic:'🏥'},{k:'diffDx',l:'Differential Diagnosis',ic:'🤔'},{k:'labData',l:'Laboratory Data',ic:'🧪'},{k:'diagTesting',l:'Diagnostic Testing',ic:'🩻'},{k:'mgmtDisc',l:'Management',ic:'💊'}];
+        // START COLLAPSED by default — don't reveal answers
+        let h='<div class="section-card"><div class="section-header collapsed" onclick="toggleSection(this)"><h3>📄 Detected Sections (contains spoilers)</h3><span class="collapse-icon">▼</span></div><div class="section-body collapsed">';
         for(const s of secs){const f=!!S.parsed[s.k];const pv=f?(typeof S.parsed[s.k]==='string'?S.parsed[s.k]:'').substring(0,120).replace(/\n/g,' '):'Not found';
             h+=`<div class="parsed-section"><div class="parsed-section-header">${s.ic} ${s.l} <span class="${f?'found':'missing'}">${f?'✓':'✗'}</span></div><div class="parsed-section-body">${esc(pv)}${pv.length>=120?'...':''}</div>`;
             if(s.k==='diffDx'&&S.parsed.diffList.length){h+='<ul class="diff-dx-list">';for(const d of S.parsed.diffList)h+=`<li class="diff-dx-item">${esc(d)}</li>`;h+='</ul>';}
@@ -406,287 +438,126 @@
     function setPhase(p){S.phase=p;document.querySelectorAll('.phase-step').forEach((e,i)=>e.className='phase-step'+(i<p?' completed':'')+(i===p?' active':''));document.querySelectorAll('.phase-label').forEach((e,i)=>e.classList.toggle('active',i===p));}
 
     // DX
-    function addDiagnosis(){const i=document.getElementById('dxInput'),t=i.value.trim();if(!t)return;S.dx.push({id:S.nid++,text:t,out:false});i.value='';i.focus();renderDx();}
-    function rmDx(id){S.dx=S.dx.filter(d=>d.id!==id);renderDx();}
-    function toggleOut(id){const d=S.dx.find(x=>x.id===id);if(d)d.out=!d.out;renderDx();}
-    function moveDx(id,dir){const i=S.dx.findIndex(d=>d.id===id),j=i+dir;if(i<0||j<0||j>=S.dx.length)return;[S.dx[i],S.dx[j]]=[S.dx[j],S.dx[i]];renderDx();}
-    function renderDx(){const l=document.getElementById('dxList');badges();if(!S.dx.length){l.innerHTML='';l.appendChild(mkE('🎯','No diagnoses yet.'));return;}l.innerHTML='';S.dx.forEach((d,i)=>{const li=document.createElement('li');li.className='dx-item'+(d.out?' dx-ruled-out':'');li.draggable=true;li.dataset.id=d.id;li.addEventListener('dragstart',dDS);li.addEventListener('dragover',dDO);li.addEventListener('drop',dDD);li.addEventListener('dragend',dDE);li.innerHTML=`<span class="dx-drag-handle">⠿</span><span class="dx-rank ${i===0&&!d.out?'top':''}">${i+1}</span><span class="dx-text">${esc(d.text)}</span>${d.out?'<span class="answer-tag incorrect">Out</span>':''}<div class="dx-actions"><button class="btn btn-ghost btn-icon" onclick="moveDx(${d.id},-1)">▲</button><button class="btn btn-ghost btn-icon" onclick="moveDx(${d.id},1)">▼</button><button class="btn btn-ghost btn-icon" onclick="toggleOut(${d.id})">${d.out?'♻':'🚫'}</button><button class="btn btn-ghost btn-icon" onclick="rmDx(${d.id})">🗑</button></div>`;l.appendChild(li);});}
-    let did=null;function dDS(e){did=+e.currentTarget.dataset.id;e.currentTarget.classList.add('dragging');}function dDO(e){e.preventDefault();e.currentTarget.classList.add('drag-over');}function dDD(e){e.preventDefault();const t=+e.currentTarget.dataset.id;if(did==null||did===t)return;const fi=S.dx.findIndex(d=>d.id===did),ti=S.dx.findIndex(d=>d.id===t);const[m]=S.dx.splice(fi,1);S.dx.splice(ti,0,m);renderDx();}function dDE(){did=null;document.querySelectorAll('.dx-item').forEach(e=>e.classList.remove('dragging','drag-over'));}
+    function addDx(){const i=document.getElementById('dxInput'),t=i.value.trim();if(!t)return;S.dx.push({id:S.nid++,text:t,out:false});i.value='';i.focus();renderDxList();}
+    function rmDx(id){S.dx=S.dx.filter(d=>d.id!==id);renderDxList();}
+    function toggleOut(id){const d=S.dx.find(x=>x.id===id);if(d)d.out=!d.out;renderDxList();}
+    function moveDx(id,dir){const i=S.dx.findIndex(d=>d.id===id),j=i+dir;if(i<0||j<0||j>=S.dx.length)return;[S.dx[i],S.dx[j]]=[S.dx[j],S.dx[i]];renderDxList();}
+    function renderDxList(){const l=document.getElementById('dxList');badges();if(!S.dx.length){l.innerHTML='';l.appendChild(mkE('🎯','No diagnoses yet.'));return;}l.innerHTML='';S.dx.forEach((d,i)=>{const li=document.createElement('li');li.className='dx-item'+(d.out?' dx-ruled-out':'');li.draggable=true;li.dataset.id=d.id;li.addEventListener('dragstart',dDS);li.addEventListener('dragover',dDO);li.addEventListener('drop',dDD);li.addEventListener('dragend',dDE);li.innerHTML=`<span class="dx-drag-handle">⠿</span><span class="dx-rank ${i===0&&!d.out?'top':''}">${i+1}</span><span class="dx-text">${esc(d.text)}</span>${d.out?'<span class="answer-tag incorrect">Out</span>':''}<div class="dx-actions"><button class="btn btn-ghost btn-icon" onclick="moveDx(${d.id},-1)">▲</button><button class="btn btn-ghost btn-icon" onclick="moveDx(${d.id},1)">▼</button><button class="btn btn-ghost btn-icon" onclick="toggleOut(${d.id})">${d.out?'♻':'🚫'}</button><button class="btn btn-ghost btn-icon" onclick="rmDx(${d.id})">🗑</button></div>`;l.appendChild(li);});}
+    let did=null;function dDS(e){did=+e.currentTarget.dataset.id;e.currentTarget.classList.add('dragging');}function dDO(e){e.preventDefault();e.currentTarget.classList.add('drag-over');}function dDD(e){e.preventDefault();const t=+e.currentTarget.dataset.id;if(did==null||did===t)return;const fi=S.dx.findIndex(d=>d.id===did),ti=S.dx.findIndex(d=>d.id===t);const[m]=S.dx.splice(fi,1);S.dx.splice(ti,0,m);renderDxList();}function dDE(){did=null;document.querySelectorAll('.dx-item').forEach(e=>e.classList.remove('dragging','drag-over'));}
 
     // TESTS
-    function addTest(){const i=document.getElementById('testInput'),n=i.value.trim();if(!n)return;S.tests.push({id:S.nid++,name:n,cat:document.getElementById('testCategory').value,rat:document.getElementById('testRationale').value.trim()});i.value='';document.getElementById('testRationale').value='';i.focus();renderTests();}
-    function rmTest(id){S.tests=S.tests.filter(t=>t.id!==id);renderTests();}
-    function renderTests(){const l=document.getElementById('testList');badges();const ic={lab:'🧪',imaging:'🩻',procedure:'🔬',other:'📋'};if(!S.tests.length){l.innerHTML='';l.appendChild(mkE('🧪','No tests.'));return;}l.innerHTML='';S.tests.forEach(t=>{const li=document.createElement('li');li.className='item-entry';li.innerHTML=`<span class="item-icon">${ic[t.cat]||'📋'}</span><div class="item-content"><div class="item-name">${esc(t.name)}</div>${t.rat?`<div class="item-rationale">${esc(t.rat)}</div>`:''}</div><span class="item-category cat-${t.cat}">${t.cat}</span><button class="btn btn-ghost btn-icon" onclick="rmTest(${t.id})">🗑</button>`;l.appendChild(li);});}
+    function addTest(){const i=document.getElementById('testInput'),n=i.value.trim();if(!n)return;S.tests.push({id:S.nid++,name:n,cat:document.getElementById('testCat').value,rat:document.getElementById('testRat').value.trim()});i.value='';document.getElementById('testRat').value='';i.focus();renderTestList();}
+    function rmTest(id){S.tests=S.tests.filter(t=>t.id!==id);renderTestList();}
+    function renderTestList(){const l=document.getElementById('testList');badges();const ic={lab:'🧪',imaging:'🩻',procedure:'🔬',other:'📋'};if(!S.tests.length){l.innerHTML='';l.appendChild(mkE('🧪','No tests.'));return;}l.innerHTML='';S.tests.forEach(t=>{const li=document.createElement('li');li.className='item-entry';li.innerHTML=`<span class="item-icon">${ic[t.cat]||'📋'}</span><div class="item-content"><div class="item-name">${esc(t.name)}</div>${t.rat?`<div class="item-rationale">${esc(t.rat)}</div>`:''}</div><span class="item-category cat-${t.cat}">${t.cat}</span><button class="btn btn-ghost btn-icon" onclick="rmTest(${t.id})">🗑</button>`;l.appendChild(li);});}
 
     // MGMT
-    function addMgmt(){const i=document.getElementById('mgmtInput'),n=i.value.trim();if(!n)return;S.mgmt.push({id:S.nid++,name:n,cat:document.getElementById('mgmtCategory').value,rat:document.getElementById('mgmtRationale').value.trim()});i.value='';document.getElementById('mgmtRationale').value='';i.focus();renderMgmt();}
-    function rmMgmt(id){S.mgmt=S.mgmt.filter(m=>m.id!==id);renderMgmt();}
-    function renderMgmt(){const l=document.getElementById('mgmtList');badges();const ic={medication:'💊',intervention:'🏥',consult:'📞',other:'📋'};if(!S.mgmt.length){l.innerHTML='';l.appendChild(mkE('💊','No management.'));return;}l.innerHTML='';S.mgmt.forEach(m=>{const li=document.createElement('li');li.className='item-entry';li.innerHTML=`<span class="item-icon">${ic[m.cat]||'📋'}</span><div class="item-content"><div class="item-name">${esc(m.name)}</div>${m.rat?`<div class="item-rationale">${esc(m.rat)}</div>`:''}</div><span class="item-category cat-${m.cat}">${m.cat}</span><button class="btn btn-ghost btn-icon" onclick="rmMgmt(${m.id})">🗑</button>`;l.appendChild(li);});}
+    function addMgmt(){const i=document.getElementById('mgmtInput'),n=i.value.trim();if(!n)return;S.mgmt.push({id:S.nid++,name:n,cat:document.getElementById('mgmtCat').value,rat:document.getElementById('mgmtRat').value.trim()});i.value='';document.getElementById('mgmtRat').value='';i.focus();renderMgmtList();}
+    function rmMgmt(id){S.mgmt=S.mgmt.filter(m=>m.id!==id);renderMgmtList();}
+    function renderMgmtList(){const l=document.getElementById('mgmtList');badges();const ic={medication:'💊',intervention:'🏥',consult:'📞',other:'📋'};if(!S.mgmt.length){l.innerHTML='';l.appendChild(mkE('💊','No management.'));return;}l.innerHTML='';S.mgmt.forEach(m=>{const li=document.createElement('li');li.className='item-entry';li.innerHTML=`<span class="item-icon">${ic[m.cat]||'📋'}</span><div class="item-content"><div class="item-name">${esc(m.name)}</div>${m.rat?`<div class="item-rationale">${esc(m.rat)}</div>`:''}</div><span class="item-category cat-${m.cat}">${m.cat}</span><button class="btn btn-ghost btn-icon" onclick="rmMgmt(${m.id})">🗑</button>`;l.appendChild(li);});}
     function badges(){document.getElementById('dxCount').textContent=S.dx.length;document.getElementById('testCount').textContent=S.tests.length;document.getElementById('mgmtCount').textContent=S.mgmt.length;document.getElementById('workupCount').textContent=S.dx.length+S.tests.length+S.mgmt.length;}
 
-    // ===== EXTRACTION — PARSER-FIRST, LLM AS SUPPLEMENT =====
-    async function extractCase() {
+    // ===== EXTRACTION =====
+    async function extractCase(){
         if(!S.pdfText.trim()){toast('Load a PDF first.','error');return;}
-        const btn=document.getElementById('extractBtn'),orig=btn.innerHTML;
-        btn.innerHTML='<span class="spinner"></span> Extracting...';btn.disabled=true;
-
-        try {
-            if(!S.parsed) S.parsed=parseSections(S.pdfText);
-
-            // Start with what the parser found directly
-            const answer = {
-                finalDx: S.parsed.finalDx || '',
-                clinicalDx: S.parsed.clinicalDx || '',
-                differentials: S.parsed.diffList.length ? [...S.parsed.diffList] : [],
-                labs: [],
-                diagnosticTests: [],
-                treatments: []
-            };
-
-            // Use LLM to extract structured lists from the raw section text
-            if (S.llm !== 'none' && (S.key || S.llm === 'ollama')) {
-                try {
-                    const llmData = await extractWithLLM(S.parsed);
-                    // Only use LLM data for lists, NOT for diagnoses (parser is more reliable)
-                    if (llmData.labs && llmData.labs.length) answer.labs = llmData.labs;
-                    if (llmData.diagnosticTests && llmData.diagnosticTests.length) answer.diagnosticTests = llmData.diagnosticTests;
-                    if (llmData.treatments && llmData.treatments.length) answer.treatments = llmData.treatments;
-                    // Only use LLM differentials if parser found none
-                    if (!answer.differentials.length && llmData.differentials && llmData.differentials.length) answer.differentials = llmData.differentials;
-                    // Only use LLM diagnosis if parser found none
-                    if (!answer.finalDx && llmData.finalDx) answer.finalDx = llmData.finalDx;
-                    if (!answer.clinicalDx && llmData.clinicalDx) answer.clinicalDx = llmData.clinicalDx;
-                } catch (llmErr) {
-                    console.warn('LLM extraction failed, using parser-only results:', llmErr);
-                    toast('LLM failed — using parsed sections only.','warning');
-                }
+        const btn=document.getElementById('extractBtn'),orig=btn.innerHTML;btn.innerHTML='<span class="spinner"></span> Extracting...';btn.disabled=true;
+        try{
+            if(!S.parsed)S.parsed=parseSections(S.pdfText);
+            const answer={finalDx:S.parsed.finalDx||'',clinicalDx:S.parsed.clinicalDx||'',differentials:S.parsed.diffList.length?[...S.parsed.diffList]:[],labs:[],diagnosticTests:[],treatments:[]};
+            if(S.llm!=='none'&&(S.key||S.llm==='ollama')){
+                try{
+                    const d=await llmExtract(S.parsed);
+                    if(d.labs?.length)answer.labs=d.labs;
+                    if(d.diagnosticTests?.length)answer.diagnosticTests=d.diagnosticTests;
+                    if(d.treatments?.length)answer.treatments=d.treatments;
+                    if(!answer.differentials.length&&d.differentials?.length)answer.differentials=d.differentials;
+                    if(!answer.finalDx&&d.finalDx)answer.finalDx=d.finalDx;
+                    if(!answer.clinicalDx&&d.clinicalDx)answer.clinicalDx=d.clinicalDx;
+                }catch(e){console.warn('LLM fail:',e);toast('LLM failed — using parsed data.','warning');}
             }
-
-            S.answer = answer;
-            renderAnswerKey();
-            toast('✅ Case extracted!','success');
-
-            // Switch to score tab
-            document.querySelectorAll('.workspace-tab').forEach(t=>t.classList.remove('active'));
-            document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
-            document.querySelector('[data-tab="scoring"]').classList.add('active');
-            document.getElementById('tab-scoring').classList.add('active');
-        } catch(err) {
-            console.error(err);
-            toast('Error: '+err.message,'error');
-        } finally { btn.innerHTML=orig;btn.disabled=false; }
+            S.answer=answer;renderAK();toast('✅ Extracted!','success');
+            document.querySelectorAll('.workspace-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+            document.querySelector('[data-tab="scoring"]').classList.add('active');document.getElementById('tab-scoring').classList.add('active');
+        }catch(err){toast('Error: '+err.message,'error');}finally{btn.innerHTML=orig;btn.disabled=false;}
     }
 
-    async function extractWithLLM(parsed) {
-        const prompt = `Extract structured data from these medical case sections. Return ONLY valid JSON, no other text.
-
-{
-  "finalDx": "final diagnosis text",
-  "clinicalDx": "clinical diagnosis text",
-  "differentials": ["each differential diagnosis name only"],
-  "labs": ["test name: result value", "test name: result value"],
-  "diagnosticTests": ["name of imaging or procedure performed"],
-  "treatments": ["specific treatment or medication given"]
-}
-
-IMPORTANT: For finalDx and clinicalDx, extract the ACTUAL diagnosis text, not a description of the section.
-For labs, include the test name AND result value separated by a colon.
-For differentials, list ONLY the diagnosis name, not discussions about it.
-
-${parsed.finalDx ? `FINAL DIAGNOSIS:\n${parsed.finalDx}\n\n` : ''}
-${parsed.clinicalDx ? `CLINICAL DIAGNOSIS:\n${parsed.clinicalDx}\n\n` : ''}
-${parsed.diffDx ? `DIFFERENTIAL DIAGNOSIS:\n${parsed.diffDx.substring(0,2000)}\n\n` : ''}
-${parsed.labData ? `LABORATORY DATA:\n${parsed.labData.substring(0,1500)}\n\n` : ''}
-${parsed.diagTesting ? `DIAGNOSTIC TESTING:\n${parsed.diagTesting.substring(0,1500)}\n\n` : ''}
-${parsed.mgmtDiscussion ? `MANAGEMENT:\n${parsed.mgmtDiscussion.substring(0,1500)}\n\n` : ''}`;
-
-        const result = await callLLM(prompt);
-        return parseLLMResponse(result.content);
+    async function llmExtract(parsed){
+        const prompt=`Extract structured data from these medical case sections. Return ONLY valid JSON.
+{"finalDx":"actual diagnosis text","clinicalDx":"actual diagnosis text","differentials":["name only"],"labs":["test: result"],"diagnosticTests":["procedure name"],"treatments":["treatment"]}
+IMPORTANT: For finalDx/clinicalDx extract the ACTUAL diagnosis, not a description.
+${parsed.finalDx?`FINAL DIAGNOSIS:\n${parsed.finalDx}\n\n`:''}${parsed.clinicalDx?`CLINICAL DIAGNOSIS:\n${parsed.clinicalDx}\n\n`:''}${parsed.diffDx?`DIFFERENTIAL DIAGNOSIS:\n${parsed.diffDx.substring(0,2000)}\n\n`:''}${parsed.labData?`LABORATORY DATA:\n${parsed.labData.substring(0,1500)}\n\n`:''}${parsed.diagTesting?`DIAGNOSTIC TESTING:\n${parsed.diagTesting.substring(0,1500)}\n\n`:''}${parsed.mgmtDisc?`MANAGEMENT:\n${parsed.mgmtDisc.substring(0,1500)}\n\n`:''}`;
+        const r=await callLLM(prompt);return parseLLM(r.content);
     }
 
-    async function callLLM(prompt){
-        switch(S.llm){
-            case 'openrouter':return await fetchOR(prompt);
-            case 'gemini':return{content:await fetchGem(prompt),reasoning:null};
-            case 'openai':return{content:await fetchOAI(prompt),reasoning:null};
-            case 'ollama':return{content:await fetchOll(prompt),reasoning:null};
-            default:throw new Error('No LLM');
-        }
-    }
-    async function fetchOAI(p){const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${S.key}`},body:JSON.stringify({model:'gpt-4o-mini',messages:[{role:'user',content:p}],temperature:0.2,max_tokens:2000})});if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.error?.message||`HTTP ${r.status}`);}return(await r.json()).choices[0].message.content;}
-    async function fetchGem(p){const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${S.key}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:p}]}],generationConfig:{temperature:0.2,maxOutputTokens:2000}})});if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.error?.message||`HTTP ${r.status}`);}return(await r.json()).candidates[0].content.parts[0].text;}
-    async function fetchOll(p){const r=await fetch(`${S.ollamaUrl}/api/generate`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:S.ollamaModel,prompt:p,stream:false,options:{temperature:0.2}})});if(!r.ok)throw new Error(`Ollama HTTP ${r.status}`);return(await r.json()).response;}
-    async function fetchOR(prompt){
-        const body={model:S.orModel,messages:[{role:'user',content:prompt}],temperature:0.2,max_tokens:3000};
-        dlog(`Model: ${body.model}`);
-        const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${S.key}`,'HTTP-Referer':window.location.href,'X-Title':'CaseDx'},body:JSON.stringify(body)});
-        const rt=await r.text();dlog(`Status: ${r.status}`);
-        if(!r.ok){let d;try{d=JSON.parse(rt).error?.message||rt;}catch(e){d=rt.substring(0,200);}dlog(d,'error');throw new Error(d);}
-        const data=JSON.parse(rt);if(!data.choices?.length)throw new Error('Empty response');
-        return{content:data.choices[0].message.content||'',reasoning:null};
-    }
+    async function callLLM(p){switch(S.llm){case 'openrouter':return await fetchOR(p);case 'gemini':return{content:await fetchGem(p)};case 'openai':return{content:await fetchOAI(p)};case 'ollama':return{content:await fetchOll(p)};default:throw new Error('No LLM');}}
+    async function fetchOAI(p){const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${S.key}`},body:JSON.stringify({model:'gpt-4o-mini',messages:[{role:'user',content:p}],temperature:0.2,max_tokens:2000})});if(!r.ok)throw new Error(`HTTP ${r.status}`);return(await r.json()).choices[0].message.content;}
+    async function fetchGem(p){const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${S.key}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:p}]}],generationConfig:{temperature:0.2,maxOutputTokens:2000}})});if(!r.ok)throw new Error(`HTTP ${r.status}`);return(await r.json()).candidates[0].content.parts[0].text;}
+    async function fetchOll(p){const r=await fetch(`${S.ollamaUrl}/api/generate`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:S.ollamaModel,prompt:p,stream:false})});if(!r.ok)throw new Error(`HTTP ${r.status}`);return(await r.json()).response;}
+    async function fetchOR(p){const body={model:S.orModel,messages:[{role:'user',content:p}],temperature:0.2,max_tokens:3000};dlog(`→ ${body.model}`);const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${S.key}`,'HTTP-Referer':window.location.href,'X-Title':'CaseDx'},body:JSON.stringify(body)});const rt=await r.text();if(!r.ok){let d;try{d=JSON.parse(rt).error?.message;}catch(e){d=rt.substring(0,200);}throw new Error(d||`HTTP ${r.status}`);}const data=JSON.parse(rt);if(!data.choices?.length)throw new Error('Empty');return{content:data.choices[0].message.content||''};}
+    function parseLLM(text){try{let s=text;const m1=s.match(/```(?:json)?\s*([\s\S]*?)```/);if(m1)s=m1[1];const m2=s.match(/\{[\s\S]*\}/);if(m2)s=m2[0];const p=JSON.parse(s);return{finalDx:p.finalDx||p.finalDiagnosis||'',clinicalDx:p.clinicalDx||p.clinicalDiagnosis||'',differentials:Array.isArray(p.differentials)?p.differentials:[],labs:Array.isArray(p.labs)?p.labs:[],diagnosticTests:Array.isArray(p.diagnosticTests)?p.diagnosticTests:[],treatments:Array.isArray(p.treatments)?p.treatments:[]};}catch(e){return{finalDx:'',clinicalDx:'',differentials:[],labs:[],diagnosticTests:[],treatments:[]};}}
 
-    function parseLLMResponse(text){
-        try{let s=text;const m1=s.match(/```(?:json)?\s*([\s\S]*?)```/);if(m1)s=m1[1];const m2=s.match(/\{[\s\S]*\}/);if(m2)s=m2[0];const p=JSON.parse(s);
-        return{finalDx:p.finalDx||p.finalDiagnosis||p.final_diagnosis||'',clinicalDx:p.clinicalDx||p.clinicalDiagnosis||p.clinical_diagnosis||'',differentials:Array.isArray(p.differentials)?p.differentials:[],labs:Array.isArray(p.labs)?p.labs:(Array.isArray(p.labTests)?p.labTests:[]),diagnosticTests:Array.isArray(p.diagnosticTests)?p.diagnosticTests:(Array.isArray(p.diagnostic_tests)?p.diagnostic_tests:[]),treatments:Array.isArray(p.treatments)?p.treatments:[]};}
-        catch(e){console.error('Parse:',e,text);return{finalDx:'',clinicalDx:'',differentials:[],labs:[],diagnosticTests:[],treatments:[]};}
+    // ===== ANSWER KEY DISPLAY =====
+    function renderAK(){
+        const c=document.getElementById('answerKeyDisplay');
+        if(!S.answer){c.innerHTML=`<div class="empty-state"><div class="empty-icon">📊</div><p>Load a PDF and click 🤖 Extract to build the answer key.</p></div><button class="btn btn-outline" onclick="createManualAK()" style="width:100%;margin-top:8px;">📝 Enter Manually</button>`;return;}
+        const a=S.answer;
+        c.innerHTML=`
+            <div class="ak-card ak-dx-card"><div class="ak-card-header">🎯 Final Diagnosis</div><div class="ak-card-body"><div class="ak-dx-value">${a.finalDx?esc(a.finalDx):'<span class="ak-empty">Not found</span>'}</div></div></div>
+            <div class="ak-card ak-clinical-card"><div class="ak-card-header">🏥 Clinical Diagnosis</div><div class="ak-card-body"><div class="ak-dx-value">${a.clinicalDx?esc(a.clinicalDx):'<span class="ak-empty">Not found</span>'}</div></div></div>
+            <div class="ak-card ak-diff-card"><div class="ak-card-header">🤔 Differentials (${a.differentials.length})</div><div class="ak-card-body">${a.differentials.length?`<ul class="ak-list">${a.differentials.map(d=>`<li><span>•</span>${esc(d)}</li>`).join('')}</ul>`:'<div class="ak-empty">None</div>'}</div></div>
+            <div class="ak-card ak-lab-card"><div class="ak-card-header">🧪 Laboratory Data (${a.labs.length})</div><div class="ak-card-body">${a.labs.length?`<ul class="ak-list">${a.labs.map(l=>`<li><span>🔬</span>${esc(l)}</li>`).join('')}</ul>`:'<div class="ak-empty">None</div>'}</div></div>
+            <div class="ak-card ak-test-card"><div class="ak-card-header">🩻 Diagnostic Testing (${a.diagnosticTests.length})</div><div class="ak-card-body">${a.diagnosticTests.length?`<ul class="ak-list">${a.diagnosticTests.map(t=>`<li><span>📋</span>${esc(t)}</li>`).join('')}</ul>`:'<div class="ak-empty">None</div>'}</div></div>
+            <div class="ak-card ak-tx-card"><div class="ak-card-header">💊 Management (${a.treatments.length})</div><div class="ak-card-body">${a.treatments.length?`<ul class="ak-list">${a.treatments.map(t=>`<li><span>💉</span>${esc(t)}</li>`).join('')}</ul>`:'<div class="ak-empty">None</div>'}</div></div>
+            <div style="display:flex;gap:8px;margin-top:12px;"><button class="btn btn-success" onclick="scoreCase()" style="flex:1;">📊 Score My Case</button><button class="btn btn-outline btn-sm" onclick="createManualAK()">✏ Edit</button><button class="btn btn-outline btn-sm" onclick="extractCase()">🔄 Re-extract</button></div>`;
     }
 
-    // ===== ANSWER KEY DISPLAY — VISUAL CARDS =====
-    function renderAnswerKey() {
-        const c = document.getElementById('answerKeyDisplay');
-        if (!S.answer) {
-            c.innerHTML = `
-                <div class="empty-state"><div class="empty-icon">📊</div><p>Load a PDF and click 🤖 Extract to build the answer key,<br>or click below to enter manually.</p></div>
-                <button class="btn btn-outline" onclick="createManualAnswer()" style="width:100%;margin-top:8px;">📝 Enter Answer Key Manually</button>`;
-            return;
-        }
-        const a = S.answer;
-        c.innerHTML = `
-            <!-- Diagnoses -->
-            <div class="ak-card ak-dx-card">
-                <div class="ak-card-header">🎯 Final Diagnosis</div>
-                <div class="ak-card-body">
-                    <div class="ak-dx-value">${a.finalDx ? esc(a.finalDx) : '<span class="ak-empty">Not found</span>'}</div>
-                </div>
-            </div>
-            <div class="ak-card ak-clinical-card">
-                <div class="ak-card-header">🏥 Clinical Diagnosis</div>
-                <div class="ak-card-body">
-                    <div class="ak-dx-value">${a.clinicalDx ? esc(a.clinicalDx) : '<span class="ak-empty">Not found</span>'}</div>
-                </div>
-            </div>
-
-            <!-- Differentials -->
-            <div class="ak-card ak-diff-card">
-                <div class="ak-card-header">🤔 Differential Diagnoses (${a.differentials.length})</div>
-                <div class="ak-card-body">
-                    ${a.differentials.length ? `<ul class="ak-list">${a.differentials.map(d => `<li><span class="ak-bullet">•</span>${esc(d)}</li>`).join('')}</ul>` : '<div class="ak-empty">None extracted</div>'}
-                </div>
-            </div>
-
-            <!-- Labs -->
-            <div class="ak-card ak-lab-card">
-                <div class="ak-card-header">🧪 Laboratory Data (${a.labs.length})</div>
-                <div class="ak-card-body">
-                    ${a.labs.length ? `<ul class="ak-list">${a.labs.map(l => `<li><span class="ak-bullet">🔬</span>${esc(l)}</li>`).join('')}</ul>` : '<div class="ak-empty">None extracted</div>'}
-                </div>
-            </div>
-
-            <!-- Diagnostic Tests -->
-            <div class="ak-card ak-test-card">
-                <div class="ak-card-header">🩻 Diagnostic Testing (${a.diagnosticTests.length})</div>
-                <div class="ak-card-body">
-                    ${a.diagnosticTests.length ? `<ul class="ak-list">${a.diagnosticTests.map(t => `<li><span class="ak-bullet">📋</span>${esc(t)}</li>`).join('')}</ul>` : '<div class="ak-empty">None extracted</div>'}
-                </div>
-            </div>
-
-            <!-- Treatments -->
-            <div class="ak-card ak-tx-card">
-                <div class="ak-card-header">💊 Management & Treatment (${a.treatments.length})</div>
-                <div class="ak-card-body">
-                    ${a.treatments.length ? `<ul class="ak-list">${a.treatments.map(t => `<li><span class="ak-bullet">💉</span>${esc(t)}</li>`).join('')}</ul>` : '<div class="ak-empty">None extracted</div>'}
-                </div>
-            </div>
-
-            <div style="display:flex;gap:8px;margin-top:12px;">
-                <button class="btn btn-success" onclick="scoreCase()" style="flex:1;">📊 Score My Case</button>
-                <button class="btn btn-outline btn-sm" onclick="createManualAnswer()">✏ Edit</button>
-                <button class="btn btn-outline btn-sm" onclick="extractCase()">🔄 Re-extract</button>
-            </div>`;
+    function createManualAK(){
+        if(!S.answer)S.answer={finalDx:'',clinicalDx:'',differentials:[],labs:[],diagnosticTests:[],treatments:[]};
+        const a=S.answer,c=document.getElementById('answerKeyDisplay');
+        c.innerHTML=`<div class="section-card"><div class="section-header"><h3>✏ Edit Answer Key</h3></div><div class="section-body">
+            <div class="form-group"><label>🎯 Final Diagnosis</label><input type="text" id="eFD" value="${esc(a.finalDx)}"></div>
+            <div class="form-group"><label>🏥 Clinical Diagnosis</label><input type="text" id="eCD" value="${esc(a.clinicalDx)}"></div>
+            <div class="form-group"><label>🤔 Differentials (one per line)</label><textarea id="eDf" style="width:100%;min-height:80px;padding:8px;border:1.5px solid var(--gray-300);border-radius:var(--radius);font-size:0.85rem;font-family:inherit;">${a.differentials.join('\n')}</textarea></div>
+            <div class="form-group"><label>🧪 Labs (one per line)</label><textarea id="eLb" style="width:100%;min-height:80px;padding:8px;border:1.5px solid var(--gray-300);border-radius:var(--radius);font-size:0.85rem;font-family:inherit;">${a.labs.join('\n')}</textarea></div>
+            <div class="form-group"><label>🩻 Diagnostic Testing (one per line)</label><textarea id="eDt" style="width:100%;min-height:80px;padding:8px;border:1.5px solid var(--gray-300);border-radius:var(--radius);font-size:0.85rem;font-family:inherit;">${a.diagnosticTests.join('\n')}</textarea></div>
+            <div class="form-group"><label>💊 Treatments (one per line)</label><textarea id="eTx" style="width:100%;min-height:80px;padding:8px;border:1.5px solid var(--gray-300);border-radius:var(--radius);font-size:0.85rem;font-family:inherit;">${a.treatments.join('\n')}</textarea></div>
+            <div style="display:flex;gap:8px;"><button class="btn btn-success" onclick="saveManualAK()" style="flex:1;">💾 Save</button><button class="btn btn-ghost" onclick="renderAK()">Cancel</button></div>
+        </div></div>`;
     }
-
-    function createManualAnswer() {
-        if (!S.answer) S.answer = { finalDx:'', clinicalDx:'', differentials:[], labs:[], diagnosticTests:[], treatments:[] };
-        const a = S.answer;
-        const c = document.getElementById('answerKeyDisplay');
-        c.innerHTML = `
-            <div class="section-card"><div class="section-header"><h3>✏ Edit Answer Key</h3></div><div class="section-body">
-                <div class="form-group"><label>🎯 Final Diagnosis</label><input type="text" id="editFinalDx" value="${esc(a.finalDx)}" placeholder="The confirmed final diagnosis"></div>
-                <div class="form-group"><label>🏥 Clinical Diagnosis</label><input type="text" id="editClinicalDx" value="${esc(a.clinicalDx)}" placeholder="Working/clinical diagnosis"></div>
-                <div class="form-group"><label>🤔 Differentials (one per line)</label><textarea style="width:100%;min-height:80px;padding:8px;border:1.5px solid var(--gray-300);border-radius:var(--radius);font-size:0.85rem;font-family:inherit;" id="editDiffs" placeholder="Meningitis\nSubarachnoid hemorrhage\nMigraine">${a.differentials.join('\n')}</textarea></div>
-                <div class="form-group"><label>🧪 Labs & Results (one per line)</label><textarea style="width:100%;min-height:80px;padding:8px;border:1.5px solid var(--gray-300);border-radius:var(--radius);font-size:0.85rem;font-family:inherit;" id="editLabs" placeholder="WBC: 12.3\nHemoglobin: 8.2">${a.labs.join('\n')}</textarea></div>
-                <div class="form-group"><label>🩻 Diagnostic Testing (one per line)</label><textarea style="width:100%;min-height:80px;padding:8px;border:1.5px solid var(--gray-300);border-radius:var(--radius);font-size:0.85rem;font-family:inherit;" id="editDiagTests" placeholder="CT head\nMRI brain\nLumbar puncture">${a.diagnosticTests.join('\n')}</textarea></div>
-                <div class="form-group"><label>💊 Treatments (one per line)</label><textarea style="width:100%;min-height:80px;padding:8px;border:1.5px solid var(--gray-300);border-radius:var(--radius);font-size:0.85rem;font-family:inherit;" id="editTx" placeholder="IV ceftriaxone\nDexamethasone\nICU admission">${a.treatments.join('\n')}</textarea></div>
-                <div style="display:flex;gap:8px;"><button class="btn btn-success" onclick="saveManualAnswer()" style="flex:1;">💾 Save Answer Key</button><button class="btn btn-ghost" onclick="renderAnswerKey()">Cancel</button></div>
-            </div></div>`;
-    }
-
-    function saveManualAnswer() {
-        const parse = id => document.getElementById(id).value.split('\n').map(s=>s.trim()).filter(Boolean);
-        S.answer = {
-            finalDx: document.getElementById('editFinalDx').value.trim(),
-            clinicalDx: document.getElementById('editClinicalDx').value.trim(),
-            differentials: parse('editDiffs'),
-            labs: parse('editLabs'),
-            diagnosticTests: parse('editDiagTests'),
-            treatments: parse('editTx')
-        };
-        renderAnswerKey();
-        toast('Answer key saved!','success');
-    }
+    function saveManualAK(){const p=id=>document.getElementById(id).value.split('\n').map(s=>s.trim()).filter(Boolean);S.answer={finalDx:document.getElementById('eFD').value.trim(),clinicalDx:document.getElementById('eCD').value.trim(),differentials:p('eDf'),labs:p('eLb'),diagnosticTests:p('eDt'),treatments:p('eTx')};renderAK();toast('Saved!','success');}
 
     // ===== SCORING =====
-    function scoreCase() {
-        if (!S.answer || !S.answer.finalDx) { toast('Need a Final Diagnosis to score.','error'); return; }
-        const a = S.answer;
-        const allTests = [...a.labs, ...a.diagnosticTests];
-        const dxS = calcDxScore(a.finalDx, a.differentials, a.clinicalDx);
-        const testS = calcLS(S.tests.map(t=>t.name), allTests);
-        const mgmtS = calcLS(S.mgmt.map(m=>m.name), a.treatments);
-        const overall = Math.round((dxS.score + testS.score + mgmtS.score) / 3);
-        const c = document.getElementById('scoreResults'); c.style.display = 'block';
-        document.getElementById('answerKeyDisplay').style.display = 'none';
-
-        c.innerHTML = `
+    function scoreCase(){
+        if(!S.answer?.finalDx){toast('Need Final Diagnosis.','error');return;}
+        const a=S.answer,all=[...a.labs,...a.diagnosticTests];
+        const dS=calcDxS(a.finalDx,a.differentials,a.clinicalDx),tS=calcLS(S.tests.map(t=>t.name),all),mS=calcLS(S.mgmt.map(m=>m.name),a.treatments);
+        const ov=Math.round((dS.score+tS.score+mS.score)/3);
+        const c=document.getElementById('scoreResults');c.style.display='block';document.getElementById('answerKeyDisplay').style.display='none';
+        c.innerHTML=`
             <div class="dx-compare"><div class="dx-compare-card clinical"><div class="dx-type">🏥 Clinical Dx</div><div class="dx-value">${a.clinicalDx?esc(a.clinicalDx):'N/A'}</div></div><div class="dx-compare-card final"><div class="dx-type">🎯 Final Dx</div><div class="dx-value">${esc(a.finalDx)}</div></div></div>
-            <div class="score-card"><h3>Performance</h3><div class="score-grid"><div class="score-item"><div class="score-value ${sc(dxS.score)}">${dxS.score}%</div><div class="score-label">Diagnosis</div></div><div class="score-item"><div class="score-value ${sc(testS.score)}">${testS.score}%</div><div class="score-label">Testing</div></div><div class="score-item"><div class="score-value ${sc(mgmtS.score)}">${mgmtS.score}%</div><div class="score-label">Management</div></div></div><div style="text-align:center;margin-top:16px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);"><div class="score-value ${sc(overall)}" style="font-size:2.5rem;">${overall}%</div><div class="score-label" style="font-size:0.85rem;">Overall</div></div></div>
-            <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><h3>🎯 Diagnosis Breakdown</h3><span class="collapse-icon">▼</span></div><div class="section-body"><p><strong>Final:</strong> ${esc(a.finalDx)}</p>${a.clinicalDx?`<p style="font-size:0.85rem;color:var(--gray-500);margin-top:4px;"><strong>Clinical:</strong> ${esc(a.clinicalDx)}</p>`:''}<p style="margin:8px 0;font-size:0.85rem;color:var(--gray-500);">${dxS.detail}</p>${S.dx.length?`<table class="comparison-table"><tr><th>#</th><th>Your Differential</th><th>Match</th></tr>${S.dx.map((d,i)=>`<tr><td>${i+1}</td><td class="${d.out?'match-no':''}">${esc(d.text)}${d.out?' (out)':''}</td><td>${dxTag(d.text,a.finalDx,a.clinicalDx,a.differentials)}</td></tr>`).join('')}</table>`:'<p style="color:var(--gray-400)">No diagnoses entered.</p>'}</div></div>
-            <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><h3>🧪 Testing</h3><span class="collapse-icon">▼</span></div><div class="section-body">${cmpL('Your Tests',S.tests.map(t=>t.name),'Answer Key',allTests)}</div></div>
-            <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><h3>💊 Management</h3><span class="collapse-icon">▼</span></div><div class="section-body">${cmpL('Your Mgmt',S.mgmt.map(m=>m.name),'Answer Key',a.treatments)}</div></div>
+            <div class="score-card"><h3>Performance</h3><div class="score-grid"><div class="score-item"><div class="score-value ${sc(dS.score)}">${dS.score}%</div><div class="score-label">Diagnosis</div></div><div class="score-item"><div class="score-value ${sc(tS.score)}">${tS.score}%</div><div class="score-label">Testing</div></div><div class="score-item"><div class="score-value ${sc(mS.score)}">${mS.score}%</div><div class="score-label">Management</div></div></div><div style="text-align:center;margin-top:16px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);"><div class="score-value ${sc(ov)}" style="font-size:2.5rem;">${ov}%</div><div class="score-label" style="font-size:0.85rem;">Overall</div></div></div>
+            <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><h3>🎯 Diagnosis</h3><span class="collapse-icon">▼</span></div><div class="section-body"><p><strong>Final:</strong> ${esc(a.finalDx)}</p>${a.clinicalDx?`<p style="font-size:0.85rem;color:var(--gray-500);margin-top:4px;"><strong>Clinical:</strong> ${esc(a.clinicalDx)}</p>`:''}<p style="margin:8px 0;font-size:0.85rem;color:var(--gray-500);">${dS.detail}</p>${S.dx.length?`<table class="comparison-table"><tr><th>#</th><th>Your Differential</th><th>Match</th></tr>${S.dx.map((d,i)=>`<tr><td>${i+1}</td><td class="${d.out?'match-no':''}">${esc(d.text)}${d.out?' (out)':''}</td><td>${dxTag(d.text,a.finalDx,a.clinicalDx,a.differentials)}</td></tr>`).join('')}</table>`:'<p style="color:var(--gray-400)">None entered.</p>'}</div></div>
+            <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><h3>🧪 Testing</h3><span class="collapse-icon">▼</span></div><div class="section-body">${cmpL('Yours',S.tests.map(t=>t.name),'Key',all)}</div></div>
+            <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><h3>💊 Management</h3><span class="collapse-icon">▼</span></div><div class="section-body">${cmpL('Yours',S.mgmt.map(m=>m.name),'Key',a.treatments)}</div></div>
             <button class="btn btn-outline" onclick="document.getElementById('scoreResults').style.display='none';document.getElementById('answerKeyDisplay').style.display='block';" style="width:100%;margin-top:8px;">← Back to Answer Key</button>`;
     }
-
-    function calcDxScore(correct,diffs,clinical){
-        if(!S.dx.length)return{score:0,detail:'No diagnoses entered.'};
-        const a=S.dx.filter(x=>!x.out);if(!a.length)return{score:0,detail:'All ruled out.'};
-        if(fz(a[0].text,correct))return{score:100,detail:'Your #1 matches the Final Diagnosis! 🎉'};
-        const mi=a.findIndex(x=>fz(x.text,correct));if(mi>0)return{score:Math.max(20,85-mi*15),detail:`Final Dx was #${mi+1} on your list.`};
-        if(clinical&&fz(a[0].text,clinical))return{score:60,detail:'Your #1 matches Clinical Dx but not Final Dx.'};
-        const dm=a.filter(x=>diffs.some(df=>fz(x.text,df))).length;
-        if(dm)return{score:Math.min(40,dm*15),detail:`${dm} on differential but missed Final Dx.`};
-        return{score:0,detail:'Final Diagnosis not on your differential.'};
-    }
+    function calcDxS(c,d,cl){if(!S.dx.length)return{score:0,detail:'No diagnoses entered.'};const a=S.dx.filter(x=>!x.out);if(!a.length)return{score:0,detail:'All ruled out.'};if(fz(a[0].text,c))return{score:100,detail:'#1 matches Final Dx! 🎉'};const mi=a.findIndex(x=>fz(x.text,c));if(mi>0)return{score:Math.max(20,85-mi*15),detail:`Final Dx was #${mi+1}.`};if(cl&&fz(a[0].text,cl))return{score:60,detail:'#1 matches Clinical Dx but not Final.'};const dm=a.filter(x=>d.some(df=>fz(x.text,df))).length;if(dm)return{score:Math.min(40,dm*15),detail:`${dm} on diff but missed Final.`};return{score:0,detail:'Final Dx not on differential.'};}
     function calcLS(u,a){if(!a.length)return{score:100};if(!u.length)return{score:0};let m=0;a.forEach(x=>{if(u.some(y=>fz(y,x)))m++;});return{score:Math.round(m/a.length*100)};}
     function fz(a,b){a=a.toLowerCase().replace(/[^a-z0-9\s]/g,'').trim();b=b.toLowerCase().replace(/[^a-z0-9\s]/g,'').trim();if(a===b||a.includes(b)||b.includes(a))return true;const wa=a.split(/\s+/).filter(w=>w.length>2),wb=b.split(/\s+/).filter(w=>w.length>2);if(!wa.length||!wb.length)return false;return wa.filter(w=>wb.some(x=>x.includes(w)||w.includes(x))).length>=Math.min(2,Math.ceil(wb.length*0.6));}
-    function dxTag(u,f,c,d){if(fz(u,f))return'<span class="answer-tag correct">✓ Final Dx</span>';if(c&&fz(u,c))return'<span class="answer-tag partial">~ Clinical Dx</span>';if(d.some(x=>fz(u,x)))return'<span class="answer-tag partial">~ Differential</span>';return'<span class="answer-tag incorrect">✗</span>';}
+    function dxTag(u,f,c,d){if(fz(u,f))return'<span class="answer-tag correct">✓ Final</span>';if(c&&fz(u,c))return'<span class="answer-tag partial">~ Clinical</span>';if(d.some(x=>fz(u,x)))return'<span class="answer-tag partial">~ Diff</span>';return'<span class="answer-tag incorrect">✗</span>';}
     function cmpL(ul,ui,al,ai){let h='<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">';h+=`<div><h4 style="font-size:0.85rem;margin-bottom:8px;color:var(--gray-600)">${ul}</h4>`;if(!ui.length)h+='<p style="color:var(--gray-400);font-size:0.85rem">None</p>';else ui.forEach(x=>{const m=ai.some(a=>fz(x,a));h+=`<div style="padding:3px 0;font-size:0.85rem">${m?'<span class="match-yes">✓</span>':'<span class="match-no">○</span>'} ${esc(x)}</div>`;});h+='</div>';h+=`<div><h4 style="font-size:0.85rem;margin-bottom:8px;color:var(--gray-600)">${al}</h4>`;if(!ai.length)h+='<p style="color:var(--gray-400);font-size:0.85rem">None</p>';else ai.forEach(x=>{const m=ui.some(u=>fz(u,x));h+=`<div style="padding:3px 0;font-size:0.85rem">${m?'<span class="match-yes">✓</span>':'<span class="match-no">✗</span>'} ${esc(x)}</div>`;});h+='</div></div>';return h;}
     function sc(s){return s>=70?'good':s>=40?'okay':'poor';}
 
     // SETTINGS
-    function openSettings(){document.getElementById('settingsModal').classList.add('show');document.querySelectorAll('input[name="llmProvider"]').forEach(r=>r.checked=r.value===S.llm);document.getElementById('apiKeyInput').value=S.key;document.getElementById('ollamaUrl').value=S.ollamaUrl;document.getElementById('ollamaModel').value=S.ollamaModel;document.getElementById('openrouterModelInput').value=S.orModel;updateSUI();document.querySelectorAll('input[name="llmProvider"]').forEach(r=>r.addEventListener('change',updateSUI));}
+    function openSettings(){document.getElementById('settingsModal').classList.add('show');document.querySelectorAll('input[name="llmProvider"]').forEach(r=>r.checked=r.value===S.llm);document.getElementById('apiKeyInput').value=S.key;document.getElementById('ollamaUrl').value=S.ollamaUrl;document.getElementById('ollamaModel').value=S.ollamaModel;document.getElementById('orModelInput').value=S.orModel;updateSUI();document.querySelectorAll('input[name="llmProvider"]').forEach(r=>r.addEventListener('change',updateSUI));}
     function closeSettings(){document.getElementById('settingsModal').classList.remove('show');}
     function updateSUI(){const p=document.querySelector('input[name="llmProvider"]:checked').value;document.getElementById('apiKeyGroup').style.display=['openai','gemini','openrouter'].includes(p)?'block':'none';document.getElementById('ollamaGroup').style.display=p==='ollama'?'block':'none';document.getElementById('openrouterGroup').style.display=p==='openrouter'?'block':'none';const l={openrouter:'<a href="https://openrouter.ai/keys" target="_blank" style="color:var(--primary)">Get key</a>',gemini:'<a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--primary)">Get key</a>',openai:'<a href="https://platform.openai.com/api-keys" target="_blank" style="color:var(--primary)">Get key</a>'};document.getElementById('apiKeyHelp').innerHTML=l[p]||'';}
-    function saveSettings(){S.llm=document.querySelector('input[name="llmProvider"]:checked').value;S.key=document.getElementById('apiKeyInput').value.trim();S.ollamaUrl=document.getElementById('ollamaUrl').value.trim();S.ollamaModel=document.getElementById('ollamaModel').value.trim();S.orModel=document.getElementById('openrouterModelInput').value.trim();localStorage.setItem('casedx',JSON.stringify({llm:S.llm,key:S.key,ou:S.ollamaUrl,om:S.ollamaModel,or:S.orModel}));updateStatus();dismissBanner();closeSettings();toast('Saved!','success');}
+    function saveSettings(){S.llm=document.querySelector('input[name="llmProvider"]:checked').value;S.key=document.getElementById('apiKeyInput').value.trim();S.ollamaUrl=document.getElementById('ollamaUrl').value.trim();S.ollamaModel=document.getElementById('ollamaModel').value.trim();S.orModel=document.getElementById('orModelInput').value.trim();localStorage.setItem('casedx',JSON.stringify({llm:S.llm,key:S.key,ou:S.ollamaUrl,om:S.ollamaModel,or:S.orModel}));updateStatus();dismissBanner();closeSettings();toast('Saved!','success');}
     function loadSettings(){try{const s=JSON.parse(localStorage.getItem('casedx'));if(s){S.llm=s.llm||'openrouter';S.key=s.key||'';S.ollamaUrl=s.ou||'http://localhost:11434';S.ollamaModel=s.om||'llama3.2';S.orModel=s.or||'meta-llama/llama-3.1-8b-instruct';}}catch(e){}}
     function updateStatus(){const d=document.getElementById('llmDot'),n=document.getElementById('llmName');const nm={none:'Manual',openai:'OpenAI',gemini:'Gemini',ollama:'Ollama',openrouter:'OR'};let dn=nm[S.llm]||'None';if(S.llm==='openrouter'&&S.orModel)dn+=` · ${S.orModel.split('/').pop()}`;n.textContent=dn;d.className=S.llm==='none'?'llm-dot':((S.key||S.llm==='ollama')?'llm-dot connected':'llm-dot needs-key');}
     function toggleKeyVis(){const i=document.getElementById('apiKeyInput');i.type=i.type==='password'?'text':'password';}
-    async function testConn(){const p=document.querySelector('input[name="llmProvider"]:checked').value;const k=document.getElementById('apiKeyInput').value.trim();const m=document.getElementById('openrouterModelInput').value.trim();dlog('--- TEST ---');if(p==='none')return;if(!k&&p!=='ollama'){toast('Enter key','error');return;}const old={k:S.key,p:S.llm,m:S.orModel};S.key=k;S.llm=p;S.orModel=m;S.ollamaUrl=document.getElementById('ollamaUrl').value.trim();S.ollamaModel=document.getElementById('ollamaModel').value.trim();const btn=document.getElementById('testBtn');btn.innerHTML='Testing...';btn.disabled=true;try{await callLLM('Say OK');dlog('SUCCESS!');toast('✅ Works!','success');}catch(e){dlog(e.message,'error');toast('❌ '+e.message.substring(0,80),'error');S.key=old.k;S.llm=old.p;S.orModel=old.m;}finally{btn.innerHTML='🔌 Test';btn.disabled=false;}}
-
-    // RESIZE
+    async function testConn(){const p=document.querySelector('input[name="llmProvider"]:checked').value;const k=document.getElementById('apiKeyInput').value.trim();const m=document.getElementById('orModelInput').value.trim();dlog('--- TEST ---');if(p==='none')return;if(!k&&p!=='ollama'){toast('Enter key','error');return;}const old={k:S.key,p:S.llm,m:S.orModel};S.key=k;S.llm=p;S.orModel=m;S.ollamaUrl=document.getElementById('ollamaUrl').value.trim();S.ollamaModel=document.getElementById('ollamaModel').value.trim();const btn=document.getElementById('testBtn');btn.innerHTML='Testing...';btn.disabled=true;try{await callLLM('Say OK');dlog('SUCCESS!');toast('✅ Works!','success');}catch(e){dlog(e.message,'error');toast('❌ '+e.message.substring(0,80),'error');S.key=old.k;S.llm=old.p;S.orModel=old.m;}finally{btn.innerHTML='🔌 Test';btn.disabled=false;}}
     function setupResize(){const h=document.getElementById('resizeHandle'),p=document.getElementById('workspacePanel');let r=false;h.addEventListener('mousedown',()=>{r=true;h.classList.add('active');document.body.style.cursor='col-resize';document.body.style.userSelect='none';});document.addEventListener('mousemove',e=>{if(!r)return;p.style.width=Math.max(380,Math.min(800,document.querySelector('.main-container').getBoundingClientRect().right-e.clientX))+'px';});document.addEventListener('mouseup',()=>{if(r){r=false;h.classList.remove('active');document.body.style.cursor='';document.body.style.userSelect='';}});}
-
-    // RESET
-    function resetCase(){
-        if(S.dx.length+S.tests.length+S.mgmt.length>0&&!confirm('Reset?'))return;
-        Object.assign(S,{pdfDoc:null,pg:1,zoom:1,pdfText:'',parsed:null,dx:[],tests:[],mgmt:[],phase:0,answer:null,nid:1});
-        document.getElementById('pdfToolbar').style.display='none';document.getElementById('pdfPlaceholder').style.display='flex';document.getElementById('pdfCanvasContainer').style.display='none';document.getElementById('pdfCanvasContainer').innerHTML='';document.getElementById('zoomLevel').textContent='100%';document.getElementById('parsedSectionsPreview').innerHTML='';
-        ['hpiNotes','examNotes','generalNotes'].forEach(id=>document.getElementById(id).value='');
-        document.getElementById('scoreResults').style.display='none';document.getElementById('pdfInput').value='';
-        setPhase(0);renderDx();renderTests();renderMgmt();renderAnswerKey();
-        document.querySelectorAll('.workspace-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));document.querySelector('.workspace-tab').classList.add('active');document.getElementById('tab-workup').classList.add('active');toast('Reset!','info');
-    }
-
+    function resetCase(){if(S.dx.length+S.tests.length+S.mgmt.length>0&&!confirm('Reset?'))return;Object.assign(S,{pdfDoc:null,pg:1,zoom:1,pdfText:'',parsed:null,dx:[],tests:[],mgmt:[],phase:0,answer:null,nid:1});document.getElementById('pdfToolbar').style.display='none';document.getElementById('pdfPlaceholder').style.display='flex';document.getElementById('pdfCanvasContainer').style.display='none';document.getElementById('pdfCanvasContainer').innerHTML='';document.getElementById('zoomLevel').textContent='100%';document.getElementById('parsedSectionsPreview').innerHTML='';['hpiNotes','examNotes','generalNotes'].forEach(id=>document.getElementById(id).value='');document.getElementById('scoreResults').style.display='none';document.getElementById('pdfInput').value='';setPhase(0);renderDxList();renderTestList();renderMgmtList();renderAK();document.querySelectorAll('.workspace-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));document.querySelector('.workspace-tab').classList.add('active');document.getElementById('tab-workup').classList.add('active');toast('Reset!','info');}
     function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
     function mkE(i,m){const li=document.createElement('li');li.className='empty-state';li.innerHTML=`<div class="empty-icon">${i}</div><p>${m}</p>`;return li;}
     function toast(msg,type='info'){const c=document.getElementById('toastContainer'),t=document.createElement('div');t.className=`toast toast-${type}`;t.textContent=msg;c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(100%)';t.style.transition='all 0.3s';setTimeout(()=>t.remove(),300);},6000);}
