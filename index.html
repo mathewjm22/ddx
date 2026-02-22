@@ -513,20 +513,18 @@
 
         // Candidates to test — mix of common free model IDs
         const candidates = [
-            'meta-llama/llama-3.1-8b-instruct:free',
-            'meta-llama/llama-3.2-3b-instruct:free',
-            'google/gemma-2-9b-it:free',
-            'qwen/qwen-2.5-7b-instruct:free',
-            'mistralai/mistral-7b-instruct:free',
-            'microsoft/phi-3-mini-128k-instruct:free',
-            'huggingfaceh4/zephyr-7b-beta:free',
-            'openchat/openchat-7b:free',
-            'meta-llama/llama-3.1-8b-instruct',
-            'google/gemma-2-9b-it',
-            'qwen/qwen-2.5-7b-instruct',
-            'mistralai/mistral-7b-instruct',
-            'nousresearch/hermes-3-llama-3.1-405b:free',
-        ];
+    'meta-llama/llama-3.1-8b-instruct',
+    'meta-llama/llama-3.2-3b-instruct',
+    'google/gemma-2-9b-it',
+    'qwen/qwen-2.5-7b-instruct',
+    'mistralai/mistral-7b-instruct',
+    'microsoft/phi-3-mini-128k-instruct',
+    'huggingfaceh4/zephyr-7b-beta',
+    'openchat/openchat-7b',
+    'meta-llama/llama-3.1-70b-instruct',
+    'qwen/qwen-2.5-72b-instruct',
+    'google/gemma-2-27b-it',
+];
 
         container.innerHTML = '<div style="font-size:0.82rem;color:var(--gray-500);">Testing models...</div>';
         const results = [];
@@ -746,7 +744,7 @@ Return ONLY valid JSON. No markdown, no code fences.
         localStorage.setItem('casedx_settings',JSON.stringify({llmProvider:state.llmProvider,apiKey:state.apiKey,ollamaUrl:state.ollamaUrl,ollamaModel:state.ollamaModel,openrouterModel:state.openrouterModel}));
         updateLLMStatus();dismissBanner();closeSettings();showToast('Saved!','success');
     }
-    function loadSettings(){try{const s=JSON.parse(localStorage.getItem('casedx_settings'));if(s){state.llmProvider=s.llmProvider||'openrouter';state.apiKey=s.apiKey||'';state.ollamaUrl=s.ollamaUrl||'http://localhost:11434';state.ollamaModel=s.ollamaModel||'llama3.2';state.openrouterModel=s.openrouterModel||'';}}catch(e){}}
+    function loadSettings(){try{const s=JSON.parse(localStorage.getItem('casedx_settings'));if(s){state.llmProvider=s.llmProvider||'openrouter';state.apiKey=s.apiKey||'';state.ollamaUrl=s.ollamaUrl||'http://localhost:11434';state.ollamaModel=s.ollamaModel||'llama3.2';state.openrouterModel=s.openrouterModel||'meta-llama/llama-3.1-8b-instruct';}}catch(e){}}
     function updateLLMStatus(){const dot=document.getElementById('llmDot'),name=document.getElementById('llmName');const names={none:'Manual',openai:'OpenAI',gemini:'Gemini',ollama:'Ollama',openrouter:'OpenRouter'};let dn=names[state.llmProvider]||'None';if(state.llmProvider==='openrouter'&&state.openrouterModel){const short=state.openrouterModel.split('/').pop().split(':')[0];dn+=` · ${short}`;}name.textContent=dn;if(state.llmProvider==='none')dot.className='llm-dot';else if(state.llmProvider==='ollama')dot.className='llm-dot connected';else if(state.apiKey)dot.className='llm-dot connected';else dot.className='llm-dot needs-key';}
     function toggleKeyVis(){const i=document.getElementById('apiKeyInput');i.type=i.type==='password'?'text':'password';}
     function setupResize(){const h=document.getElementById('resizeHandle'),p=document.getElementById('workspacePanel');let r=false;h.addEventListener('mousedown',()=>{r=true;h.classList.add('active');document.body.style.cursor='col-resize';document.body.style.userSelect='none';});document.addEventListener('mousemove',e=>{if(!r)return;const b=document.querySelector('.main-container').getBoundingClientRect();p.style.width=Math.max(380,Math.min(800,b.right-e.clientX))+'px';});document.addEventListener('mouseup',()=>{if(r){r=false;h.classList.remove('active');document.body.style.cursor='';document.body.style.userSelect='';}});}
@@ -765,3 +763,4 @@ Return ONLY valid JSON. No markdown, no code fences.
     </script>
 </body>
 </html>
+
