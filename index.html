@@ -462,7 +462,14 @@
         const btn=document.getElementById('extractBtn'),orig=btn.innerHTML;btn.innerHTML='<span class="spinner"></span> Extracting...';btn.disabled=true;
         try{
             if(!S.parsed)S.parsed=parseSections(S.pdfText);
-            const answer={finalDx:S.parsed.finalDx||'',clinicalDx:S.parsed.clinicalDx||'',differentials:S.parsed.diffList.length?[...S.parsed.diffList]:[],labs:[],diagnosticTests:[],treatments:[]};
+            const answer = {
+    finalDx: normalizeDxText(S.parsed.finalDx || ''),
+    clinicalDx: normalizeDxText(S.parsed.clinicalDx || ''),
+    differentials: S.parsed.diffList.length ? [...S.parsed.diffList] : [],
+    labs: [],
+    diagnosticTests: [],
+    treatments: []
+};
             if(S.llm!=='none'&&(S.key||S.llm==='ollama')){
                 try{
                     const d=await llmExtract(S.parsed);
@@ -470,8 +477,8 @@
                     if(d.diagnosticTests?.length)answer.diagnosticTests=d.diagnosticTests;
                     if(d.treatments?.length)answer.treatments=d.treatments;
                     if(!answer.differentials.length&&d.differentials?.length)answer.differentials=d.differentials;
-                    if(!answer.finalDx&&d.finalDx)answer.finalDx=d.finalDx;
-                    if(!answer.clinicalDx&&d.clinicalDx)answer.clinicalDx=d.clinicalDx;
+                    if (!answer.finalDx && d.finalDx) answer.finalDx = normalizeDxText(d.finalDx);
+if (!answer.clinicalDx && d.clinicalDx) answer.clinicalDx = normalizeDxText(d.clinicalDx);
                 }catch(e){console.warn('LLM fail:',e);toast('LLM failed — using parsed data.','warning');}
             }
             S.answer=answer;renderAK();toast('✅ Extracted!','success');
@@ -482,8 +489,14 @@
 
     async function llmExtract(parsed){
         const prompt=`Extract structured data from these medical case sections. Return ONLY valid JSON.
-{"finalDx":"actual diagnosis text","clinicalDx":"actual diagnosis text","differentials":["name only"],"labs":["test: result"],"diagnosticTests":["procedure name"],"treatments":["treatment"]}
-IMPORTANT: For finalDx/clinicalDx extract the ACTUAL diagnosis, not a description.
+{"finalDx":"diagnosis name only (e.g. \"Eosinophilic granulomatosis with polyangiitis\")",
+ "clinicalDx":"diagnosis name only",
+ "differentials":["name only"],
+ "labs":["test: result"],
+ "diagnosticTests":["procedure name"],
+ "treatments":["treatment"]}
+IMPORTANT:
+- finalDx and clinicalDx MUST be just the diagnosis name, not full sentences, not labels like "Final Diagnosis", and not explanations.
 ${parsed.finalDx?`FINAL DIAGNOSIS:\n${parsed.finalDx}\n\n`:''}${parsed.clinicalDx?`CLINICAL DIAGNOSIS:\n${parsed.clinicalDx}\n\n`:''}${parsed.diffDx?`DIFFERENTIAL DIAGNOSIS:\n${parsed.diffDx.substring(0,2000)}\n\n`:''}${parsed.labData?`LABORATORY DATA:\n${parsed.labData.substring(0,1500)}\n\n`:''}${parsed.diagTesting?`DIAGNOSTIC TESTING:\n${parsed.diagTesting.substring(0,1500)}\n\n`:''}${parsed.mgmtDisc?`MANAGEMENT:\n${parsed.mgmtDisc.substring(0,1500)}\n\n`:''}`;
         const r=await callLLM(prompt);return parseLLM(r.content);
     }
@@ -495,6 +508,28 @@ ${parsed.finalDx?`FINAL DIAGNOSIS:\n${parsed.finalDx}\n\n`:''}${parsed.clinicalD
     async function fetchOR(p){const body={model:S.orModel,messages:[{role:'user',content:p}],temperature:0.2,max_tokens:3000};dlog(`→ ${body.model}`);const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${S.key}`,'HTTP-Referer':window.location.href,'X-Title':'CaseDx'},body:JSON.stringify(body)});const rt=await r.text();if(!r.ok){let d;try{d=JSON.parse(rt).error?.message;}catch(e){d=rt.substring(0,200);}throw new Error(d||`HTTP ${r.status}`);}const data=JSON.parse(rt);if(!data.choices?.length)throw new Error('Empty');return{content:data.choices[0].message.content||''};}
     function parseLLM(text){try{let s=text;const m1=s.match(/```(?:json)?\s*([\s\S]*?)```/);if(m1)s=m1[1];const m2=s.match(/\{[\s\S]*\}/);if(m2)s=m2[0];const p=JSON.parse(s);return{finalDx:p.finalDx||p.finalDiagnosis||'',clinicalDx:p.clinicalDx||p.clinicalDiagnosis||'',differentials:Array.isArray(p.differentials)?p.differentials:[],labs:Array.isArray(p.labs)?p.labs:[],diagnosticTests:Array.isArray(p.diagnosticTests)?p.diagnosticTests:[],treatments:Array.isArray(p.treatments)?p.treatments:[]};}catch(e){return{finalDx:'',clinicalDx:'',differentials:[],labs:[],diagnosticTests:[],treatments:[]};}}
 
+    function normalizeDxText(raw) {
+        if (!raw) return raw;
+        let s = String(raw);
+
+        // If there is an explicit "Final Diagnosis" label, take the text after it
+        const labelMatch = s.match(/Final\s+Diagnosis[^:]*[:.]?\s*(.+)/i);
+        if (labelMatch) {
+            s = labelMatch[1];
+        }
+
+        // Stop at the first period to avoid pulling in whole sentences after the dx
+        const firstSentence = s.split(/[.]/)[0];
+
+        // Remove some common boilerplate tails if they slipped in
+        let cleaned = firstSentence.replace(/This case was presented.*$/i, '');
+
+        // Collapse whitespace and trim
+        cleaned = cleaned.replace(/\s+/g, ' ').trim();
+
+        return cleaned;
+    }
+        
     // ===== ANSWER KEY DISPLAY =====
     function renderAK(){
         const c=document.getElementById('answerKeyDisplay');
@@ -504,7 +539,33 @@ ${parsed.finalDx?`FINAL DIAGNOSIS:\n${parsed.finalDx}\n\n`:''}${parsed.clinicalD
             <div class="ak-card ak-dx-card"><div class="ak-card-header">🎯 Final Diagnosis</div><div class="ak-card-body"><div class="ak-dx-value">${a.finalDx?esc(a.finalDx):'<span class="ak-empty">Not found</span>'}</div></div></div>
             <div class="ak-card ak-clinical-card"><div class="ak-card-header">🏥 Clinical Diagnosis</div><div class="ak-card-body"><div class="ak-dx-value">${a.clinicalDx?esc(a.clinicalDx):'<span class="ak-empty">Not found</span>'}</div></div></div>
             <div class="ak-card ak-diff-card"><div class="ak-card-header">🤔 Differentials (${a.differentials.length})</div><div class="ak-card-body">${a.differentials.length?`<ul class="ak-list">${a.differentials.map(d=>`<li><span>•</span>${esc(d)}</li>`).join('')}</ul>`:'<div class="ak-empty">None</div>'}</div></div>
-            <div class="ak-card ak-lab-card"><div class="ak-card-header">🧪 Laboratory Data (${a.labs.length})</div><div class="ak-card-body">${a.labs.length?`<ul class="ak-list">${a.labs.map(l=>`<li><span>🔬</span>${esc(l)}</li>`).join('')}</ul>`:'<div class="ak-empty">None</div>'}</div></div>
+            <div class="ak-card ak-lab-card"><div class="ak-card-header">🧪 Laboratory Data (${a.labs.length})</div><div class="ak-card-body">${
+    a.labs.length ? `
+        <ul class="ak-list">
+            ${a.labs.map(l => {
+                if (typeof l === 'string') {
+                    // Backwards compatible: plain string from parser or LLM
+                    return `<li><span>🔬</span>${esc(l)}</li>`;
+                }
+                if (l && typeof l === 'object') {
+                    // Try common shapes from LLM output
+                    const name  = l.name  || l.test  || '';
+                    const value = l.value || l.result || l.abnormality || '';
+                    const extra = l.note  || l.comment || '';
+
+                    const main = [name, value].filter(Boolean).join(': ');
+                    const full = [main, extra].filter(Boolean).join(' — ');
+
+                    // Fallback to JSON if we still don't have anything readable
+                    const text = full || JSON.stringify(l);
+                    return `<li><span>🔬</span>${esc(text)}</li>`;
+                }
+                // Last-resort fallback
+                return `<li><span>🔬</span>${esc(String(l))}</li>`;
+            }).join('')}
+        </ul>
+    ` : '<div class="ak-empty">None</div>'
+}</div></div>
             <div class="ak-card ak-test-card"><div class="ak-card-header">🩻 Diagnostic Testing (${a.diagnosticTests.length})</div><div class="ak-card-body">${a.diagnosticTests.length?`<ul class="ak-list">${a.diagnosticTests.map(t=>`<li><span>📋</span>${esc(t)}</li>`).join('')}</ul>`:'<div class="ak-empty">None</div>'}</div></div>
             <div class="ak-card ak-tx-card"><div class="ak-card-header">💊 Management (${a.treatments.length})</div><div class="ak-card-body">${a.treatments.length?`<ul class="ak-list">${a.treatments.map(t=>`<li><span>💉</span>${esc(t)}</li>`).join('')}</ul>`:'<div class="ak-empty">None</div>'}</div></div>
             <div style="display:flex;gap:8px;margin-top:12px;"><button class="btn btn-success" onclick="scoreCase()" style="flex:1;">📊 Score My Case</button><button class="btn btn-outline btn-sm" onclick="createManualAK()">✏ Edit</button><button class="btn btn-outline btn-sm" onclick="extractCase()">🔄 Re-extract</button></div>`;
@@ -564,3 +625,4 @@ ${parsed.finalDx?`FINAL DIAGNOSIS:\n${parsed.finalDx}\n\n`:''}${parsed.clinicalD
     </script>
 </body>
 </html>
+
