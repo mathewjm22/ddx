@@ -63,6 +63,89 @@
         .btn-save:hover { background: #3182ce; transform: translateY(-1px); }
         #file-input { display: none; }
 
+        /* Cases dropdown */
+        .cases-dropdown-wrap {
+            position: relative;
+        }
+        .btn-cases { background: #ed8936; color: #fff; }
+        .btn-cases:hover { background: #dd6b20; transform: translateY(-1px); }
+        .cases-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 12px 40px rgba(0,0,0,.25), 0 0 0 1px rgba(0,0,0,.06);
+            width: 370px;
+            z-index: 200;
+            overflow: hidden;
+            animation: dropIn .2s ease;
+        }
+        .cases-dropdown.show { display: block; }
+        @keyframes dropIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .cases-dropdown-header {
+            padding: 14px 18px 10px;
+            font-size: .72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            color: #718096;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .cases-dropdown a.case-link {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 18px;
+            text-decoration: none;
+            color: #2d3748;
+            border-bottom: 1px solid #f7fafc;
+            transition: background .15s;
+        }
+        .cases-dropdown a.case-link:last-child { border-bottom: none; }
+        .cases-dropdown a.case-link:hover { background: #f7fafc; }
+        .case-link-icon {
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .case-link-icon.cpc { background: #ebf4ff; }
+        .case-link-icon.challenge { background: #fefcbf; }
+        .case-link-info { flex: 1; }
+        .case-link-title {
+            font-size: .88rem;
+            font-weight: 600;
+            color: #1a365d;
+            margin-bottom: 2px;
+        }
+        .case-link-desc {
+            font-size: .75rem;
+            color: #718096;
+            line-height: 1.4;
+        }
+        .case-link-arrow {
+            color: #a0aec0;
+            font-size: .85rem;
+            margin-top: 4px;
+            transition: transform .15s;
+        }
+        .cases-dropdown a.case-link:hover .case-link-arrow { transform: translateX(3px); color: #4299e1; }
+
+        .cases-dropdown-footer {
+            padding: 10px 18px;
+            background: #f7fafc;
+            border-top: 1px solid #e2e8f0;
+            font-size: .7rem;
+            color: #a0aec0;
+            text-align: center;
+        }
+
         /* ── Main Layout ───────────────────────────────────── */
         .main-container {
             display: flex;
@@ -116,20 +199,101 @@
             padding: 20px;
         }
 
+        /* ── Placeholder with Case Links ───────────────────── */
         .pdf-placeholder {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #718096;
+            color: #cbd5e0;
             height: 100%;
             width: 100%;
             text-align: center;
             user-select: none;
+            padding: 40px 30px;
+            gap: 6px;
         }
-        .pdf-placeholder .ph-icon { font-size: 4.5rem; margin-bottom: 18px; opacity: .6; }
-        .pdf-placeholder .ph-title { font-size: 1.15rem; font-weight: 600; margin-bottom: 6px; }
-        .pdf-placeholder .ph-sub { font-size: .85rem; opacity: .7; }
+        .pdf-placeholder .ph-icon { font-size: 4rem; margin-bottom: 10px; opacity: .5; }
+        .pdf-placeholder .ph-title { font-size: 1.2rem; font-weight: 600; color: #e2e8f0; }
+        .pdf-placeholder .ph-sub { font-size: .85rem; opacity: .65; margin-bottom: 24px; }
+
+        .ph-divider {
+            width: 60px;
+            height: 2px;
+            background: rgba(255,255,255,.12);
+            border-radius: 1px;
+            margin: 10px 0 20px;
+        }
+
+        .ph-links-title {
+            font-size: .7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #718096;
+            margin-bottom: 14px;
+        }
+
+        .ph-case-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            max-width: 440px;
+        }
+        .ph-case-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 20px;
+            background: rgba(255,255,255,.05);
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 12px;
+            text-decoration: none;
+            color: #e2e8f0;
+            transition: all .2s;
+            text-align: left;
+        }
+        .ph-case-card:hover {
+            background: rgba(255,255,255,.1);
+            border-color: rgba(66,153,225,.5);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,.3);
+        }
+        .ph-card-icon {
+            width: 48px; height: 48px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .ph-card-icon.cpc    { background: rgba(66,153,225,.2); }
+        .ph-card-icon.challenge { background: rgba(237,137,54,.2); }
+        .ph-card-info { flex: 1; }
+        .ph-card-title { font-size: .92rem; font-weight: 600; margin-bottom: 3px; }
+        .ph-card-desc { font-size: .75rem; color: #a0aec0; line-height: 1.4; }
+        .ph-card-arrow { font-size: 1.1rem; color: #4a5568; transition: all .2s; }
+        .ph-case-card:hover .ph-card-arrow { color: #4299e1; transform: translateX(3px); }
+        .ph-card-badge {
+            display: inline-block;
+            font-size: .65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+        .ph-card-badge.nejm { background: rgba(229,62,62,.2); color: #fc8181; }
+        .ph-card-badge.interactive { background: rgba(237,137,54,.2); color: #fbd38d; }
+
+        .ph-footnote {
+            margin-top: 20px;
+            font-size: .72rem;
+            color: #4a5568;
+            max-width: 360px;
+            line-height: 1.5;
+        }
 
         #pdf-container {
             position: relative;
@@ -225,7 +389,7 @@
             flex-direction: column;
             overflow: hidden;
             transition: box-shadow .2s;
-            flex-shrink: 0;         /* KEY FIX: never compress */
+            flex-shrink: 0;
         }
         .dx-box:hover { box-shadow: 0 3px 12px rgba(0,0,0,.1); }
 
@@ -313,7 +477,7 @@
             white-space: nowrap;
         }
 
-        /* List area — NO max-height; grows naturally, panel scrolls */
+        /* List area */
         .dx-list {
             padding: 6px 8px;
             min-height: 48px;
@@ -389,23 +553,6 @@
 
         .item-icon { font-size: .9rem; flex-shrink: 0; }
 
-        /* ── Scrollbar Styling ─────────────────────────────── */
-        .pdf-viewer::-webkit-scrollbar,
-        .diagnostic-panel::-webkit-scrollbar {
-            width: 7px; height: 7px;
-        }
-        .pdf-viewer::-webkit-scrollbar-track,
-        .diagnostic-panel::-webkit-scrollbar-track { background: transparent; }
-        .pdf-viewer::-webkit-scrollbar-thumb { background: rgba(255,255,255,.2); border-radius: 4px; }
-        .diagnostic-panel::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 4px; }
-        .diagnostic-panel::-webkit-scrollbar-thumb:hover { background: #a0aec0; }
-
-        /* ── Animations ────────────────────────────────────── */
-        @keyframes fadeSlideIn {
-            from { opacity: 0; transform: translateY(-6px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
         /* ── Collapse / Expand toggle ──────────────────────── */
         .collapse-btn {
             background: none; border: none;
@@ -422,6 +569,22 @@
 
         .dx-body { overflow: hidden; transition: max-height .3s ease; }
         .dx-body.collapsed { max-height: 0 !important; }
+
+        /* ── Scrollbar Styling ─────────────────────────────── */
+        .pdf-viewer::-webkit-scrollbar,
+        .diagnostic-panel::-webkit-scrollbar {
+            width: 7px; height: 7px;
+        }
+        .pdf-viewer::-webkit-scrollbar-track,
+        .diagnostic-panel::-webkit-scrollbar-track { background: transparent; }
+        .pdf-viewer::-webkit-scrollbar-thumb { background: rgba(255,255,255,.2); border-radius: 4px; }
+        .diagnostic-panel::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 4px; }
+        .diagnostic-panel::-webkit-scrollbar-thumb:hover { background: #a0aec0; }
+
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
 
         /* ── Print ─────────────────────────────────────────── */
         @media print {
@@ -445,6 +608,36 @@
         </div>
     </div>
     <div class="header-actions">
+
+        <!-- Find Cases Dropdown -->
+        <div class="cases-dropdown-wrap">
+            <button class="btn btn-cases" onclick="toggleCasesDropdown()" id="cases-btn">
+                📚 Find Cases
+            </button>
+            <div class="cases-dropdown" id="cases-dropdown">
+                <div class="cases-dropdown-header">NEJM Case Resources</div>
+                <a class="case-link" href="https://www-nejm-org.cuanschutz.idm.oclc.org/browse/nejm-article-type/case-records-of-the-massachusetts-general-hospital?query=featured_secondary_home" target="_blank" rel="noopener">
+                    <div class="case-link-icon cpc">🏥</div>
+                    <div class="case-link-info">
+                        <div class="case-link-title">Case Records of the MGH</div>
+                        <div class="case-link-desc">Classic clinicopathological conferences — full case presentations with expert discussion &amp; diagnosis</div>
+                    </div>
+                    <span class="case-link-arrow">→</span>
+                </a>
+                <a class="case-link" href="https://www-nejm-org.cuanschutz.idm.oclc.org/case-challenges" target="_blank" rel="noopener">
+                    <div class="case-link-icon challenge">🧩</div>
+                    <div class="case-link-info">
+                        <div class="case-link-title">Interactive Case Challenges</div>
+                        <div class="case-link-desc">Self-assessment cases with step-by-step clinical decision points and feedback</div>
+                    </div>
+                    <span class="case-link-arrow">→</span>
+                </a>
+                <div class="cases-dropdown-footer">
+                    CU Anschutz proxy links · Download case PDF then upload here
+                </div>
+            </div>
+        </div>
+
         <input type="file" id="file-input" accept=".pdf">
         <button class="btn btn-upload" onclick="document.getElementById('file-input').click()">
             📄 Upload PDF
@@ -474,11 +667,43 @@
             <button onclick="fitToWidth()">Fit</button>
         </div>
         <div class="pdf-viewer" id="pdf-viewer">
+
+            <!-- Placeholder with case resource links -->
             <div class="pdf-placeholder" id="pdf-placeholder">
                 <div class="ph-icon">📋</div>
                 <div class="ph-title">Upload an NEJM Case PDF</div>
-                <div class="ph-sub">Click <strong>Upload PDF</strong> above to begin</div>
+                <div class="ph-sub">Click <strong>Upload PDF</strong> above to load a case</div>
+
+                <div class="ph-divider"></div>
+
+                <div class="ph-links-title">Or browse NEJM cases first</div>
+
+                <div class="ph-case-links">
+                    <a class="ph-case-card" href="https://www-nejm-org.cuanschutz.idm.oclc.org/browse/nejm-article-type/case-records-of-the-massachusetts-general-hospital?query=featured_secondary_home" target="_blank" rel="noopener">
+                        <div class="ph-card-icon cpc">🏥</div>
+                        <div class="ph-card-info">
+                            <div class="ph-card-title">Case Records of the MGH</div>
+                            <div class="ph-card-desc">Classic CPC cases — full presentation, differential diagnosis discussion, and final diagnosis</div>
+                            <span class="ph-card-badge nejm">CPC Series</span>
+                        </div>
+                        <span class="ph-card-arrow">→</span>
+                    </a>
+                    <a class="ph-case-card" href="https://www-nejm-org.cuanschutz.idm.oclc.org/case-challenges" target="_blank" rel="noopener">
+                        <div class="ph-card-icon challenge">🧩</div>
+                        <div class="ph-card-info">
+                            <div class="ph-card-title">Interactive Case Challenges</div>
+                            <div class="ph-card-desc">Step-by-step clinical decision making with self-assessment and expert feedback</div>
+                            <span class="ph-card-badge interactive">Interactive</span>
+                        </div>
+                        <span class="ph-card-arrow">→</span>
+                    </a>
+                </div>
+
+                <div class="ph-footnote">
+                    💡 <strong>Workflow:</strong> Open a case link above → download the PDF from NEJM → click <strong>Upload PDF</strong> to load it here → build your differential as you read
+                </div>
             </div>
+
             <div id="pdf-container">
                 <canvas id="pdf-canvas"></canvas>
                 <div id="text-layer"></div>
@@ -499,7 +724,7 @@
                 <input type="text" id="case-title" placeholder="e.g. NEJM CPC — 45 y/o F with dyspnea and rash">
             </div>
 
-            <!-- 1. Differential Diagnosis (full-width, draggable) -->
+            <!-- 1. Differential Diagnosis -->
             <div class="dx-box theme-red" id="box-ddx">
                 <div class="dx-box-header">
                     <div class="dx-box-header-left">
@@ -521,9 +746,8 @@
                 </div>
             </div>
 
-            <!-- 2 + 3. Labs & Imaging (side by side) -->
+            <!-- 2 + 3. Labs & Imaging -->
             <div class="two-col-grid">
-
                 <!-- Labs -->
                 <div class="dx-box theme-blue" id="box-labs">
                     <div class="dx-box-header">
@@ -567,7 +791,7 @@
                 </div>
             </div>
 
-            <!-- 4. Management (full-width) -->
+            <!-- 4. Management -->
             <div class="dx-box theme-purple" id="box-mgmt">
                 <div class="dx-box-header">
                     <div class="dx-box-header-left">
@@ -588,11 +812,26 @@
                 </div>
             </div>
 
-        </div><!-- /panel-inner -->
+        </div>
     </section>
 </div>
 
 <script>
+/* ═══════════════════════════════════════════════════════════
+   Cases Dropdown
+   ═══════════════════════════════════════════════════════════ */
+function toggleCasesDropdown() {
+    document.getElementById('cases-dropdown').classList.toggle('show');
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', e => {
+    const wrap = document.querySelector('.cases-dropdown-wrap');
+    if (!wrap.contains(e.target)) {
+        document.getElementById('cases-dropdown').classList.remove('show');
+    }
+});
+
 /* ═══════════════════════════════════════════════════════════
    PDF.js Setup
    ═══════════════════════════════════════════════════════════ */
@@ -736,7 +975,6 @@ function addItem(cat) {
     renderList(cat);
     inp.focus();
 
-    // auto-expand if collapsed
     const body = document.getElementById('body-' + cat);
     if (body.classList.contains('collapsed')) {
         body.classList.remove('collapsed');
@@ -921,7 +1159,6 @@ function clearAll() {
     lists.ddx = []; lists.labs = []; lists.imaging = []; lists.mgmt = [];
     document.getElementById('case-title').value = '';
     ['ddx','labs','imaging','mgmt'].forEach(renderList);
-    // expand all
     ['ddx','labs','imaging','mgmt'].forEach(cat => {
         const body = document.getElementById('body-' + cat);
         body.classList.remove('collapsed');
