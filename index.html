@@ -78,6 +78,7 @@
             display: flex;
             flex-direction: column;
             background: #1e2533;
+            flex-shrink: 0;
         }
 
         .pdf-toolbar {
@@ -126,11 +127,7 @@
             text-align: center;
             user-select: none;
         }
-        .pdf-placeholder .ph-icon {
-            font-size: 4.5rem;
-            margin-bottom: 18px;
-            opacity: .6;
-        }
+        .pdf-placeholder .ph-icon { font-size: 4.5rem; margin-bottom: 18px; opacity: .6; }
         .pdf-placeholder .ph-title { font-size: 1.15rem; font-weight: 600; margin-bottom: 6px; }
         .pdf-placeholder .ph-sub { font-size: .85rem; opacity: .7; }
 
@@ -148,14 +145,9 @@
         /* ── PDF Text Layer ────────────────────────────────── */
         #text-layer {
             position: absolute;
-            left: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
+            left: 0; top: 0; right: 0; bottom: 0;
             overflow: hidden;
             line-height: 1.0;
-            -webkit-text-size-adjust: none;
-            text-size-adjust: none;
         }
         #text-layer > span {
             color: transparent;
@@ -164,14 +156,8 @@
             cursor: text;
             transform-origin: 0% 0%;
         }
-        #text-layer ::selection {
-            background: rgba(66, 153, 225, .45);
-            color: transparent;
-        }
-        #text-layer ::-moz-selection {
-            background: rgba(66, 153, 225, .45);
-            color: transparent;
-        }
+        #text-layer ::selection { background: rgba(66, 153, 225, .45); color: transparent; }
+        #text-layer ::-moz-selection { background: rgba(66, 153, 225, .45); color: transparent; }
 
         /* ── Resizer Handle ────────────────────────────────── */
         .resizer {
@@ -190,6 +176,10 @@
             flex: 1;
             overflow-y: auto;
             padding: 16px;
+            min-width: 320px;
+        }
+
+        .panel-inner {
             display: flex;
             flex-direction: column;
             gap: 14px;
@@ -205,17 +195,13 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-shrink: 0;
         }
         .case-title-bar label { font-weight: 600; font-size: .82rem; color: #4a5568; white-space: nowrap; }
         .case-title-bar input {
-            flex: 1;
-            border: none;
-            outline: none;
-            font-family: inherit;
-            font-size: .92rem;
-            font-weight: 500;
-            color: #1a365d;
-            background: transparent;
+            flex: 1; border: none; outline: none;
+            font-family: inherit; font-size: .92rem; font-weight: 500;
+            color: #1a365d; background: transparent;
         }
         .case-title-bar input::placeholder { color: #a0aec0; font-weight: 400; }
 
@@ -239,6 +225,7 @@
             flex-direction: column;
             overflow: hidden;
             transition: box-shadow .2s;
+            flex-shrink: 0;         /* KEY FIX: never compress */
         }
         .dx-box:hover { box-shadow: 0 3px 12px rgba(0,0,0,.1); }
 
@@ -252,6 +239,7 @@
             letter-spacing: .6px;
             text-transform: uppercase;
             color: #fff;
+            flex-shrink: 0;
         }
         .dx-box-header .badge {
             background: rgba(255,255,255,.25);
@@ -290,6 +278,7 @@
             border-bottom: 1px solid #fed7d7;
             text-align: center;
             font-weight: 500;
+            flex-shrink: 0;
         }
 
         /* Input area */
@@ -298,6 +287,7 @@
             display: flex;
             gap: 8px;
             border-bottom: 1px solid #edf2f7;
+            flex-shrink: 0;
         }
         .dx-input-row input {
             flex: 1;
@@ -323,15 +313,11 @@
             white-space: nowrap;
         }
 
-        /* List area */
+        /* List area — NO max-height; grows naturally, panel scrolls */
         .dx-list {
             padding: 6px 8px;
             min-height: 48px;
-            max-height: 280px;
-            overflow-y: auto;
-            flex: 1;
         }
-        .dx-list.tall { max-height: 340px; }
 
         .dx-list-empty {
             display: flex;
@@ -356,11 +342,12 @@
             border-radius: 7px;
             transition: all .15s;
             user-select: none;
+            animation: fadeSlideIn .2s ease;
         }
         .dx-item:hover { background: #edf2f7; border-color: #cbd5e0; }
         .dx-item.dragging { opacity: .4; background: #ebf8ff; }
-        .dx-item.drag-over-top { border-top: 3px solid #e53e3e; margin-top: 0; }
-        .dx-item.drag-over-bottom { border-bottom: 3px solid #e53e3e; margin-bottom: 0; }
+        .dx-item.drag-over-top { border-top: 3px solid #4299e1; padding-top: 4px; }
+        .dx-item.drag-over-bottom { border-bottom: 3px solid #4299e1; padding-bottom: 4px; }
 
         .drag-handle {
             cursor: grab;
@@ -372,15 +359,11 @@
         .drag-handle:active { cursor: grabbing; }
 
         .rank-num {
-            width: 22px;
-            height: 22px;
+            width: 22px; height: 22px;
             border-radius: 50%;
             color: #fff;
-            font-size: .7rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-size: .7rem; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
             flex-shrink: 0;
         }
 
@@ -392,59 +375,58 @@
         }
 
         .item-remove {
-            background: none;
-            border: none;
+            background: none; border: none;
             color: #cbd5e0;
             cursor: pointer;
             font-size: .95rem;
             padding: 2px 4px;
             border-radius: 4px;
             transition: all .15s;
-            display: flex;
-            align-items: center;
+            display: flex; align-items: center;
             line-height: 1;
         }
         .item-remove:hover { color: #e53e3e; background: #fff5f5; }
 
-        .item-icon {
-            font-size: .9rem;
-            flex-shrink: 0;
-        }
+        .item-icon { font-size: .9rem; flex-shrink: 0; }
 
         /* ── Scrollbar Styling ─────────────────────────────── */
         .pdf-viewer::-webkit-scrollbar,
-        .diagnostic-panel::-webkit-scrollbar,
-        .dx-list::-webkit-scrollbar {
+        .diagnostic-panel::-webkit-scrollbar {
             width: 7px; height: 7px;
         }
         .pdf-viewer::-webkit-scrollbar-track,
-        .diagnostic-panel::-webkit-scrollbar-track,
-        .dx-list::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .pdf-viewer::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,.2); border-radius: 4px;
-        }
-        .diagnostic-panel::-webkit-scrollbar-thumb,
-        .dx-list::-webkit-scrollbar-thumb {
-            background: #cbd5e0; border-radius: 4px;
-        }
-        .diagnostic-panel::-webkit-scrollbar-thumb:hover,
-        .dx-list::-webkit-scrollbar-thumb:hover {
-            background: #a0aec0;
-        }
+        .diagnostic-panel::-webkit-scrollbar-track { background: transparent; }
+        .pdf-viewer::-webkit-scrollbar-thumb { background: rgba(255,255,255,.2); border-radius: 4px; }
+        .diagnostic-panel::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 4px; }
+        .diagnostic-panel::-webkit-scrollbar-thumb:hover { background: #a0aec0; }
 
         /* ── Animations ────────────────────────────────────── */
         @keyframes fadeSlideIn {
             from { opacity: 0; transform: translateY(-6px); }
             to   { opacity: 1; transform: translateY(0); }
         }
-        .dx-item { animation: fadeSlideIn .2s ease; }
 
-        /* ── Print / Export styles ──────────────────────────── */
+        /* ── Collapse / Expand toggle ──────────────────────── */
+        .collapse-btn {
+            background: none; border: none;
+            color: rgba(255,255,255,.7);
+            cursor: pointer;
+            font-size: .85rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: all .15s;
+            margin-left: 8px;
+        }
+        .collapse-btn:hover { color: #fff; background: rgba(255,255,255,.15); }
+        .dx-box-header-left { display: flex; align-items: center; gap: 4px; }
+
+        .dx-body { overflow: hidden; transition: max-height .3s ease; }
+        .dx-body.collapsed { max-height: 0 !important; }
+
+        /* ── Print ─────────────────────────────────────────── */
         @media print {
             .pdf-panel, .resizer, .header-actions, .dx-input-row, .dx-hint,
-            .item-remove, .drag-handle { display: none !important; }
+            .item-remove, .drag-handle, .collapse-btn { display: none !important; }
             .main-container { display: block !important; }
             .diagnostic-panel { width: 100% !important; overflow: visible !important; }
             .dx-box { break-inside: avoid; }
@@ -467,7 +449,7 @@
         <button class="btn btn-upload" onclick="document.getElementById('file-input').click()">
             📄 Upload PDF
         </button>
-        <button class="btn btn-save" onclick="exportSession()" title="Export your session as JSON">
+        <button class="btn btn-save" onclick="exportSession()" title="Export session as JSON">
             💾 Export
         </button>
         <button class="btn btn-reset" onclick="clearAll()">
@@ -509,82 +491,104 @@
 
     <!-- ── Right: Diagnostic Grid ── -->
     <section class="diagnostic-panel" id="diag-panel">
+        <div class="panel-inner">
 
-        <!-- Case Title -->
-        <div class="case-title-bar">
-            <label>📝 Case:</label>
-            <input type="text" id="case-title" placeholder="e.g. NEJM CPC — 45 y/o F with dyspnea and rash">
-        </div>
-
-        <!-- 1. Differential Diagnosis (full-width, draggable) -->
-        <div class="dx-box theme-red" id="box-ddx">
-            <div class="dx-box-header">
-                <span>🔍 Differential Diagnosis</span>
-                <span class="badge" id="count-ddx">0</span>
+            <!-- Case Title -->
+            <div class="case-title-bar">
+                <label>📝 Case:</label>
+                <input type="text" id="case-title" placeholder="e.g. NEJM CPC — 45 y/o F with dyspnea and rash">
             </div>
-            <div class="dx-hint">Drag & drop to rank — #1 = most likely</div>
-            <div class="dx-input-row">
-                <input id="input-ddx" placeholder="Add a diagnosis…"
-                       onkeydown="if(event.key==='Enter')addItem('ddx')">
-                <button class="dx-add-btn" onclick="addItem('ddx')">+ Add</button>
-            </div>
-            <div class="dx-list tall" id="list-ddx">
-                <div class="dx-list-empty">No diagnoses yet</div>
-            </div>
-        </div>
 
-        <!-- 2 + 3. Labs & Imaging (side by side) -->
-        <div class="two-col-grid">
-
-            <!-- Labs -->
-            <div class="dx-box theme-blue" id="box-labs">
+            <!-- 1. Differential Diagnosis (full-width, draggable) -->
+            <div class="dx-box theme-red" id="box-ddx">
                 <div class="dx-box-header">
-                    <span>🧪 Laboratory Studies</span>
-                    <span class="badge" id="count-labs">0</span>
+                    <div class="dx-box-header-left">
+                        <span>🔍 Differential Diagnosis</span>
+                        <button class="collapse-btn" onclick="toggleCollapse('ddx', this)" title="Collapse / Expand">▼</button>
+                    </div>
+                    <span class="badge" id="count-ddx">0</span>
                 </div>
-                <div class="dx-input-row">
-                    <input id="input-labs" placeholder="Add a lab…"
-                           onkeydown="if(event.key==='Enter')addItem('labs')">
-                    <button class="dx-add-btn" onclick="addItem('labs')">+ Add</button>
-                </div>
-                <div class="dx-list" id="list-labs">
-                    <div class="dx-list-empty">No labs yet</div>
+                <div class="dx-body" id="body-ddx">
+                    <div class="dx-hint">Drag & drop to rank — #1 = most likely</div>
+                    <div class="dx-input-row">
+                        <input id="input-ddx" placeholder="Add a diagnosis…"
+                               onkeydown="if(event.key==='Enter')addItem('ddx')">
+                        <button class="dx-add-btn" onclick="addItem('ddx')">+ Add</button>
+                    </div>
+                    <div class="dx-list" id="list-ddx">
+                        <div class="dx-list-empty">No diagnoses yet</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Imaging -->
-            <div class="dx-box theme-green" id="box-imaging">
+            <!-- 2 + 3. Labs & Imaging (side by side) -->
+            <div class="two-col-grid">
+
+                <!-- Labs -->
+                <div class="dx-box theme-blue" id="box-labs">
+                    <div class="dx-box-header">
+                        <div class="dx-box-header-left">
+                            <span>🧪 Laboratory Studies</span>
+                            <button class="collapse-btn" onclick="toggleCollapse('labs', this)" title="Collapse / Expand">▼</button>
+                        </div>
+                        <span class="badge" id="count-labs">0</span>
+                    </div>
+                    <div class="dx-body" id="body-labs">
+                        <div class="dx-input-row">
+                            <input id="input-labs" placeholder="Add a lab…"
+                                   onkeydown="if(event.key==='Enter')addItem('labs')">
+                            <button class="dx-add-btn" onclick="addItem('labs')">+ Add</button>
+                        </div>
+                        <div class="dx-list" id="list-labs">
+                            <div class="dx-list-empty">No labs yet</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Imaging -->
+                <div class="dx-box theme-green" id="box-imaging">
+                    <div class="dx-box-header">
+                        <div class="dx-box-header-left">
+                            <span>📷 Diagnostic Imaging</span>
+                            <button class="collapse-btn" onclick="toggleCollapse('imaging', this)" title="Collapse / Expand">▼</button>
+                        </div>
+                        <span class="badge" id="count-imaging">0</span>
+                    </div>
+                    <div class="dx-body" id="body-imaging">
+                        <div class="dx-input-row">
+                            <input id="input-imaging" placeholder="Add imaging…"
+                                   onkeydown="if(event.key==='Enter')addItem('imaging')">
+                            <button class="dx-add-btn" onclick="addItem('imaging')">+ Add</button>
+                        </div>
+                        <div class="dx-list" id="list-imaging">
+                            <div class="dx-list-empty">No imaging yet</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Management (full-width) -->
+            <div class="dx-box theme-purple" id="box-mgmt">
                 <div class="dx-box-header">
-                    <span>📷 Diagnostic Imaging</span>
-                    <span class="badge" id="count-imaging">0</span>
+                    <div class="dx-box-header-left">
+                        <span>💊 Management Plan</span>
+                        <button class="collapse-btn" onclick="toggleCollapse('mgmt', this)" title="Collapse / Expand">▼</button>
+                    </div>
+                    <span class="badge" id="count-mgmt">0</span>
                 </div>
-                <div class="dx-input-row">
-                    <input id="input-imaging" placeholder="Add imaging…"
-                           onkeydown="if(event.key==='Enter')addItem('imaging')">
-                    <button class="dx-add-btn" onclick="addItem('imaging')">+ Add</button>
-                </div>
-                <div class="dx-list" id="list-imaging">
-                    <div class="dx-list-empty">No imaging yet</div>
+                <div class="dx-body" id="body-mgmt">
+                    <div class="dx-input-row">
+                        <input id="input-mgmt" placeholder="Add management consideration…"
+                               onkeydown="if(event.key==='Enter')addItem('mgmt')">
+                        <button class="dx-add-btn" onclick="addItem('mgmt')">+ Add</button>
+                    </div>
+                    <div class="dx-list" id="list-mgmt">
+                        <div class="dx-list-empty">No items yet</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 4. Management (full-width) -->
-        <div class="dx-box theme-purple" id="box-mgmt">
-            <div class="dx-box-header">
-                <span>💊 Management Plan</span>
-                <span class="badge" id="count-mgmt">0</span>
-            </div>
-            <div class="dx-input-row">
-                <input id="input-mgmt" placeholder="Add management consideration…"
-                       onkeydown="if(event.key==='Enter')addItem('mgmt')">
-                <button class="dx-add-btn" onclick="addItem('mgmt')">+ Add</button>
-            </div>
-            <div class="dx-list" id="list-mgmt">
-                <div class="dx-list-empty">No items yet</div>
-            </div>
-        </div>
-
+        </div><!-- /panel-inner -->
     </section>
 </div>
 
@@ -630,7 +634,6 @@ async function renderPage() {
     canvas.height = vp.height;
     await page.render({ canvasContext: ctx, viewport: vp }).promise;
 
-    /* Text layer for selection */
     textLayer.innerHTML = '';
     textLayer.style.width  = vp.width  + 'px';
     textLayer.style.height = vp.height + 'px';
@@ -648,7 +651,6 @@ async function renderPage() {
         }
     } catch (err) { console.warn('Text layer error:', err); }
 
-    /* Update toolbar */
     document.getElementById('page-info').textContent = `${pageNum} / ${numPages}`;
     document.getElementById('prev-btn').disabled = pageNum <= 1;
     document.getElementById('next-btn').disabled = pageNum >= numPages;
@@ -674,9 +676,8 @@ function fitToWidth() {
     });
 }
 
-/* ── Keyboard navigation ──────────────────────────────── */
 document.addEventListener('keydown', e => {
-    if (e.target.tagName === 'INPUT') return;           // don't hijack typing
+    if (e.target.tagName === 'INPUT') return;
     if (e.key === 'ArrowLeft')  changePage(-1);
     if (e.key === 'ArrowRight') changePage(1);
 });
@@ -697,7 +698,6 @@ document.addEventListener('keydown', e => {
         document.addEventListener('mouseup', onUp);
         e.preventDefault();
     });
-
     function onMove(e) {
         const w = startW + (e.clientX - startX);
         const min = 280, max = window.innerWidth - 340;
@@ -711,10 +711,18 @@ document.addEventListener('keydown', e => {
 })();
 
 /* ═══════════════════════════════════════════════════════════
+   Collapse / Expand Toggle
+   ═══════════════════════════════════════════════════════════ */
+function toggleCollapse(cat, btn) {
+    const body = document.getElementById('body-' + cat);
+    const isCollapsed = body.classList.toggle('collapsed');
+    btn.textContent = isCollapsed ? '▶' : '▼';
+}
+
+/* ═══════════════════════════════════════════════════════════
    Diagnostic Lists — Data & Rendering
    ═══════════════════════════════════════════════════════════ */
 const lists = { ddx: [], labs: [], imaging: [], mgmt: [] };
-
 const icons = { labs: '🧪', imaging: '📷', mgmt: '💊' };
 
 function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
@@ -727,6 +735,14 @@ function addItem(cat) {
     inp.value = '';
     renderList(cat);
     inp.focus();
+
+    // auto-expand if collapsed
+    const body = document.getElementById('body-' + cat);
+    if (body.classList.contains('collapsed')) {
+        body.classList.remove('collapsed');
+        const btn = body.closest('.dx-box').querySelector('.collapse-btn');
+        if (btn) btn.textContent = '▼';
+    }
 }
 
 function removeItem(cat, idx) {
@@ -763,8 +779,6 @@ function renderList(cat) {
             item.addEventListener('dragenter', onDragEnter);
             item.addEventListener('dragleave', onDragLeave);
             item.addEventListener('drop',      onDrop);
-
-            /* touch reorder support */
             item.addEventListener('touchstart', onTouchStart, { passive: false });
         } else {
             item.innerHTML = `
@@ -808,28 +822,33 @@ function onDragLeave() {
 function onDrop(e) {
     e.preventDefault();
     e.stopPropagation();
-    const tgt = +this.dataset.index;
-    if (dragSrcIdx !== null && dragSrcIdx !== tgt) {
-        const moved = lists.ddx.splice(dragSrcIdx, 1)[0];
-        const rect  = this.getBoundingClientRect();
-        const insertIdx = e.clientY < rect.top + rect.height / 2 ? tgt : tgt + (dragSrcIdx < tgt ? 0 : 1);
-        lists.ddx.splice(insertIdx > lists.ddx.length ? lists.ddx.length : insertIdx, 0, moved);
+    const from = dragSrcIdx;
+    const to   = +this.dataset.index;
+    if (from !== null && from !== to) {
+        const rect = this.getBoundingClientRect();
+        const before = e.clientY < rect.top + rect.height / 2;
+        const moved  = lists.ddx.splice(from, 1)[0];
+        let insertAt = before ? to : to + 1;
+        if (from < to) insertAt--;
+        if (insertAt < 0) insertAt = 0;
+        if (insertAt > lists.ddx.length) insertAt = lists.ddx.length;
+        lists.ddx.splice(insertAt, 0, moved);
         renderList('ddx');
     }
     this.classList.remove('drag-over-top', 'drag-over-bottom');
 }
 
 /* ═══════════════════════════════════════════════════════════
-   Touch-based Reorder (mobile / tablet support)
+   Touch-based Reorder
    ═══════════════════════════════════════════════════════════ */
 let touchSrcIdx = null, touchClone = null, touchTarget = null;
 
 function onTouchStart(e) {
-    if (e.target.classList.contains('item-remove')) return; // allow remove tap
+    if (e.target.classList.contains('item-remove')) return;
     const touch = e.touches[0];
     touchSrcIdx = +this.dataset.index;
+    const self = this;
 
-    // create floating clone
     touchClone = this.cloneNode(true);
     touchClone.style.cssText = `
         position:fixed; left:${touch.clientX - 30}px; top:${touch.clientY - 20}px;
@@ -837,7 +856,7 @@ function onTouchStart(e) {
         pointer-events:none; box-shadow:0 8px 24px rgba(0,0,0,.25);
         border-radius:7px; background:#fff;`;
     document.body.appendChild(touchClone);
-    this.classList.add('dragging');
+    self.classList.add('dragging');
 
     const onMove = ev => {
         ev.preventDefault();
@@ -858,7 +877,7 @@ function onTouchStart(e) {
 
     const onEnd = () => {
         if (touchClone) { touchClone.remove(); touchClone = null; }
-        this.classList.remove('dragging');
+        self.classList.remove('dragging');
         document.querySelectorAll('.dx-item').forEach(d => d.classList.remove('drag-over-top'));
 
         if (touchTarget !== null && touchSrcIdx !== touchTarget) {
@@ -892,7 +911,7 @@ function exportSession() {
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
     a.href = url;
-    a.download = (payload.caseTitle || 'case-review') .replace(/[^a-z0-9]/gi, '_') + '.json';
+    a.download = (payload.caseTitle || 'case-review').replace(/[^a-z0-9]/gi, '_') + '.json';
     a.click();
     URL.revokeObjectURL(url);
 }
@@ -902,6 +921,13 @@ function clearAll() {
     lists.ddx = []; lists.labs = []; lists.imaging = []; lists.mgmt = [];
     document.getElementById('case-title').value = '';
     ['ddx','labs','imaging','mgmt'].forEach(renderList);
+    // expand all
+    ['ddx','labs','imaging','mgmt'].forEach(cat => {
+        const body = document.getElementById('body-' + cat);
+        body.classList.remove('collapsed');
+        const btn = body.closest('.dx-box').querySelector('.collapse-btn');
+        if (btn) btn.textContent = '▼';
+    });
 }
 </script>
 </body>
