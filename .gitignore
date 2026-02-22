@@ -1,9 +1,0 @@
-# Secrets
-.env
-.env.local
-
-# Dependencies
-node_modules
-
-# Build folder
-dist
