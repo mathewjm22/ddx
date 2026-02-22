@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CaseDx – Medical Case Simulator</title>
     <style>
-        /* ===== CSS RESET & VARIABLES ===== */
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
@@ -49,7 +48,6 @@
             height: 100vh;
         }
 
-        /* ===== HEADER ===== */
         .app-header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
@@ -71,9 +69,7 @@
             gap: 8px;
         }
 
-        .app-header h1 .icon {
-            font-size: 1.4rem;
-        }
+        .app-header h1 .icon { font-size: 1.4rem; }
 
         .header-actions {
             display: flex;
@@ -81,7 +77,6 @@
             gap: 8px;
         }
 
-        /* ===== BUTTONS ===== */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -96,68 +91,37 @@
             white-space: nowrap;
         }
 
-        .btn-primary {
-            background: white;
-            color: var(--primary);
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-light);
-        }
+        .btn-primary { background: white; color: var(--primary); }
+        .btn-primary:hover { background: var(--primary-light); }
 
         .btn-secondary {
             background: rgba(255,255,255,0.15);
             color: white;
             border: 1px solid rgba(255,255,255,0.3);
         }
+        .btn-secondary:hover { background: rgba(255,255,255,0.25); }
 
-        .btn-secondary:hover {
-            background: rgba(255,255,255,0.25);
-        }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: #15803d; }
 
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #15803d;
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #b91c1c;
-        }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-danger:hover { background: #b91c1c; }
 
         .btn-outline {
             background: transparent;
             color: var(--primary);
             border: 1.5px solid var(--primary);
         }
-
-        .btn-outline:hover {
-            background: var(--primary-light);
-        }
+        .btn-outline:hover { background: var(--primary-light); }
 
         .btn-ghost {
             background: transparent;
             color: var(--gray-500);
             padding: 5px 8px;
         }
+        .btn-ghost:hover { background: var(--gray-100); color: var(--gray-700); }
 
-        .btn-ghost:hover {
-            background: var(--gray-100);
-            color: var(--gray-700);
-        }
-
-        .btn-sm {
-            padding: 4px 10px;
-            font-size: 0.8rem;
-        }
+        .btn-sm { padding: 4px 10px; font-size: 0.8rem; }
 
         .btn-icon {
             padding: 6px;
@@ -165,14 +129,12 @@
             justify-content: center;
         }
 
-        /* ===== MAIN LAYOUT ===== */
         .main-container {
             display: flex;
             height: calc(100vh - 52px);
             overflow: hidden;
         }
 
-        /* ===== LEFT PANEL - PDF VIEWER ===== */
         .pdf-panel {
             flex: 1;
             display: flex;
@@ -205,10 +167,7 @@
             padding: 4px 8px;
             font-size: 0.8rem;
         }
-
-        .pdf-toolbar .btn:hover {
-            background: rgba(255,255,255,0.2);
-        }
+        .pdf-toolbar .btn:hover { background: rgba(255,255,255,0.2); }
 
         .pdf-content {
             flex: 1;
@@ -243,27 +202,15 @@
             padding: 40px;
         }
 
-        .pdf-placeholder .upload-icon {
-            font-size: 4rem;
-            line-height: 1;
-        }
-
-        .pdf-placeholder h3 {
-            color: var(--gray-600);
-            font-size: 1.1rem;
-        }
-
-        .pdf-placeholder p {
-            font-size: 0.9rem;
-            max-width: 320px;
-        }
+        .pdf-placeholder .upload-icon { font-size: 4rem; line-height: 1; }
+        .pdf-placeholder h3 { color: var(--gray-600); font-size: 1.1rem; }
+        .pdf-placeholder p { font-size: 0.9rem; max-width: 320px; }
 
         .drop-zone-active .pdf-content {
             background: var(--primary-light);
             border: 3px dashed var(--primary);
         }
 
-        /* ===== RESIZE HANDLE ===== */
         .resize-handle {
             width: 6px;
             background: var(--gray-300);
@@ -275,23 +222,15 @@
             flex-shrink: 0;
         }
 
-        .resize-handle:hover,
-        .resize-handle.active {
-            background: var(--primary);
-        }
+        .resize-handle:hover, .resize-handle.active { background: var(--primary); }
 
         .resize-handle::after {
             content: '⋮';
             color: var(--gray-500);
             font-size: 1.2rem;
         }
+        .resize-handle:hover::after, .resize-handle.active::after { color: white; }
 
-        .resize-handle:hover::after,
-        .resize-handle.active::after {
-            color: white;
-        }
-
-        /* ===== RIGHT PANEL - WORKSPACE ===== */
         .workspace-panel {
             width: 520px;
             min-width: 380px;
@@ -329,10 +268,7 @@
             gap: 6px;
         }
 
-        .workspace-tab:hover {
-            color: var(--gray-700);
-            background: var(--gray-100);
-        }
+        .workspace-tab:hover { color: var(--gray-700); background: var(--gray-100); }
 
         .workspace-tab.active {
             color: var(--primary);
@@ -360,15 +296,9 @@
             padding: 16px;
         }
 
-        .tab-pane {
-            display: none;
-        }
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; }
 
-        .tab-pane.active {
-            display: block;
-        }
-
-        /* ===== SECTION CARDS ===== */
         .section-card {
             background: white;
             border: 1px solid var(--gray-200);
@@ -402,27 +332,18 @@
             color: var(--gray-400);
         }
 
-        .section-header.collapsed .collapse-icon {
-            transform: rotate(-90deg);
-        }
+        .section-header.collapsed .collapse-icon { transform: rotate(-90deg); }
 
-        .section-body {
-            padding: 12px 14px;
-        }
+        .section-body { padding: 12px 14px; }
+        .section-body.collapsed { display: none; }
 
-        .section-body.collapsed {
-            display: none;
-        }
-
-        /* ===== INPUT GROUP ===== */
         .input-group {
             display: flex;
             gap: 6px;
             margin-bottom: 10px;
         }
 
-        .input-group input,
-        .input-group textarea {
+        .input-group input, .input-group textarea {
             flex: 1;
             padding: 8px 12px;
             border: 1.5px solid var(--gray-300);
@@ -432,21 +353,15 @@
             font-family: inherit;
         }
 
-        .input-group input:focus,
-        .input-group textarea:focus {
+        .input-group input:focus, .input-group textarea:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
-        .input-group input::placeholder {
-            color: var(--gray-400);
-        }
+        .input-group input::placeholder { color: var(--gray-400); }
 
-        /* ===== DIAGNOSIS LIST ===== */
-        .dx-list {
-            list-style: none;
-        }
+        .dx-list { list-style: none; }
 
         .dx-item {
             display: flex;
@@ -462,9 +377,7 @@
             user-select: none;
         }
 
-        .dx-item:active {
-            cursor: grabbing;
-        }
+        .dx-item:active { cursor: grabbing; }
 
         .dx-item.dragging {
             opacity: 0.5;
@@ -472,9 +385,7 @@
             border-color: var(--primary);
         }
 
-        .dx-item.drag-over {
-            border-top: 2px solid var(--primary);
-        }
+        .dx-item.drag-over { border-top: 2px solid var(--primary); }
 
         .dx-rank {
             font-weight: 800;
@@ -490,10 +401,7 @@
             flex-shrink: 0;
         }
 
-        .dx-rank.top {
-            background: var(--success-light);
-            color: var(--success);
-        }
+        .dx-rank.top { background: var(--success-light); color: var(--success); }
 
         .dx-drag-handle {
             color: var(--gray-400);
@@ -503,44 +411,19 @@
             padding: 0 2px;
         }
 
-        .dx-text {
-            flex: 1;
-            font-size: 0.87rem;
-            font-weight: 500;
-        }
+        .dx-text { flex: 1; font-size: 0.87rem; font-weight: 500; }
 
-        .dx-confidence {
-            font-size: 0.75rem;
-            color: var(--gray-500);
-            flex-shrink: 0;
-        }
+        .dx-confidence { font-size: 0.75rem; color: var(--gray-500); flex-shrink: 0; }
 
-        .dx-actions {
-            display: flex;
-            gap: 2px;
-            flex-shrink: 0;
-        }
+        .dx-actions { display: flex; gap: 2px; flex-shrink: 0; }
 
-        .dx-actions .btn-icon {
-            font-size: 0.85rem;
-            padding: 3px;
-            min-width: 24px;
-        }
+        .dx-actions .btn-icon { font-size: 0.85rem; padding: 3px; min-width: 24px; }
 
-        .dx-ruled-out {
-            text-decoration: line-through;
-            opacity: 0.5;
-        }
+        .dx-ruled-out { text-decoration: line-through; opacity: 0.5; }
 
-        .dx-ruled-out .dx-rank {
-            background: var(--danger-light);
-            color: var(--danger);
-        }
+        .dx-ruled-out .dx-rank { background: var(--danger-light); color: var(--danger); }
 
-        /* ===== TEST / MANAGEMENT ITEMS ===== */
-        .item-list {
-            list-style: none;
-        }
+        .item-list { list-style: none; }
 
         .item-entry {
             display: flex;
@@ -553,19 +436,9 @@
             border-radius: var(--radius);
         }
 
-        .item-entry .item-icon {
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        .item-entry .item-content {
-            flex: 1;
-        }
-
-        .item-entry .item-name {
-            font-size: 0.87rem;
-            font-weight: 600;
-        }
+        .item-entry .item-icon { flex-shrink: 0; margin-top: 2px; }
+        .item-entry .item-content { flex: 1; }
+        .item-entry .item-name { font-size: 0.87rem; font-weight: 600; }
 
         .item-entry .item-rationale {
             font-size: 0.8rem;
@@ -590,11 +463,6 @@
         .cat-intervention { background: #fef3c7; color: #d97706; }
         .cat-consult { background: #e0e7ff; color: #4f46e5; }
 
-        .item-entry .btn-icon {
-            flex-shrink: 0;
-        }
-
-        /* ===== NOTES SECTION ===== */
         .notes-textarea {
             width: 100%;
             min-height: 120px;
@@ -613,7 +481,6 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
-        /* ===== SCORE CARD ===== */
         .score-card {
             background: linear-gradient(135deg, var(--gray-800), var(--gray-900));
             color: white;
@@ -636,26 +503,13 @@
             gap: 12px;
         }
 
-        .score-item {
-            text-align: center;
-        }
-
-        .score-value {
-            font-size: 1.8rem;
-            font-weight: 800;
-        }
-
+        .score-item { text-align: center; }
+        .score-value { font-size: 1.8rem; font-weight: 800; }
         .score-value.good { color: #4ade80; }
         .score-value.okay { color: #facc15; }
         .score-value.poor { color: #f87171; }
+        .score-label { font-size: 0.75rem; color: var(--gray-400); margin-top: 2px; }
 
-        .score-label {
-            font-size: 0.75rem;
-            color: var(--gray-400);
-            margin-top: 2px;
-        }
-
-        /* ===== COMPARISON TABLE ===== */
         .comparison-table {
             width: 100%;
             border-collapse: collapse;
@@ -682,7 +536,6 @@
         .match-no { color: var(--danger); }
         .match-partial { color: var(--warning); }
 
-        /* ===== MODAL ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -694,9 +547,7 @@
             padding: 20px;
         }
 
-        .modal-overlay.show {
-            display: flex;
-        }
+        .modal-overlay.show { display: flex; }
 
         .modal {
             background: white;
@@ -716,13 +567,9 @@
             border-bottom: 1px solid var(--gray-200);
         }
 
-        .modal-header h2 {
-            font-size: 1.1rem;
-        }
+        .modal-header h2 { font-size: 1.1rem; }
 
-        .modal-body {
-            padding: 20px;
-        }
+        .modal-body { padding: 20px; }
 
         .modal-footer {
             display: flex;
@@ -732,9 +579,7 @@
             border-top: 1px solid var(--gray-200);
         }
 
-        .form-group {
-            margin-bottom: 14px;
-        }
+        .form-group { margin-bottom: 14px; }
 
         .form-group label {
             display: block;
@@ -744,9 +589,7 @@
             color: var(--gray-700);
         }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%;
             padding: 8px 12px;
             border: 1.5px solid var(--gray-300);
@@ -755,18 +598,13 @@
             font-family: inherit;
         }
 
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
-        /* ===== SETTINGS PANEL ===== */
-        .settings-group {
-            margin-bottom: 20px;
-        }
+        .settings-group { margin-bottom: 20px; }
 
         .settings-group h4 {
             font-size: 0.85rem;
@@ -778,11 +616,7 @@
             border-bottom: 1px solid var(--gray-200);
         }
 
-        .radio-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
+        .radio-group { display: flex; flex-direction: column; gap: 6px; }
 
         .radio-option {
             display: flex;
@@ -795,26 +629,11 @@
             transition: var(--transition);
         }
 
-        .radio-option:hover {
-            border-color: var(--primary);
-            background: var(--primary-light);
-        }
+        .radio-option:hover { border-color: var(--primary); background: var(--primary-light); }
+        .radio-option input[type="radio"] { accent-color: var(--primary); }
+        .radio-option .option-label { font-weight: 600; font-size: 0.87rem; }
+        .radio-option .option-desc { font-size: 0.78rem; color: var(--gray-500); }
 
-        .radio-option input[type="radio"] {
-            accent-color: var(--primary);
-        }
-
-        .radio-option .option-label {
-            font-weight: 600;
-            font-size: 0.87rem;
-        }
-
-        .radio-option .option-desc {
-            font-size: 0.78rem;
-            color: var(--gray-500);
-        }
-
-        /* ===== TOAST NOTIFICATIONS ===== */
         .toast-container {
             position: fixed;
             bottom: 20px;
@@ -848,23 +667,15 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
-        /* ===== EMPTY STATES ===== */
         .empty-state {
             text-align: center;
             padding: 30px 20px;
             color: var(--gray-400);
         }
 
-        .empty-state .empty-icon {
-            font-size: 2.5rem;
-            margin-bottom: 8px;
-        }
+        .empty-state .empty-icon { font-size: 2.5rem; margin-bottom: 8px; }
+        .empty-state p { font-size: 0.85rem; }
 
-        .empty-state p {
-            font-size: 0.85rem;
-        }
-
-        /* ===== LLM STATUS ===== */
         .llm-status {
             display: flex;
             align-items: center;
@@ -885,12 +696,7 @@
         .llm-dot.connected { background: #4ade80; }
         .llm-dot.error { background: #f87171; }
 
-        /* ===== PROGRESS BAR ===== */
-        .phase-bar {
-            display: flex;
-            gap: 2px;
-            margin-bottom: 12px;
-        }
+        .phase-bar { display: flex; gap: 2px; margin-bottom: 12px; }
 
         .phase-step {
             flex: 1;
@@ -901,19 +707,10 @@
             transition: var(--transition);
         }
 
-        .phase-step.active {
-            background: var(--primary);
-        }
+        .phase-step.active { background: var(--primary); }
+        .phase-step.completed { background: var(--success); }
 
-        .phase-step.completed {
-            background: var(--success);
-        }
-
-        .phase-labels {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 16px;
-        }
+        .phase-labels { display: flex; justify-content: space-between; margin-bottom: 16px; }
 
         .phase-label {
             font-size: 0.7rem;
@@ -924,16 +721,9 @@
             border-radius: 4px;
         }
 
-        .phase-label.active {
-            color: var(--primary);
-            font-weight: 700;
-        }
+        .phase-label.active { color: var(--primary); font-weight: 700; }
+        .phase-label:hover { background: var(--gray-100); }
 
-        .phase-label:hover {
-            background: var(--gray-100);
-        }
-
-        /* ===== LOADING SPINNER ===== */
         .spinner {
             display: inline-block;
             width: 16px;
@@ -949,11 +739,8 @@
             border-top-color: var(--primary);
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ===== ANSWER KEY TAG ===== */
         .answer-tag {
             display: inline-flex;
             align-items: center;
@@ -964,68 +751,24 @@
             font-weight: 600;
         }
 
-        .answer-tag.correct {
-            background: var(--success-light);
-            color: var(--success);
-        }
+        .answer-tag.correct { background: var(--success-light); color: var(--success); }
+        .answer-tag.incorrect { background: var(--danger-light); color: var(--danger); }
+        .answer-tag.partial { background: var(--warning-light); color: var(--warning); }
 
-        .answer-tag.incorrect {
-            background: var(--danger-light);
-            color: var(--danger);
-        }
+        .workspace-content::-webkit-scrollbar, .pdf-content::-webkit-scrollbar { width: 8px; }
+        .workspace-content::-webkit-scrollbar-track, .pdf-content::-webkit-scrollbar-track { background: var(--gray-100); }
+        .workspace-content::-webkit-scrollbar-thumb, .pdf-content::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 4px; }
+        .workspace-content::-webkit-scrollbar-thumb:hover, .pdf-content::-webkit-scrollbar-thumb:hover { background: var(--gray-400); }
 
-        .answer-tag.partial {
-            background: var(--warning-light);
-            color: var(--warning);
-        }
-
-        /* ===== SCROLLBAR ===== */
-        .workspace-content::-webkit-scrollbar,
-        .pdf-content::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .workspace-content::-webkit-scrollbar-track,
-        .pdf-content::-webkit-scrollbar-track {
-            background: var(--gray-100);
-        }
-
-        .workspace-content::-webkit-scrollbar-thumb,
-        .pdf-content::-webkit-scrollbar-thumb {
-            background: var(--gray-300);
-            border-radius: 4px;
-        }
-
-        .workspace-content::-webkit-scrollbar-thumb:hover,
-        .pdf-content::-webkit-scrollbar-thumb:hover {
-            background: var(--gray-400);
-        }
-
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 900px) {
-            .main-container {
-                flex-direction: column;
-            }
-            .pdf-panel {
-                height: 40vh;
-                min-width: unset;
-            }
-            .workspace-panel {
-                width: 100% !important;
-                min-width: unset;
-                max-width: unset;
-                height: 60vh;
-            }
-            .resize-handle {
-                width: 100%;
-                height: 6px;
-                cursor: row-resize;
-            }
+            .main-container { flex-direction: column; }
+            .pdf-panel { height: 40vh; min-width: unset; }
+            .workspace-panel { width: 100% !important; min-width: unset; max-width: unset; height: 60vh; }
+            .resize-handle { width: 100%; height: 6px; cursor: row-resize; }
         }
 
         .hidden { display: none !important; }
 
-        /* ===== EXTRACTION STATUS ===== */
         .extraction-status {
             background: var(--primary-light);
             border: 1px solid var(--primary);
@@ -1038,24 +781,11 @@
             font-size: 0.87rem;
         }
 
-        .extraction-status.error {
-            background: var(--danger-light);
-            border-color: var(--danger);
-        }
+        .extraction-status.error { background: var(--danger-light); border-color: var(--danger); }
+        .extraction-status.success { background: var(--success-light); border-color: var(--success); }
 
-        .extraction-status.success {
-            background: var(--success-light);
-            border-color: var(--success);
-        }
-
-        /* ===== KEY INPUT (for LLM) ===== */
-        .key-input-wrapper {
-            position: relative;
-        }
-
-        .key-input-wrapper input {
-            padding-right: 40px;
-        }
+        .key-input-wrapper { position: relative; }
+        .key-input-wrapper input { padding-right: 40px; }
 
         .key-toggle {
             position: absolute;
@@ -1069,35 +799,8 @@
             font-size: 1rem;
         }
 
-        /* Confidence slider */
-        .confidence-slider {
-            width: 60px;
-            height: 4px;
-            -webkit-appearance: none;
-            appearance: none;
-            background: var(--gray-200);
-            border-radius: 2px;
-            outline: none;
-        }
+        .helper-text { font-size: 0.78rem; color: var(--gray-400); margin-bottom: 8px; }
 
-        .confidence-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: var(--primary);
-            cursor: pointer;
-        }
-
-        /* Subtitle / helper text */
-        .helper-text {
-            font-size: 0.78rem;
-            color: var(--gray-400);
-            margin-bottom: 8px;
-        }
-
-        /* Tag / chip input for categories */
         .select-small {
             padding: 4px 8px;
             font-size: 0.8rem;
@@ -1105,11 +808,37 @@
             border-radius: var(--radius);
             background: white;
         }
+
+        /* Reasoning display */
+        .reasoning-block {
+            background: #fffbeb;
+            border: 1px solid #fbbf24;
+            border-radius: var(--radius);
+            padding: 12px;
+            margin-top: 12px;
+            font-size: 0.82rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .reasoning-block summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--warning);
+            margin-bottom: 6px;
+        }
+
+        .reasoning-block pre {
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: inherit;
+            color: var(--gray-600);
+            margin-top: 8px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- ===== HEADER ===== -->
     <header class="app-header">
         <h1>
             <span class="icon">🩺</span>
@@ -1129,10 +858,7 @@
         </div>
     </header>
 
-    <!-- ===== MAIN LAYOUT ===== -->
     <div class="main-container">
-
-        <!-- PDF PANEL -->
         <div class="pdf-panel" id="pdfPanel">
             <div class="pdf-toolbar" id="pdfToolbar" style="display:none;">
                 <div class="pdf-toolbar-group">
@@ -1158,10 +884,8 @@
             </div>
         </div>
 
-        <!-- RESIZE HANDLE -->
         <div class="resize-handle" id="resizeHandle"></div>
 
-        <!-- WORKSPACE PANEL -->
         <div class="workspace-panel" id="workspacePanel">
             <div class="workspace-tabs">
                 <button class="workspace-tab active" data-tab="workup">
@@ -1182,10 +906,8 @@
             </div>
 
             <div class="workspace-content">
-
-                <!-- TAB: WORKUP (Overview / Notes) -->
+                <!-- TAB: WORKUP -->
                 <div class="tab-pane active" id="tab-workup">
-                    <!-- Phase Progress -->
                     <div class="section-card">
                         <div class="section-header" onclick="toggleSection(this)">
                             <h3>📋 Case Phase</h3>
@@ -1209,7 +931,6 @@
                         </div>
                     </div>
 
-                    <!-- Key Findings -->
                     <div class="section-card">
                         <div class="section-header" onclick="toggleSection(this)">
                             <h3>🔑 Key Findings / HPI Notes</h3>
@@ -1220,7 +941,6 @@
                         </div>
                     </div>
 
-                    <!-- Physical Exam Notes -->
                     <div class="section-card">
                         <div class="section-header" onclick="toggleSection(this)">
                             <h3>🩻 Physical Exam Notes</h3>
@@ -1231,7 +951,6 @@
                         </div>
                     </div>
 
-                    <!-- Free Notes -->
                     <div class="section-card">
                         <div class="section-header" onclick="toggleSection(this)">
                             <h3>📝 General Notes</h3>
@@ -1246,12 +965,10 @@
                 <!-- TAB: DIAGNOSES -->
                 <div class="tab-pane" id="tab-diagnoses">
                     <div class="helper-text">Rank your differential diagnoses from most to least likely. Drag to reorder.</div>
-
                     <div class="input-group">
                         <input type="text" id="dxInput" placeholder="Enter a diagnosis..." onkeydown="if(event.key==='Enter') addDiagnosis()">
                         <button class="btn btn-outline btn-sm" onclick="addDiagnosis()">+ Add</button>
                     </div>
-
                     <ul class="dx-list" id="dxList">
                         <li class="empty-state" id="dxEmpty">
                             <div class="empty-icon">🎯</div>
@@ -1263,7 +980,6 @@
                 <!-- TAB: TESTING -->
                 <div class="tab-pane" id="tab-testing">
                     <div class="helper-text">Order the diagnostic tests you'd like. Be specific!</div>
-
                     <div class="input-group" style="flex-wrap:wrap;">
                         <input type="text" id="testInput" placeholder="e.g., CBC with diff, CT chest with contrast..." onkeydown="if(event.key==='Enter') addTest()" style="flex: 1; min-width: 200px;">
                         <select class="select-small" id="testCategory">
@@ -1274,11 +990,9 @@
                         </select>
                         <button class="btn btn-outline btn-sm" onclick="addTest()">+ Add</button>
                     </div>
-
                     <div class="form-group" style="margin-bottom: 14px;">
                         <input type="text" id="testRationale" placeholder="Rationale (optional) — why are you ordering this?" style="width:100%; padding:6px 12px; border:1.5px solid var(--gray-300); border-radius:var(--radius); font-size:0.83rem;">
                     </div>
-
                     <ul class="item-list" id="testList">
                         <li class="empty-state" id="testEmpty">
                             <div class="empty-icon">🧪</div>
@@ -1290,7 +1004,6 @@
                 <!-- TAB: MANAGEMENT -->
                 <div class="tab-pane" id="tab-management">
                     <div class="helper-text">What treatments or interventions would you start?</div>
-
                     <div class="input-group" style="flex-wrap:wrap;">
                         <input type="text" id="mgmtInput" placeholder="e.g., IV NS bolus 1L, Ceftriaxone 1g IV..." onkeydown="if(event.key==='Enter') addManagement()" style="flex: 1; min-width: 200px;">
                         <select class="select-small" id="mgmtCategory">
@@ -1301,11 +1014,9 @@
                         </select>
                         <button class="btn btn-outline btn-sm" onclick="addManagement()">+ Add</button>
                     </div>
-
                     <div class="form-group" style="margin-bottom: 14px;">
                         <input type="text" id="mgmtRationale" placeholder="Rationale (optional)" style="width:100%; padding:6px 12px; border:1.5px solid var(--gray-300); border-radius:var(--radius); font-size:0.83rem;">
                     </div>
-
                     <ul class="item-list" id="mgmtList">
                         <li class="empty-state" id="mgmtEmpty">
                             <div class="empty-icon">💊</div>
@@ -1321,7 +1032,6 @@
                             <div class="empty-icon">📊</div>
                             <p>Score your case after extracting the answer key from the PDF using the 🤖 Extract button, or manually enter the answer key below.</p>
                         </div>
-
                         <div class="section-card">
                             <div class="section-header" onclick="toggleSection(this)">
                                 <h3>📝 Manual Answer Key</h3>
@@ -1348,15 +1058,13 @@
                             </div>
                         </div>
                     </div>
-
                     <div id="scoreResults" style="display:none;"></div>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <!-- ===== SETTINGS MODAL ===== -->
+    <!-- SETTINGS MODAL -->
     <div class="modal-overlay" id="settingsModal">
         <div class="modal">
             <div class="modal-header">
@@ -1368,7 +1076,7 @@
                     <h4>LLM Provider</h4>
                     <div class="radio-group" id="llmProviderGroup">
                         <label class="radio-option">
-                            <input type="radio" name="llmProvider" value="none" checked>
+                            <input type="radio" name="llmProvider" value="none">
                             <div>
                                 <div class="option-label">None (Manual Mode)</div>
                                 <div class="option-desc">No AI extraction — enter answer key manually.</div>
@@ -1403,16 +1111,16 @@
                             </div>
                         </label>
                         <label class="radio-option">
-                            <input type="radio" name="llmProvider" value="openrouter">
+                            <input type="radio" name="llmProvider" value="openrouter" checked>
                             <div>
-                                <div class="option-label">OpenRouter</div>
-                                <div class="option-desc">Access many models. Some free tiers available.</div>
+                                <div class="option-label">OpenRouter ⭐</div>
+                                <div class="option-desc">Pre-configured with free GPT-OSS-120B model.</div>
                             </div>
                         </label>
                     </div>
                 </div>
 
-                <div class="settings-group" id="apiKeyGroup" style="display:none;">
+                <div class="settings-group" id="apiKeyGroup">
                     <h4>API Key</h4>
                     <div class="form-group">
                         <div class="key-input-wrapper">
@@ -1437,13 +1145,22 @@
                     </div>
                 </div>
 
-                <div class="settings-group" id="openrouterGroup" style="display:none;">
+                <div class="settings-group" id="openrouterGroup">
                     <h4>OpenRouter Settings</h4>
                     <div class="form-group">
                         <label>Model</label>
-                        <input type="text" id="openrouterModel" value="meta-llama/llama-3.1-8b-instruct:free" placeholder="model identifier">
+                        <input type="text" id="openrouterModel" value="openai/gpt-oss-120b:free" placeholder="model identifier">
                         <div style="font-size:0.75rem; color:var(--gray-400); margin-top:4px;">
-                            Use ":free" suffix for free models, e.g., meta-llama/llama-3.1-8b-instruct:free
+                            Current: openai/gpt-oss-120b:free (free model with reasoning)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label style="display:flex; align-items:center; gap:8px;">
+                            <input type="checkbox" id="openrouterReasoning" checked style="accent-color:var(--primary);">
+                            Enable reasoning (chain-of-thought)
+                        </label>
+                        <div style="font-size:0.75rem; color:var(--gray-400); margin-top:4px;">
+                            When enabled, the model will show its reasoning process. Supported by GPT-OSS-120B.
                         </div>
                     </div>
                 </div>
@@ -1455,39 +1172,34 @@
         </div>
     </div>
 
-    <!-- ===== TOAST CONTAINER ===== -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- ===== PDF.js ===== -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
-    <!-- ===== APP SCRIPT ===== -->
     <script>
         // ===== GLOBAL STATE =====
         const state = {
-            // PDF
             pdfDoc: null,
             currentPage: 1,
             zoom: 1.0,
             pdfText: '',
 
-            // User entries
-            diagnoses: [],        // {id, text, ruledOut, confidence}
-            tests: [],            // {id, name, category, rationale}
-            management: [],       // {id, name, category, rationale}
+            diagnoses: [],
+            tests: [],
+            management: [],
             currentPhase: 0,
 
-            // Answer key (from LLM or manual)
-            answerKey: null,      // {diagnosis, differentials[], tests[], treatments[]}
+            answerKey: null,
+            lastReasoning: null, // Store reasoning from LLM
 
-            // Settings
-            llmProvider: 'none',
-            apiKey: '',
+            // DEFAULTS: Pre-configured for OpenRouter with your key and free model
+            llmProvider: 'openrouter',
+            apiKey: 'GET_API_KEY',
             ollamaUrl: 'http://localhost:11434',
             ollamaModel: 'llama3.2',
-            openrouterModel: 'meta-llama/llama-3.1-8b-instruct:free',
+            openrouterModel: 'openai/gpt-oss-120b:free',
+            openrouterReasoning: true,
 
-            // Internal
             nextId: 1
         };
 
@@ -1519,7 +1231,6 @@
                 document.getElementById('pdfCanvasContainer').style.display = 'flex';
                 document.getElementById('pageCount').textContent = state.pdfDoc.numPages;
 
-                // Extract all text
                 state.pdfText = '';
                 for (let i = 1; i <= state.pdfDoc.numPages; i++) {
                     const page = await state.pdfDoc.getPage(i);
@@ -1529,7 +1240,7 @@
 
                 state.currentPage = 1;
                 renderPage(state.currentPage);
-                showToast('PDF loaded successfully!', 'success');
+                showToast(`PDF loaded! ${state.pdfDoc.numPages} pages, ${state.pdfText.length} chars extracted.`, 'success');
             } catch (err) {
                 console.error(err);
                 showToast('Failed to load PDF: ' + err.message, 'error');
@@ -1551,22 +1262,15 @@
 
             await page.render({ canvasContext: ctx, viewport }).promise;
             container.appendChild(canvas);
-
             document.getElementById('pageNum').textContent = num;
         }
 
         function prevPage() {
-            if (state.currentPage > 1) {
-                state.currentPage--;
-                renderPage(state.currentPage);
-            }
+            if (state.currentPage > 1) { state.currentPage--; renderPage(state.currentPage); }
         }
 
         function nextPage() {
-            if (state.pdfDoc && state.currentPage < state.pdfDoc.numPages) {
-                state.currentPage++;
-                renderPage(state.currentPage);
-            }
+            if (state.pdfDoc && state.currentPage < state.pdfDoc.numPages) { state.currentPage++; renderPage(state.currentPage); }
         }
 
         function zoomIn() {
@@ -1584,13 +1288,8 @@
         // ===== DRAG & DROP PDF =====
         function setupDragDrop() {
             const panel = document.getElementById('pdfPanel');
-            panel.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                panel.classList.add('drop-zone-active');
-            });
-            panel.addEventListener('dragleave', () => {
-                panel.classList.remove('drop-zone-active');
-            });
+            panel.addEventListener('dragover', (e) => { e.preventDefault(); panel.classList.add('drop-zone-active'); });
+            panel.addEventListener('dragleave', () => { panel.classList.remove('drop-zone-active'); });
             panel.addEventListener('drop', async (e) => {
                 e.preventDefault();
                 panel.classList.remove('drop-zone-active');
@@ -1603,7 +1302,7 @@
             });
         }
 
-        // ===== TAB SWITCHING =====
+        // ===== TABS =====
         function setupTabs() {
             document.querySelectorAll('.workspace-tab').forEach(tab => {
                 tab.addEventListener('click', () => {
@@ -1615,14 +1314,12 @@
             });
         }
 
-        // ===== SECTION COLLAPSE =====
         function toggleSection(header) {
             header.classList.toggle('collapsed');
-            const body = header.nextElementSibling;
-            body.classList.toggle('collapsed');
+            header.nextElementSibling.classList.toggle('collapsed');
         }
 
-        // ===== PHASE MANAGEMENT =====
+        // ===== PHASE =====
         function setPhase(phase) {
             state.currentPhase = phase;
             document.querySelectorAll('.phase-step').forEach((el, i) => {
@@ -1640,14 +1337,7 @@
             const input = document.getElementById('dxInput');
             const text = input.value.trim();
             if (!text) return;
-
-            state.diagnoses.push({
-                id: state.nextId++,
-                text,
-                ruledOut: false,
-                confidence: 50
-            });
-
+            state.diagnoses.push({ id: state.nextId++, text, ruledOut: false, confidence: 50 });
             input.value = '';
             input.focus();
             renderDiagnoses();
@@ -1675,11 +1365,8 @@
 
         function renderDiagnoses() {
             const list = document.getElementById('dxList');
-            const empty = document.getElementById('dxEmpty');
             const count = state.diagnoses.length;
             document.getElementById('dxCount').textContent = count;
-
-            // Badge on workup tab too
             document.getElementById('workupCount').textContent =
                 state.diagnoses.length + state.tests.length + state.management.length;
 
@@ -1695,7 +1382,6 @@
                 li.className = 'dx-item' + (dx.ruledOut ? ' dx-ruled-out' : '');
                 li.draggable = true;
                 li.dataset.id = dx.id;
-
                 li.addEventListener('dragstart', handleDxDragStart);
                 li.addEventListener('dragover', handleDxDragOver);
                 li.addEventListener('drop', handleDxDrop);
@@ -1718,7 +1404,6 @@
             });
         }
 
-        // Drag & drop for diagnoses
         let draggedDxId = null;
 
         function handleDxDragStart(e) {
@@ -1730,19 +1415,16 @@
         function handleDxDragOver(e) {
             e.preventDefault();
             e.dataTransfer.dropEffect = 'move';
-            const item = e.currentTarget;
-            item.classList.add('drag-over');
+            e.currentTarget.classList.add('drag-over');
         }
 
         function handleDxDrop(e) {
             e.preventDefault();
             const targetId = parseInt(e.currentTarget.dataset.id);
             if (draggedDxId === null || draggedDxId === targetId) return;
-
             const fromIdx = state.diagnoses.findIndex(d => d.id === draggedDxId);
             const toIdx = state.diagnoses.findIndex(d => d.id === targetId);
             if (fromIdx === -1 || toIdx === -1) return;
-
             const [moved] = state.diagnoses.splice(fromIdx, 1);
             state.diagnoses.splice(toIdx, 0, moved);
             renderDiagnoses();
@@ -1750,9 +1432,7 @@
 
         function handleDxDragEnd(e) {
             draggedDxId = null;
-            document.querySelectorAll('.dx-item').forEach(el => {
-                el.classList.remove('dragging', 'drag-over');
-            });
+            document.querySelectorAll('.dx-item').forEach(el => el.classList.remove('dragging', 'drag-over'));
         }
 
         // ===== TESTS =====
@@ -1762,14 +1442,7 @@
             const rationale = document.getElementById('testRationale');
             const name = input.value.trim();
             if (!name) return;
-
-            state.tests.push({
-                id: state.nextId++,
-                name,
-                category,
-                rationale: rationale.value.trim()
-            });
-
+            state.tests.push({ id: state.nextId++, name, category, rationale: rationale.value.trim() });
             input.value = '';
             rationale.value = '';
             input.focus();
@@ -1796,7 +1469,6 @@
 
             list.innerHTML = '';
             const catIcons = { lab: '🧪', imaging: '🩻', procedure: '🔬', other: '📋' };
-
             state.tests.forEach(t => {
                 const li = document.createElement('li');
                 li.className = 'item-entry';
@@ -1820,14 +1492,7 @@
             const rationale = document.getElementById('mgmtRationale');
             const name = input.value.trim();
             if (!name) return;
-
-            state.management.push({
-                id: state.nextId++,
-                name,
-                category,
-                rationale: rationale.value.trim()
-            });
-
+            state.management.push({ id: state.nextId++, name, category, rationale: rationale.value.trim() });
             input.value = '';
             rationale.value = '';
             input.focus();
@@ -1854,7 +1519,6 @@
 
             list.innerHTML = '';
             const catIcons = { medication: '💊', intervention: '🏥', consult: '📞', other: '📋' };
-
             state.management.forEach(m => {
                 const li = document.createElement('li');
                 li.className = 'item-entry';
@@ -1871,13 +1535,15 @@
             });
         }
 
-        // ===== LLM EXTRACTION =====
+        // =============================================================
+        // ===== LLM EXTRACTION (Updated for OpenRouter + Reasoning) ===
+        // =============================================================
+
         async function extractWithLLM() {
             if (!state.pdfText.trim()) {
                 showToast('No PDF text found. Make sure a PDF is loaded.', 'error');
                 return;
             }
-
             if (state.llmProvider === 'none') {
                 showToast('No LLM configured. Go to Settings to set one up, or use manual answer key.', 'error');
                 return;
@@ -1890,18 +1556,35 @@
 
             try {
                 const prompt = buildExtractionPrompt(state.pdfText);
-                const response = await callLLM(prompt);
-                const parsed = parseExtractionResponse(response);
+                console.log('📤 Sending to LLM:', state.llmProvider, '| Text length:', state.pdfText.length);
+
+                const result = await callLLM(prompt);
+                console.log('📥 LLM response:', result);
+
+                const parsed = parseExtractionResponse(result.content);
 
                 if (parsed) {
                     state.answerKey = parsed;
+                    state.lastReasoning = result.reasoning;
+
                     document.getElementById('answerDiagnosis').value = parsed.diagnosis || '';
                     document.getElementById('answerTests').value = (parsed.tests || []).join(', ');
                     document.getElementById('answerTreatments').value = (parsed.treatments || []).join(', ');
                     document.getElementById('answerDifferentials').value = (parsed.differentials || []).join(', ');
-                    showToast('✅ Case data extracted successfully!', 'success');
+
+                    let successMsg = '✅ Case data extracted successfully!';
+                    if (result.reasoning) {
+                        successMsg += ' (with reasoning)';
+                    }
+                    showToast(successMsg, 'success');
+
+                    // Switch to scoring tab to show results
+                    document.querySelectorAll('.workspace-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+                    document.querySelector('[data-tab="scoring"]').classList.add('active');
+                    document.getElementById('tab-scoring').classList.add('active');
                 } else {
-                    showToast('Failed to parse extraction. Check console.', 'error');
+                    showToast('Failed to parse LLM response. Check browser console for details.', 'error');
                 }
             } catch (err) {
                 console.error('Extraction error:', err);
@@ -1913,31 +1596,47 @@
         }
 
         function buildExtractionPrompt(text) {
-            // Truncate to ~12k chars to stay within limits
-            const truncated = text.substring(0, 12000);
-            return `You are a medical education assistant. Analyze the following medical case and extract key information. Return your response as valid JSON only, no markdown, no explanation.
+            // Truncate to stay within token limits (roughly 4 chars per token)
+            const maxChars = 15000;
+            const truncated = text.length > maxChars
+                ? text.substring(0, maxChars) + '\n\n[...text truncated...]'
+                : text;
 
-JSON format:
+            return `You are a medical education assistant analyzing a clinical case for a learning exercise.
+
+Analyze the following medical case text and extract the key clinical information.
+
+IMPORTANT: Return ONLY a valid JSON object with no additional text, no markdown code fences, no explanation before or after. Just the raw JSON.
+
+Required JSON structure:
 {
-  "diagnosis": "the final/correct diagnosis",
-  "differentials": ["list", "of", "differential", "diagnoses", "considered"],
-  "tests": ["list", "of", "diagnostic", "tests", "performed"],
-  "treatments": ["list", "of", "treatments", "given"],
-  "keyFindings": "brief summary of key clinical findings",
-  "specialty": "medical specialty"
+  "diagnosis": "the final/correct diagnosis from the case",
+  "differentials": ["differential diagnosis 1", "differential diagnosis 2", "etc"],
+  "tests": ["diagnostic test 1", "diagnostic test 2", "etc"],
+  "treatments": ["treatment 1", "treatment 2", "etc"],
+  "keyFindings": "brief summary of the most important clinical findings",
+  "specialty": "primary medical specialty"
 }
 
-Case text:
+Guidelines:
+- "diagnosis" should be the final confirmed diagnosis
+- "differentials" should include all diagnoses that were considered/discussed
+- "tests" should include labs, imaging, procedures, and any diagnostic workup performed
+- "treatments" should include medications, procedures, interventions, and consultations
+- Be specific with test and treatment names
+
+CASE TEXT:
 ${truncated}`;
         }
 
+        // Unified LLM call that returns { content, reasoning }
         async function callLLM(prompt) {
             switch (state.llmProvider) {
-                case 'openai': return callOpenAI(prompt);
-                case 'anthropic': return callAnthropic(prompt);
-                case 'gemini': return callGemini(prompt);
-                case 'ollama': return callOllama(prompt);
-                case 'openrouter': return callOpenRouter(prompt);
+                case 'openai': return { content: await callOpenAI(prompt), reasoning: null };
+                case 'anthropic': return { content: await callAnthropic(prompt), reasoning: null };
+                case 'gemini': return { content: await callGemini(prompt), reasoning: null };
+                case 'ollama': return { content: await callOllama(prompt), reasoning: null };
+                case 'openrouter': return await callOpenRouter(prompt);
                 default: throw new Error('No LLM provider configured');
             }
         }
@@ -1965,7 +1664,6 @@ ${truncated}`;
         }
 
         async function callAnthropic(prompt) {
-            // Note: Anthropic API has CORS restrictions, may need a proxy for browser-only usage
             const res = await fetch('https://api.anthropic.com/v1/messages', {
                 method: 'POST',
                 headers: {
@@ -2021,7 +1719,26 @@ ${truncated}`;
             return data.response;
         }
 
+        // ===== OPENROUTER WITH REASONING SUPPORT =====
         async function callOpenRouter(prompt) {
+            const requestBody = {
+                model: state.openrouterModel,
+                messages: [{ role: 'user', content: prompt }],
+                temperature: 0.2,
+                max_tokens: 4000
+            };
+
+            // Add reasoning support if enabled
+            if (state.openrouterReasoning) {
+                requestBody.reasoning = { enabled: true };
+            }
+
+            console.log('🔵 OpenRouter request:', {
+                model: requestBody.model,
+                reasoning: requestBody.reasoning,
+                messageLength: prompt.length
+            });
+
             const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
                 method: 'POST',
                 headers: {
@@ -2030,37 +1747,63 @@ ${truncated}`;
                     'HTTP-Referer': window.location.href,
                     'X-Title': 'CaseDx Medical Simulator'
                 },
-                body: JSON.stringify({
-                    model: state.openrouterModel,
-                    messages: [{ role: 'user', content: prompt }],
-                    temperature: 0.2,
-                    max_tokens: 2000
-                })
+                body: JSON.stringify(requestBody)
             });
+
             if (!res.ok) {
-                const err = await res.json().catch(() => ({}));
-                throw new Error(err.error?.message || `OpenRouter error: ${res.status}`);
+                const errBody = await res.text();
+                console.error('OpenRouter error response:', errBody);
+                let errMsg;
+                try {
+                    const errJson = JSON.parse(errBody);
+                    errMsg = errJson.error?.message || errJson.error || `HTTP ${res.status}`;
+                } catch {
+                    errMsg = `HTTP ${res.status}: ${errBody.substring(0, 200)}`;
+                }
+                throw new Error(`OpenRouter: ${errMsg}`);
             }
+
             const data = await res.json();
-            return data.choices[0].message.content;
+            console.log('🟢 OpenRouter response:', data);
+
+            const message = data.choices[0].message;
+            const content = message.content || '';
+
+            // Extract reasoning if present
+            let reasoning = null;
+            if (message.reasoning_details) {
+                // reasoning_details can be a string or array of objects
+                if (typeof message.reasoning_details === 'string') {
+                    reasoning = message.reasoning_details;
+                } else if (Array.isArray(message.reasoning_details)) {
+                    reasoning = message.reasoning_details
+                        .map(r => typeof r === 'string' ? r : (r.content || r.text || JSON.stringify(r)))
+                        .join('\n');
+                }
+                console.log('🧠 Reasoning:', reasoning);
+            }
+
+            // Also check for reasoning in the response (some models use 'reasoning' field)
+            if (!reasoning && message.reasoning) {
+                reasoning = typeof message.reasoning === 'string'
+                    ? message.reasoning
+                    : JSON.stringify(message.reasoning);
+            }
+
+            return { content, reasoning };
         }
 
         function parseExtractionResponse(text) {
             try {
-                // Try to find JSON in the response
                 let jsonStr = text;
 
-                // Remove markdown code block if present
+                // Remove markdown code blocks
                 const jsonMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/);
-                if (jsonMatch) {
-                    jsonStr = jsonMatch[1];
-                }
+                if (jsonMatch) jsonStr = jsonMatch[1];
 
-                // Try to find JSON object
+                // Find JSON object
                 const objMatch = jsonStr.match(/\{[\s\S]*\}/);
-                if (objMatch) {
-                    jsonStr = objMatch[0];
-                }
+                if (objMatch) jsonStr = objMatch[0];
 
                 const parsed = JSON.parse(jsonStr);
                 return {
@@ -2072,7 +1815,33 @@ ${truncated}`;
                     specialty: parsed.specialty || ''
                 };
             } catch (e) {
-                console.error('Parse error:', e, 'Raw text:', text);
+                console.error('JSON parse error:', e, '\nRaw text:', text);
+
+                // Try a more aggressive extraction
+                try {
+                    const lines = text.split('\n');
+                    let inJson = false;
+                    let jsonLines = [];
+                    for (const line of lines) {
+                        if (line.includes('{')) inJson = true;
+                        if (inJson) jsonLines.push(line);
+                        if (line.includes('}') && inJson) break;
+                    }
+                    if (jsonLines.length > 0) {
+                        const parsed = JSON.parse(jsonLines.join('\n'));
+                        return {
+                            diagnosis: parsed.diagnosis || '',
+                            differentials: Array.isArray(parsed.differentials) ? parsed.differentials : [],
+                            tests: Array.isArray(parsed.tests) ? parsed.tests : [],
+                            treatments: Array.isArray(parsed.treatments) ? parsed.treatments : [],
+                            keyFindings: parsed.keyFindings || '',
+                            specialty: parsed.specialty || ''
+                        };
+                    }
+                } catch (e2) {
+                    console.error('Aggressive parse also failed:', e2);
+                }
+
                 return null;
             }
         }
@@ -2091,17 +1860,35 @@ ${truncated}`;
 
             state.answerKey = { diagnosis, tests, treatments, differentials };
 
-            // Calculate scores
             const dxScore = calculateDiagnosisScore(diagnosis, differentials);
             const testScore = calculateListScore(state.tests.map(t => t.name), tests);
             const mgmtScore = calculateListScore(state.management.map(m => m.name), treatments);
-
             const overallScore = Math.round((dxScore.score + testScore.score + mgmtScore.score) / 3);
 
-            // Render score
             const container = document.getElementById('scoreResults');
             container.style.display = 'block';
             document.getElementById('noScoreYet').style.display = 'none';
+
+            // Build reasoning HTML if available
+            let reasoningHtml = '';
+            if (state.lastReasoning) {
+                reasoningHtml = `
+                    <div class="section-card">
+                        <div class="section-header" onclick="toggleSection(this)">
+                            <h3>🧠 AI Reasoning Process</h3>
+                            <span class="collapse-icon">▼</span>
+                        </div>
+                        <div class="section-body">
+                            <div class="reasoning-block">
+                                <details>
+                                    <summary>View the model's chain-of-thought reasoning</summary>
+                                    <pre>${escapeHtml(state.lastReasoning)}</pre>
+                                </details>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
 
             container.innerHTML = `
                 <div class="score-card">
@@ -2126,7 +1913,8 @@ ${truncated}`;
                     </div>
                 </div>
 
-                <!-- Diagnosis Detail -->
+                ${reasoningHtml}
+
                 <div class="section-card">
                     <div class="section-header" onclick="toggleSection(this)">
                         <h3>🎯 Diagnosis Breakdown</h3>
@@ -2150,7 +1938,6 @@ ${truncated}`;
                     </div>
                 </div>
 
-                <!-- Testing Detail -->
                 <div class="section-card">
                     <div class="section-header" onclick="toggleSection(this)">
                         <h3>🧪 Testing Breakdown</h3>
@@ -2161,7 +1948,6 @@ ${truncated}`;
                     </div>
                 </div>
 
-                <!-- Management Detail -->
                 <div class="section-card">
                     <div class="section-header" onclick="toggleSection(this)">
                         <h3>💊 Management Breakdown</h3>
@@ -2179,39 +1965,29 @@ ${truncated}`;
         }
 
         function calculateDiagnosisScore(correctDx, differentials) {
-            if (state.diagnoses.length === 0) {
-                return { score: 0, detail: 'No diagnoses entered.' };
-            }
+            if (state.diagnoses.length === 0) return { score: 0, detail: 'No diagnoses entered.' };
 
             const activeDx = state.diagnoses.filter(d => !d.ruledOut);
-            if (activeDx.length === 0) {
-                return { score: 0, detail: 'All diagnoses were ruled out.' };
-            }
+            if (activeDx.length === 0) return { score: 0, detail: 'All diagnoses were ruled out.' };
 
-            // Check if #1 active diagnosis matches
             const topDx = activeDx[0].text.toLowerCase();
             const correct = correctDx.toLowerCase();
 
-            if (fuzzyMatch(topDx, correct)) {
+            if (fuzzyMatch(topDx, correct))
                 return { score: 100, detail: `Your #1 diagnosis "${activeDx[0].text}" matches the correct diagnosis!` };
-            }
 
-            // Check if correct dx is anywhere in active list
             const matchIdx = activeDx.findIndex(d => fuzzyMatch(d.text.toLowerCase(), correct));
             if (matchIdx > 0) {
-                const penalty = matchIdx * 15;
-                const score = Math.max(20, 85 - penalty);
+                const score = Math.max(20, 85 - matchIdx * 15);
                 return { score, detail: `Correct diagnosis was #${matchIdx + 1} on your active list. Higher ranking = better score.` };
             }
 
-            // Check if any differentials match
             const diffMatches = activeDx.filter(d =>
                 differentials.some(diff => fuzzyMatch(d.text.toLowerCase(), diff.toLowerCase()))
             ).length;
 
-            if (diffMatches > 0) {
+            if (diffMatches > 0)
                 return { score: Math.min(40, diffMatches * 15), detail: `${diffMatches} of your diagnoses were on the differential list, but you didn't identify the correct final diagnosis.` };
-            }
 
             return { score: 0, detail: 'The correct diagnosis was not on your differential.' };
         }
@@ -2222,25 +1998,21 @@ ${truncated}`;
 
             let matches = 0;
             answerItems.forEach(answer => {
-                if (userItems.some(u => fuzzyMatch(u.toLowerCase(), answer.toLowerCase()))) {
-                    matches++;
-                }
+                if (userItems.some(u => fuzzyMatch(u.toLowerCase(), answer.toLowerCase()))) matches++;
             });
 
-            const score = Math.round((matches / answerItems.length) * 100);
-            return { score, detail: `${matches}/${answerItems.length} key items matched.` };
+            return { score: Math.round((matches / answerItems.length) * 100), detail: `${matches}/${answerItems.length} key items matched.` };
         }
 
         function fuzzyMatch(a, b) {
-            a = a.toLowerCase().replace(/[^a-z0-9]/g, '');
-            b = b.toLowerCase().replace(/[^a-z0-9]/g, '');
+            a = a.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
+            b = b.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
 
             if (a === b) return true;
             if (a.includes(b) || b.includes(a)) return true;
 
-            // Simple word overlap check
-            const wordsA = a.replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2);
-            const wordsB = b.replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2);
+            const wordsA = a.split(/\s+/).filter(w => w.length > 2);
+            const wordsB = b.split(/\s+/).filter(w => w.length > 2);
             if (wordsA.length === 0 || wordsB.length === 0) return false;
 
             const overlap = wordsA.filter(w => wordsB.some(wb => wb.includes(w) || w.includes(wb)));
@@ -2249,12 +2021,10 @@ ${truncated}`;
 
         function getDxMatchTag(userDx, correctDx, differentials) {
             const u = userDx.toLowerCase();
-            if (fuzzyMatch(u, correctDx.toLowerCase())) {
+            if (fuzzyMatch(u, correctDx.toLowerCase()))
                 return '<span class="answer-tag correct">✓ Correct Dx</span>';
-            }
-            if (differentials.some(d => fuzzyMatch(u, d.toLowerCase()))) {
+            if (differentials.some(d => fuzzyMatch(u, d.toLowerCase())))
                 return '<span class="answer-tag partial">~ On Differential</span>';
-            }
             return '<span class="answer-tag incorrect">✗ Not matched</span>';
         }
 
@@ -2267,10 +2037,7 @@ ${truncated}`;
             } else {
                 userItems.forEach(item => {
                     const matched = answerItems.some(a => fuzzyMatch(item.toLowerCase(), a.toLowerCase()));
-                    html += `<div style="padding:4px 0; font-size:0.85rem;">
-                        ${matched ? '<span class="match-yes">✓</span>' : '<span class="match-no">○</span>'}
-                        ${escapeHtml(item)}
-                    </div>`;
+                    html += `<div style="padding:4px 0; font-size:0.85rem;">${matched ? '<span class="match-yes">✓</span>' : '<span class="match-no">○</span>'} ${escapeHtml(item)}</div>`;
                 });
             }
             html += '</div>';
@@ -2281,14 +2048,10 @@ ${truncated}`;
             } else {
                 answerItems.forEach(item => {
                     const matched = userItems.some(u => fuzzyMatch(u.toLowerCase(), item.toLowerCase()));
-                    html += `<div style="padding:4px 0; font-size:0.85rem;">
-                        ${matched ? '<span class="match-yes">✓</span>' : '<span class="match-no">✗</span>'}
-                        ${escapeHtml(item)}
-                    </div>`;
+                    html += `<div style="padding:4px 0; font-size:0.85rem;">${matched ? '<span class="match-yes">✓</span>' : '<span class="match-no">✗</span>'} ${escapeHtml(item)}</div>`;
                 });
             }
             html += '</div></div>';
-
             return html;
         }
 
@@ -2301,17 +2064,18 @@ ${truncated}`;
         // ===== SETTINGS =====
         function openSettings() {
             document.getElementById('settingsModal').classList.add('show');
-            // Restore current values
-            const radios = document.querySelectorAll('input[name="llmProvider"]');
-            radios.forEach(r => { r.checked = r.value === state.llmProvider; });
+            document.querySelectorAll('input[name="llmProvider"]').forEach(r => {
+                r.checked = r.value === state.llmProvider;
+            });
             document.getElementById('apiKeyInput').value = state.apiKey;
             document.getElementById('ollamaUrl').value = state.ollamaUrl;
             document.getElementById('ollamaModel').value = state.ollamaModel;
             document.getElementById('openrouterModel').value = state.openrouterModel;
+            document.getElementById('openrouterReasoning').checked = state.openrouterReasoning;
             updateSettingsVisibility();
-
-            // Listen for radio changes
-            radios.forEach(r => r.addEventListener('change', updateSettingsVisibility));
+            document.querySelectorAll('input[name="llmProvider"]').forEach(r =>
+                r.addEventListener('change', updateSettingsVisibility)
+            );
         }
 
         function closeSettings() {
@@ -2320,13 +2084,10 @@ ${truncated}`;
 
         function updateSettingsVisibility() {
             const provider = document.querySelector('input[name="llmProvider"]:checked').value;
-            const apiKeyGroup = document.getElementById('apiKeyGroup');
-            const ollamaGroup = document.getElementById('ollamaGroup');
-            const openrouterGroup = document.getElementById('openrouterGroup');
-
-            apiKeyGroup.style.display = ['openai', 'anthropic', 'gemini', 'openrouter'].includes(provider) ? 'block' : 'none';
-            ollamaGroup.style.display = provider === 'ollama' ? 'block' : 'none';
-            openrouterGroup.style.display = provider === 'openrouter' ? 'block' : 'none';
+            document.getElementById('apiKeyGroup').style.display =
+                ['openai', 'anthropic', 'gemini', 'openrouter'].includes(provider) ? 'block' : 'none';
+            document.getElementById('ollamaGroup').style.display = provider === 'ollama' ? 'block' : 'none';
+            document.getElementById('openrouterGroup').style.display = provider === 'openrouter' ? 'block' : 'none';
         }
 
         function saveSettings() {
@@ -2335,14 +2096,15 @@ ${truncated}`;
             state.ollamaUrl = document.getElementById('ollamaUrl').value.trim();
             state.ollamaModel = document.getElementById('ollamaModel').value.trim();
             state.openrouterModel = document.getElementById('openrouterModel').value.trim();
+            state.openrouterReasoning = document.getElementById('openrouterReasoning').checked;
 
-            // Save to localStorage
             localStorage.setItem('casedx_settings', JSON.stringify({
                 llmProvider: state.llmProvider,
                 apiKey: state.apiKey,
                 ollamaUrl: state.ollamaUrl,
                 ollamaModel: state.ollamaModel,
-                openrouterModel: state.openrouterModel
+                openrouterModel: state.openrouterModel,
+                openrouterReasoning: state.openrouterReasoning
             }));
 
             updateLLMStatus();
@@ -2354,19 +2116,21 @@ ${truncated}`;
             try {
                 const saved = JSON.parse(localStorage.getItem('casedx_settings'));
                 if (saved) {
-                    state.llmProvider = saved.llmProvider || 'none';
-                    state.apiKey = saved.apiKey || '';
+                    state.llmProvider = saved.llmProvider || 'openrouter';
+                    state.apiKey = saved.apiKey || state.apiKey;
                     state.ollamaUrl = saved.ollamaUrl || 'http://localhost:11434';
                     state.ollamaModel = saved.ollamaModel || 'llama3.2';
-                    state.openrouterModel = saved.openrouterModel || 'meta-llama/llama-3.1-8b-instruct:free';
+                    state.openrouterModel = saved.openrouterModel || 'openai/gpt-oss-120b:free';
+                    state.openrouterReasoning = saved.openrouterReasoning !== undefined ? saved.openrouterReasoning : true;
                 }
-            } catch (e) {}
+            } catch (e) {
+                console.log('No saved settings, using defaults with OpenRouter');
+            }
         }
 
         function updateLLMStatus() {
             const dot = document.getElementById('llmDot');
             const name = document.getElementById('llmName');
-
             const names = {
                 none: 'Manual Mode',
                 openai: 'OpenAI',
@@ -2376,7 +2140,13 @@ ${truncated}`;
                 openrouter: 'OpenRouter'
             };
 
-            name.textContent = names[state.llmProvider] || 'None';
+            let displayName = names[state.llmProvider] || 'None';
+            if (state.llmProvider === 'openrouter' && state.openrouterModel) {
+                // Show short model name
+                const shortModel = state.openrouterModel.split('/').pop().split(':')[0];
+                displayName += ` (${shortModel})`;
+            }
+            name.textContent = displayName;
 
             if (state.llmProvider === 'none') {
                 dot.className = 'llm-dot';
@@ -2392,13 +2162,13 @@ ${truncated}`;
             input.type = input.type === 'password' ? 'text' : 'password';
         }
 
-        // ===== RESIZE HANDLE =====
+        // ===== RESIZE =====
         function setupResize() {
             const handle = document.getElementById('resizeHandle');
             const panel = document.getElementById('workspacePanel');
             let isResizing = false;
 
-            handle.addEventListener('mousedown', (e) => {
+            handle.addEventListener('mousedown', () => {
                 isResizing = true;
                 handle.classList.add('active');
                 document.body.style.cursor = 'col-resize';
@@ -2408,9 +2178,8 @@ ${truncated}`;
             document.addEventListener('mousemove', (e) => {
                 if (!isResizing) return;
                 const containerRect = document.querySelector('.main-container').getBoundingClientRect();
-                const newWidth = containerRect.right - e.clientX;
-                const clamped = Math.max(380, Math.min(800, newWidth));
-                panel.style.width = clamped + 'px';
+                const newWidth = Math.max(380, Math.min(800, containerRect.right - e.clientX));
+                panel.style.width = newWidth + 'px';
             });
 
             document.addEventListener('mouseup', () => {
@@ -2438,16 +2207,15 @@ ${truncated}`;
             state.management = [];
             state.currentPhase = 0;
             state.answerKey = null;
+            state.lastReasoning = null;
             state.nextId = 1;
 
-            // Reset PDF viewer
             document.getElementById('pdfToolbar').style.display = 'none';
             document.getElementById('pdfPlaceholder').style.display = 'flex';
             document.getElementById('pdfCanvasContainer').style.display = 'none';
             document.getElementById('pdfCanvasContainer').innerHTML = '';
             document.getElementById('zoomLevel').textContent = '100%';
 
-            // Reset workspace
             document.getElementById('hpiNotes').value = '';
             document.getElementById('examNotes').value = '';
             document.getElementById('generalNotes').value = '';
@@ -2458,20 +2226,17 @@ ${truncated}`;
             document.getElementById('scoreResults').style.display = 'none';
             document.getElementById('scoreResults').innerHTML = '';
             document.getElementById('noScoreYet').style.display = 'block';
+            document.getElementById('pdfInput').value = '';
 
             setPhase(0);
             renderDiagnoses();
             renderTests();
             renderManagement();
 
-            // Switch to first tab
             document.querySelectorAll('.workspace-tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
             document.querySelector('.workspace-tab').classList.add('active');
             document.getElementById('tab-workup').classList.add('active');
-
-            // Reset file input
-            document.getElementById('pdfInput').value = '';
 
             showToast('Case reset!', 'info');
         }
