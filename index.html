@@ -463,8 +463,10 @@
         try{
             if(!S.parsed)S.parsed=parseSections(S.pdfText);
             const answer = {
-    finalDx: normalizeDxText(S.parsed.finalDx || ''),
-    clinicalDx: normalizeDxText(S.parsed.clinicalDx || ''),
+    // Always derive final diagnosis from full PDF text between "Diagnosis" and
+    // "This case was presented at "
+    finalDx: extractFinalDiagnosisFromFullText(S.pdfText),
+    // Clinical diagnosis removed by design
     differentials: S.parsed.diffList.length ? [...S.parsed.diffList] : [],
     labs: [],
     diagnosticTests: [],
@@ -477,8 +479,10 @@
                     if(d.diagnosticTests?.length)answer.diagnosticTests=d.diagnosticTests;
                     if(d.treatments?.length)answer.treatments=d.treatments;
                     if(!answer.differentials.length&&d.differentials?.length)answer.differentials=d.differentials;
-                    if (!answer.finalDx && d.finalDx) answer.finalDx = normalizeDxText(d.finalDx);
-if (!answer.clinicalDx && d.clinicalDx) answer.clinicalDx = normalizeDxText(d.clinicalDx);
+                    // Only use LLM as a fallback if the pattern-based extraction failed
+if (!answer.finalDx && d.finalDx) {
+    answer.finalDx = d.finalDx;
+}
                 }catch(e){console.warn('LLM fail:',e);toast('LLM failed — using parsed data.','warning');}
             }
             S.answer=answer;renderAK();toast('✅ Extracted!','success');
@@ -490,7 +494,6 @@ if (!answer.clinicalDx && d.clinicalDx) answer.clinicalDx = normalizeDxText(d.cl
     async function llmExtract(parsed){
         const prompt=`Extract structured data from these medical case sections. Return ONLY valid JSON.
 {"finalDx":"diagnosis name only (e.g. \"Eosinophilic granulomatosis with polyangiitis\")",
- "clinicalDx":"diagnosis name only",
  "differentials":["name only"],
  "labs":["test: result"],
  "diagnosticTests":["procedure name"],
@@ -508,27 +511,37 @@ ${parsed.finalDx?`FINAL DIAGNOSIS:\n${parsed.finalDx}\n\n`:''}${parsed.clinicalD
     async function fetchOR(p){const body={model:S.orModel,messages:[{role:'user',content:p}],temperature:0.2,max_tokens:3000};dlog(`→ ${body.model}`);const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${S.key}`,'HTTP-Referer':window.location.href,'X-Title':'CaseDx'},body:JSON.stringify(body)});const rt=await r.text();if(!r.ok){let d;try{d=JSON.parse(rt).error?.message;}catch(e){d=rt.substring(0,200);}throw new Error(d||`HTTP ${r.status}`);}const data=JSON.parse(rt);if(!data.choices?.length)throw new Error('Empty');return{content:data.choices[0].message.content||''};}
     function parseLLM(text){try{let s=text;const m1=s.match(/```(?:json)?\s*([\s\S]*?)```/);if(m1)s=m1[1];const m2=s.match(/\{[\s\S]*\}/);if(m2)s=m2[0];const p=JSON.parse(s);return{finalDx:p.finalDx||p.finalDiagnosis||'',clinicalDx:p.clinicalDx||p.clinicalDiagnosis||'',differentials:Array.isArray(p.differentials)?p.differentials:[],labs:Array.isArray(p.labs)?p.labs:[],diagnosticTests:Array.isArray(p.diagnosticTests)?p.diagnosticTests:[],treatments:Array.isArray(p.treatments)?p.treatments:[]};}catch(e){return{finalDx:'',clinicalDx:'',differentials:[],labs:[],diagnosticTests:[],treatments:[]};}}
 
-    function normalizeDxText(raw) {
-        if (!raw) return raw;
-        let s = String(raw);
+function extractFinalDiagnosisFromFullText(fullText) {
+    if (!fullText) return '';
 
-        // If there is an explicit "Final Diagnosis" label, take the text after it
-        const labelMatch = s.match(/Final\s+Diagnosis[^:]*[:.]?\s*(.+)/i);
-        if (labelMatch) {
-            s = labelMatch[1];
-        }
+    const startLabel = /Diagnosis/i;
+    const endLabel = /This case was presented at/i;
 
-        // Stop at the first period to avoid pulling in whole sentences after the dx
-        const firstSentence = s.split(/[.]/)[0];
+    const startMatch = fullText.match(startLabel);
+    const endMatch   = fullText.match(endLabel);
 
-        // Remove some common boilerplate tails if they slipped in
-        let cleaned = firstSentence.replace(/This case was presented.*$/i, '');
-
-        // Collapse whitespace and trim
-        cleaned = cleaned.replace(/\s+/g, ' ').trim();
-
-        return cleaned;
+    if (!startMatch || !endMatch) {
+        return '';
     }
+
+    const startIdx = startMatch.index + startMatch[0].length;
+    const endIdx   = endMatch.index;
+
+    if (endIdx <= startIdx) {
+        return '';
+    }
+
+    let segment = fullText.slice(startIdx, endIdx);
+
+    // Clean up leading separators
+    segment = segment.replace(/^[\s:;–—-]+/, '');
+
+    // Use only the first sentence or line, since the dx is usually concise
+    segment = segment.split(/[.\n]/)[0];
+
+    // Normalize whitespace and trim
+    return segment.replace(/\s+/g, ' ').trim();
+}
         
     // ===== ANSWER KEY DISPLAY =====
     function renderAK(){
@@ -537,7 +550,6 @@ ${parsed.finalDx?`FINAL DIAGNOSIS:\n${parsed.finalDx}\n\n`:''}${parsed.clinicalD
         const a=S.answer;
         c.innerHTML=`
             <div class="ak-card ak-dx-card"><div class="ak-card-header">🎯 Final Diagnosis</div><div class="ak-card-body"><div class="ak-dx-value">${a.finalDx?esc(a.finalDx):'<span class="ak-empty">Not found</span>'}</div></div></div>
-            <div class="ak-card ak-clinical-card"><div class="ak-card-header">🏥 Clinical Diagnosis</div><div class="ak-card-body"><div class="ak-dx-value">${a.clinicalDx?esc(a.clinicalDx):'<span class="ak-empty">Not found</span>'}</div></div></div>
             <div class="ak-card ak-diff-card"><div class="ak-card-header">🤔 Differentials (${a.differentials.length})</div><div class="ak-card-body">${a.differentials.length?`<ul class="ak-list">${a.differentials.map(d=>`<li><span>•</span>${esc(d)}</li>`).join('')}</ul>`:'<div class="ak-empty">None</div>'}</div></div>
             <div class="ak-card ak-lab-card"><div class="ak-card-header">🧪 Laboratory Data (${a.labs.length})</div><div class="ak-card-body">${
     a.labs.length ? `
@@ -576,7 +588,6 @@ ${parsed.finalDx?`FINAL DIAGNOSIS:\n${parsed.finalDx}\n\n`:''}${parsed.clinicalD
         const a=S.answer,c=document.getElementById('answerKeyDisplay');
         c.innerHTML=`<div class="section-card"><div class="section-header"><h3>✏ Edit Answer Key</h3></div><div class="section-body">
             <div class="form-group"><label>🎯 Final Diagnosis</label><input type="text" id="eFD" value="${esc(a.finalDx)}"></div>
-            <div class="form-group"><label>🏥 Clinical Diagnosis</label><input type="text" id="eCD" value="${esc(a.clinicalDx)}"></div>
             <div class="form-group"><label>🤔 Differentials (one per line)</label><textarea id="eDf" style="width:100%;min-height:80px;padding:8px;border:1.5px solid var(--gray-300);border-radius:var(--radius);font-size:0.85rem;font-family:inherit;">${a.differentials.join('\n')}</textarea></div>
             <div class="form-group"><label>🧪 Labs (one per line)</label><textarea id="eLb" style="width:100%;min-height:80px;padding:8px;border:1.5px solid var(--gray-300);border-radius:var(--radius);font-size:0.85rem;font-family:inherit;">${a.labs.join('\n')}</textarea></div>
             <div class="form-group"><label>🩻 Diagnostic Testing (one per line)</label><textarea id="eDt" style="width:100%;min-height:80px;padding:8px;border:1.5px solid var(--gray-300);border-radius:var(--radius);font-size:0.85rem;font-family:inherit;">${a.diagnosticTests.join('\n')}</textarea></div>
@@ -584,28 +595,52 @@ ${parsed.finalDx?`FINAL DIAGNOSIS:\n${parsed.finalDx}\n\n`:''}${parsed.clinicalD
             <div style="display:flex;gap:8px;"><button class="btn btn-success" onclick="saveManualAK()" style="flex:1;">💾 Save</button><button class="btn btn-ghost" onclick="renderAK()">Cancel</button></div>
         </div></div>`;
     }
-    function saveManualAK(){const p=id=>document.getElementById(id).value.split('\n').map(s=>s.trim()).filter(Boolean);S.answer={finalDx:document.getElementById('eFD').value.trim(),clinicalDx:document.getElementById('eCD').value.trim(),differentials:p('eDf'),labs:p('eLb'),diagnosticTests:p('eDt'),treatments:p('eTx')};renderAK();toast('Saved!','success');}
+    function saveManualAK(){const p=id=>document.getElementById(id).value.split('\n').map(s=>s.trim()).filter(Boolean);S.answer = {
+    finalDx: document.getElementById('eFD').value.trim(),
+    differentials: p('eDf'),
+    labs: p('eLb'),
+    diagnosticTests: p('eDt'),
+    treatments: p('eTx')
+};renderAK();toast('Saved!','success');}
 
     // ===== SCORING =====
     function scoreCase(){
         if(!S.answer?.finalDx){toast('Need Final Diagnosis.','error');return;}
-        const a=S.answer,all=[...a.labs,...a.diagnosticTests];
-        const dS=calcDxS(a.finalDx,a.differentials,a.clinicalDx),tS=calcLS(S.tests.map(t=>t.name),all),mS=calcLS(S.mgmt.map(m=>m.name),a.treatments);
+        const a = S.answer, all = [...a.labs, ...a.diagnosticTests];
+const dS = calcDxS(a.finalDx, a.differentials),
+      tS = calcLS(S.tests.map(t => t.name), all),
+      mS = calcLS(S.mgmt.map(m => m.name), a.treatments);
         const ov=Math.round((dS.score+tS.score+mS.score)/3);
         const c=document.getElementById('scoreResults');c.style.display='block';document.getElementById('answerKeyDisplay').style.display='none';
         c.innerHTML=`
-            <div class="dx-compare"><div class="dx-compare-card clinical"><div class="dx-type">🏥 Clinical Dx</div><div class="dx-value">${a.clinicalDx?esc(a.clinicalDx):'N/A'}</div></div><div class="dx-compare-card final"><div class="dx-type">🎯 Final Dx</div><div class="dx-value">${esc(a.finalDx)}</div></div></div>
+            <div class="dx-compare"><div class="dx-compare-card final"><div class="dx-type">🎯 Final Dx</div><div class="dx-value">${esc(a.finalDx)}</div></div></div>
             <div class="score-card"><h3>Performance</h3><div class="score-grid"><div class="score-item"><div class="score-value ${sc(dS.score)}">${dS.score}%</div><div class="score-label">Diagnosis</div></div><div class="score-item"><div class="score-value ${sc(tS.score)}">${tS.score}%</div><div class="score-label">Testing</div></div><div class="score-item"><div class="score-value ${sc(mS.score)}">${mS.score}%</div><div class="score-label">Management</div></div></div><div style="text-align:center;margin-top:16px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);"><div class="score-value ${sc(ov)}" style="font-size:2.5rem;">${ov}%</div><div class="score-label" style="font-size:0.85rem;">Overall</div></div></div>
             <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><h3>🎯 Diagnosis</h3><span class="collapse-icon">▼</span></div><div class="section-body"><p><strong>Final:</strong> ${esc(a.finalDx)}</p>${a.clinicalDx?`<p style="font-size:0.85rem;color:var(--gray-500);margin-top:4px;"><strong>Clinical:</strong> ${esc(a.clinicalDx)}</p>`:''}<p style="margin:8px 0;font-size:0.85rem;color:var(--gray-500);">${dS.detail}</p>${S.dx.length?`<table class="comparison-table"><tr><th>#</th><th>Your Differential</th><th>Match</th></tr>${S.dx.map((d,i)=>`<tr><td>${i+1}</td><td class="${d.out?'match-no':''}">${esc(d.text)}${d.out?' (out)':''}</td><td>${dxTag(d.text,a.finalDx,a.clinicalDx,a.differentials)}</td></tr>`).join('')}</table>`:'<p style="color:var(--gray-400)">None entered.</p>'}</div></div>
             <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><h3>🧪 Testing</h3><span class="collapse-icon">▼</span></div><div class="section-body">${cmpL('Yours',S.tests.map(t=>t.name),'Key',all)}</div></div>
             <div class="section-card"><div class="section-header" onclick="toggleSection(this)"><h3>💊 Management</h3><span class="collapse-icon">▼</span></div><div class="section-body">${cmpL('Yours',S.mgmt.map(m=>m.name),'Key',a.treatments)}</div></div>
             <button class="btn btn-outline" onclick="document.getElementById('scoreResults').style.display='none';document.getElementById('answerKeyDisplay').style.display='block';" style="width:100%;margin-top:8px;">← Back to Answer Key</button>`;
     }
-    function calcDxS(c,d,cl){if(!S.dx.length)return{score:0,detail:'No diagnoses entered.'};const a=S.dx.filter(x=>!x.out);if(!a.length)return{score:0,detail:'All ruled out.'};if(fz(a[0].text,c))return{score:100,detail:'#1 matches Final Dx! 🎉'};const mi=a.findIndex(x=>fz(x.text,c));if(mi>0)return{score:Math.max(20,85-mi*15),detail:`Final Dx was #${mi+1}.`};if(cl&&fz(a[0].text,cl))return{score:60,detail:'#1 matches Clinical Dx but not Final.'};const dm=a.filter(x=>d.some(df=>fz(x.text,df))).length;if(dm)return{score:Math.min(40,dm*15),detail:`${dm} on diff but missed Final.`};return{score:0,detail:'Final Dx not on differential.'};}
-    function calcLS(u,a){if(!a.length)return{score:100};if(!u.length)return{score:0};let m=0;a.forEach(x=>{if(u.some(y=>fz(y,x)))m++;});return{score:Math.round(m/a.length*100)};}
+    function calcDxS(finalDx, differentials){
+    if (!S.dx.length) return { score: 0, detail: 'No diagnoses entered.' };
+    const a = S.dx.filter(x => !x.out);
+    if (!a.length) return { score: 0, detail: 'All ruled out.' };
+
+    const top = a[0].text;
+
+    if (fz(top, finalDx)) {
+        return { score: 100, detail: 'Top diagnosis matched the final diagnosis.' };
+    }
+    if (differentials.some(x => fz(top, x))) {
+        return { score: 50, detail: 'Top diagnosis was in the differential list.' };
+    }
+    return { score: 0, detail: 'Top diagnosis did not match.' };
+}function calcLS(u,a){if(!a.length)return{score:100};if(!u.length)return{score:0};let m=0;a.forEach(x=>{if(u.some(y=>fz(y,x)))m++;});return{score:Math.round(m/a.length*100)};}
     function fz(a,b){a=a.toLowerCase().replace(/[^a-z0-9\s]/g,'').trim();b=b.toLowerCase().replace(/[^a-z0-9\s]/g,'').trim();if(a===b||a.includes(b)||b.includes(a))return true;const wa=a.split(/\s+/).filter(w=>w.length>2),wb=b.split(/\s+/).filter(w=>w.length>2);if(!wa.length||!wb.length)return false;return wa.filter(w=>wb.some(x=>x.includes(w)||w.includes(x))).length>=Math.min(2,Math.ceil(wb.length*0.6));}
-    function dxTag(u,f,c,d){if(fz(u,f))return'<span class="answer-tag correct">✓ Final</span>';if(c&&fz(u,c))return'<span class="answer-tag partial">~ Clinical</span>';if(d.some(x=>fz(u,x)))return'<span class="answer-tag partial">~ Diff</span>';return'<span class="answer-tag incorrect">✗</span>';}
-    function cmpL(ul,ui,al,ai){let h='<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">';h+=`<div><h4 style="font-size:0.85rem;margin-bottom:8px;color:var(--gray-600)">${ul}</h4>`;if(!ui.length)h+='<p style="color:var(--gray-400);font-size:0.85rem">None</p>';else ui.forEach(x=>{const m=ai.some(a=>fz(x,a));h+=`<div style="padding:3px 0;font-size:0.85rem">${m?'<span class="match-yes">✓</span>':'<span class="match-no">○</span>'} ${esc(x)}</div>`;});h+='</div>';h+=`<div><h4 style="font-size:0.85rem;margin-bottom:8px;color:var(--gray-600)">${al}</h4>`;if(!ai.length)h+='<p style="color:var(--gray-400);font-size:0.85rem">None</p>';else ai.forEach(x=>{const m=ui.some(u=>fz(u,x));h+=`<div style="padding:3px 0;font-size:0.85rem">${m?'<span class="match-yes">✓</span>':'<span class="match-no">✗</span>'} ${esc(x)}</div>`;});h+='</div></div>';return h;}
+function dxTag(u,f,d){
+    if (fz(u, f)) return '<span class="answer-tag correct">✓ Final</span>';
+    if (d.some(x => fz(u, x))) return '<span class="answer-tag partial">~ Diff</span>';
+    return '<span class="answer-tag incorrect">✗</span>';
+}    function cmpL(ul,ui,al,ai){let h='<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">';h+=`<div><h4 style="font-size:0.85rem;margin-bottom:8px;color:var(--gray-600)">${ul}</h4>`;if(!ui.length)h+='<p style="color:var(--gray-400);font-size:0.85rem">None</p>';else ui.forEach(x=>{const m=ai.some(a=>fz(x,a));h+=`<div style="padding:3px 0;font-size:0.85rem">${m?'<span class="match-yes">✓</span>':'<span class="match-no">○</span>'} ${esc(x)}</div>`;});h+='</div>';h+=`<div><h4 style="font-size:0.85rem;margin-bottom:8px;color:var(--gray-600)">${al}</h4>`;if(!ai.length)h+='<p style="color:var(--gray-400);font-size:0.85rem">None</p>';else ai.forEach(x=>{const m=ui.some(u=>fz(u,x));h+=`<div style="padding:3px 0;font-size:0.85rem">${m?'<span class="match-yes">✓</span>':'<span class="match-no">✗</span>'} ${esc(x)}</div>`;});h+='</div></div>';return h;}
     function sc(s){return s>=70?'good':s>=40?'okay':'poor';}
 
     // SETTINGS
@@ -625,4 +660,5 @@ ${parsed.finalDx?`FINAL DIAGNOSIS:\n${parsed.finalDx}\n\n`:''}${parsed.clinicalD
     </script>
 </body>
 </html>
+
 
